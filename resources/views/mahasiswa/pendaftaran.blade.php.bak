@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Halaman Pendaftaran - Kampus Merdeka</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@300..900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2563eb",
+                        "primary-dark": "#1d4ed8",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e293b",
+                        "border-light": "#e2e8f0",
+                        "border-dark": "#334155",
+                        "success": "#10b981"
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'glow': '0 0 15px rgba(37, 99, 235, 0.3)',
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body:has(.modal-toggle:checked) {
+                overflow: hidden;
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background-color: #475569;
+        }
+        /* Animation Keyframes */
+        @keyframes modal-pop {
+            0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-animate {
+            animation: modal-pop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-body text-slate-800 dark:text-slate-200 transition-colors duration-200 selection:bg-primary/20 selection:text-primary">
+    <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+        <!-- Header -->
+        <div
+            class="w-full bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-md border-b border-border-light dark:border-border-dark sticky top-0 z-40 transition-all duration-300">
+            <div class="flex justify-center px-4 md:px-8 lg:px-12 py-4">
+                <div class="flex max-w-7xl flex-1 items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="flex items-center justify-center size-10 rounded-xl bg-primary text-white shadow-glow">
+                            <span class="material-symbols-outlined">school</span>
+                        </div>
+                        <h2
+                            class="text-xl font-display font-bold leading-tight tracking-tight text-slate-900 dark:text-white">
+                            Kampus<span class="text-primary">Merdeka</span></h2>
+                    </div>
+                    <div class="flex items-center gap-6 md:gap-8">
+                        <nav class="flex items-center">
+                            <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
+                                href="{{ url('/') }}" onclick="event.preventDefault(); showExitModal()">Beranda</a>
+                        </nav>
+                        <div class="flex">
+                            <a href="{{ route('login') }}"
+                                class="flex items-center justify-center rounded-xl h-10 px-5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-600 transition-all">
+                                Masuk
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="pendaftaran-form" action="{{ route('mahasiswa.store') }}" method="POST" class="flex flex-col grow">
+            @csrf
+            <!-- Modal Toggles -->
+            <input class="peer/modal1 hidden modal-toggle" id="modal-1" type="checkbox" />
+            <input class="peer/modal2 hidden modal-toggle" id="modal-2" type="checkbox" />
+            <input class="peer/modal3 hidden modal-toggle" id="modal-3" type="checkbox" />
+            <input class="peer/modal4 hidden modal-toggle" id="modal-4" type="checkbox" />
+            <input class="peer/modal5 hidden modal-toggle" id="modal-5" type="checkbox" />
+
+            <main class="flex flex-col items-center px-4 md:px-8 lg:px-12 py-10 grow">
+                <div class="flex flex-col max-w-4xl w-full gap-10">
+                    <div class="flex flex-col gap-6 text-center md:text-left md:flex-row md:items-end justify-between">
+                        <div class="flex flex-col gap-3 max-w-2xl">
+                            <div
+                                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 w-fit">
+                                <span class="relative flex h-2 w-2">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                                </span>
+                                <span class="text-xs font-bold uppercase tracking-wide text-primary">Pendaftaran
+                                    Aktif</span>
+                            </div>
+                            <h1
+                                class="text-3xl md:text-4xl lg:text-5xl font-display font-black leading-tight text-slate-900 dark:text-white">
+                                Formulir Mahasiswa Baru
+                            </h1>
+                            <p class="text-slate-500 dark:text-slate-400 text-base md:text-lg leading-relaxed">
+                                Silakan lengkapi setiap bagian di bawah ini. Pastikan data yang Anda masukkan akurat
+                                sesuai dengan dokumen resmi.
+                            </p>
+                        </div>
+                    </div>
+
+                    @if ($errors->any())
+                        <div
+                            class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4 rounded-xl border border-red-100 dark:border-red-900/50 mb-6">
+                            <div class="flex items-center gap-2 mb-2 font-bold">
+                                <span class="material-symbols-outlined">warning</span>
+                                <h3>Mohon periksa kembali inputan Anda:</h3>
+                            </div>
+                            <ul class="list-disc list-inside text-sm">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <div
+                        class="relative overflow-hidden flex flex-col sm:flex-row gap-4 bg-white dark:bg-surface-dark border border-blue-100 dark:border-blue-900/50 rounded-2xl p-5 shadow-soft">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+                        <div class="flex items-start gap-4 z-10">
+                            <div class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-primary shrink-0">
+                                <span class="material-symbols-outlined">verified_user</span>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <h3 class="font-bold text-slate-900 dark:text-white">Kelengkapan Data</h3>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">
+                                    Ikon centang hijau menandakan bagian tersebut telah lengkap. Anda dapat mengedit
+                                    kembali data tersebut sebelum menekan tombol Lanjut.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-4 w-full">
+                        <!-- Step 1 -->
+                        <label
+                            class="group bg-white dark:bg-surface-dark rounded-2xl shadow-soft border border-border-light dark:border-border-dark p-5 md:p-6 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all hover:border-primary/30 hover:shadow-md flex items-center justify-between"
+                            for="modal-1">
+                            <div class="flex items-center gap-4 md:gap-6">
+                                <div
+                                    class="flex items-center justify-center size-12 rounded-xl bg-blue-50 text-primary dark:bg-blue-900/20 shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-symbols-outlined text-[24px]">school</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-2">
+                                        <h2
+                                            class="text-lg md:text-xl font-display font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                                            I. Program Studi</h2>
+                                        <span class="material-symbols-outlined text-success text-xl">check_circle</span>
+                                    </div>
+                                    <span class="text-sm text-slate-400 dark:text-slate-500 font-normal">Gelombang I -
+                                        Sistem Informasi</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="hidden sm:block text-xs font-bold text-success uppercase tracking-wider">Lengkap</span>
+                                <div
+                                    class="flex items-center justify-center size-10 rounded-full border border-slate-200 dark:border-slate-700 text-slate-400 group-hover:border-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                    <span class="material-symbols-outlined text-sm">edit</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Step 2 -->
+                        <label
+                            class="group bg-white dark:bg-surface-dark rounded-2xl shadow-soft border border-border-light dark:border-border-dark p-5 md:p-6 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all hover:border-primary/30 hover:shadow-md flex items-center justify-between"
+                            for="modal-2">
+                            <div class="flex items-center gap-4 md:gap-6">
+                                <div
+                                    class="flex items-center justify-center size-12 rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400 shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-symbols-outlined text-[24px]">person</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-2">
+                                        <h2
+                                            class="text-lg md:text-xl font-display font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                                            II. Identitas Diri</h2>
+                                        <span class="material-symbols-outlined text-success text-xl">check_circle</span>
+                                    </div>
+                                    <span class="text-sm text-slate-400 dark:text-slate-500 font-normal">Sesuai KTP dan
+                                        Ijazah Terakhir</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="hidden sm:block text-xs font-bold text-success uppercase tracking-wider">Lengkap</span>
+                                <div
+                                    class="flex items-center justify-center size-10 rounded-full border border-slate-200 dark:border-slate-700 text-slate-400 group-hover:border-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                    <span class="material-symbols-outlined text-sm">edit</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Step 3 -->
+                        <label
+                            class="group bg-white dark:bg-surface-dark rounded-2xl shadow-soft border border-border-light dark:border-border-dark p-5 md:p-6 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all hover:border-primary/30 hover:shadow-md flex items-center justify-between"
+                            for="modal-3">
+                            <div class="flex items-center gap-4 md:gap-6">
+                                <div
+                                    class="flex items-center justify-center size-12 rounded-xl bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400 shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-symbols-outlined text-[24px]">apartment</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-2">
+                                        <h2
+                                            class="text-lg md:text-xl font-display font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                                            III. Identitas SMA/Sederajat</h2>
+                                    </div>
+                                    <span class="text-sm text-slate-400 dark:text-slate-500 font-normal">Belum diisi -
+                                        Asal sekolah dan nilai</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="hidden sm:block text-xs font-bold text-slate-400 uppercase tracking-wider">Belum
+                                    Isi</span>
+                                <div
+                                    class="flex items-center justify-center size-10 rounded-full border border-slate-200 dark:border-slate-700 text-slate-400 group-hover:border-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                    <span class="material-symbols-outlined text-sm">add</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Step 4 -->
+                        <label
+                            class="group bg-white dark:bg-surface-dark rounded-2xl shadow-soft border border-border-light dark:border-border-dark p-5 md:p-6 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all hover:border-primary/30 hover:shadow-md flex items-center justify-between"
+                            for="modal-4">
+                            <div class="flex items-center gap-4 md:gap-6">
+                                <div
+                                    class="flex items-center justify-center size-12 rounded-xl bg-teal-50 text-teal-600 dark:bg-teal-900/20 dark:text-teal-400 shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-symbols-outlined text-[24px]">family_restroom</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-2">
+                                        <h2
+                                            class="text-lg md:text-xl font-display font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                                            IV. Identitas Ortu/Wali</h2>
+                                    </div>
+                                    <span class="text-sm text-slate-400 dark:text-slate-500 font-normal">Belum diisi -
+                                        Data orang tua atau wali</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="hidden sm:block text-xs font-bold text-slate-400 uppercase tracking-wider">Belum
+                                    Isi</span>
+                                <div
+                                    class="flex items-center justify-center size-10 rounded-full border border-slate-200 dark:border-slate-700 text-slate-400 group-hover:border-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                    <span class="material-symbols-outlined text-sm">add</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Step 5 -->
+                        <label
+                            class="group bg-white dark:bg-surface-dark rounded-2xl shadow-soft border border-border-light dark:border-border-dark p-5 md:p-6 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all hover:border-primary/30 hover:shadow-md flex items-center justify-between"
+                            for="modal-5">
+                            <div class="flex items-center gap-4 md:gap-6">
+                                <div
+                                    class="flex items-center justify-center size-12 rounded-xl bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                    <span class="material-symbols-outlined text-[24px]">move_up</span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-2">
+                                        <h2
+                                            class="text-lg md:text-xl font-display font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                                            V. Mahasiswa Transfer (Opsional)</h2>
+                                    </div>
+                                    <span class="text-sm text-slate-400 dark:text-slate-500 font-normal">Kosongkan jika
+                                        bukan mahasiswa pindahan</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="hidden sm:block text-xs font-bold text-slate-400 uppercase tracking-wider">Opsional</span>
+                                <div
+                                    class="flex items-center justify-center size-10 rounded-full border border-slate-200 dark:border-slate-700 text-slate-400 group-hover:border-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                    <span class="material-symbols-outlined text-sm">add</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div
+                        class="flex flex-col-reverse md:flex-row justify-end gap-4 mt-8 pt-8 border-t border-slate-200 dark:border-slate-700">
+                        <button
+                            class="flex items-center justify-center gap-2 h-14 px-8 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-transparent text-slate-600 dark:text-white font-bold hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 transition-all"
+                            type="submit" name="action" value="draft">
+                            <span class="material-symbols-outlined text-[20px]">save</span>
+                            <span>Simpan Draf</span>
+                        </button>
+                        <button
+                            class="flex items-center justify-center gap-2 h-14 px-10 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all transform w-full md:w-auto"
+                            type="submit" name="action" value="submit">
+                            <span>Lanjut</span>
+                            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Modal 1: Program Studi (New Design) -->
+            <div
+                class="fixed inset-0 z-[60] hidden peer-checked/modal1:flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm transition-all duration-300">
+                <label class="absolute inset-0" for="modal-1"></label>
+                <div
+                    class="relative w-full max-w-[580px] flex flex-col bg-white dark:bg-[#1a202c] rounded-xl shadow-2xl transform transition-all scale-100 overflow-hidden modal-animate">
+                    <div
+                        class="flex items-center justify-between px-6 py-5 border-b border-[#dbdfe6] dark:border-gray-700">
+                        <div class="flex flex-col">
+                            <h2
+                                class="text-[#111318] dark:text-white text-[20px] font-bold leading-tight tracking-[-0.015em]">
+                                I. Program Studi
+                            </h2>
+                        </div>
+                        <label for="modal-1"
+                            class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined">close</span>
+                        </label>
+                    </div>
+
+                    <div class="flex flex-col gap-8 px-8 py-8">
+                        <div class="flex flex-col w-full">
+                            <p class="text-[#111318] dark:text-gray-200 text-base font-semibold leading-normal pb-4">
+                                Gelombang</p>
+                            <div class="flex flex-col gap-4">
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                        class="custom-radio w-5 h-5 text-primary border-gray-300 focus:ring-primary focus:ring-offset-0"
+                                        name="gelombang" type="radio" value="1" {{ old('gelombang') == '1' ? 'checked' : '' }} />
+                                    <span
+                                        class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Gelombang
+                                        I (Januari - Maret)</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                        class="custom-radio w-5 h-5 text-primary border-gray-300 focus:ring-primary focus:ring-offset-0"
+                                        name="gelombang" type="radio" value="2" {{ old('gelombang') == '2' ? 'checked' : '' }} />
+                                    <span
+                                        class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Gelombang
+                                        II (April - Juni)</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                        class="custom-radio w-5 h-5 text-primary border-gray-300 focus:ring-primary focus:ring-offset-0"
+                                        name="gelombang" type="radio" value="3" {{ old('gelombang') == '3' ? 'checked' : '' }} />
+                                    <span
+                                        class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Gelombang
+                                        III (Juli - Agustus)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col w-full">
+                            <div class="flex items-center justify-between pb-1">
+                                <p class="text-[#111318] dark:text-gray-200 text-base font-semibold leading-normal">
+                                    Pilihan Program Studi</p>
+                                <span id="prodi-counter"
+                                    class="text-xs font-medium px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-md">0/3
+                                    terpilih</span>
+                            </div>
+                            <p id="prodi-error" class="text-xs text-red-500 dark:text-red-400 mb-4 font-medium"
+                                style="display: block;">*Wajib memilih minimal 2 program studi</p>
+
+                            <!-- Hidden input store joined values -->
+                            <input type="hidden" name="pilihan_prodi" id="real-pilihan-prodi">
+
+                            <div class="flex flex-col gap-4" id="prodi-options">
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                        class="custom-checkbox w-5 h-5 rounded text-primary border-gray-300 focus:ring-primary focus:ring-offset-0"
+                                        type="checkbox" value="Sistem Komputer S1" />
+                                    <span
+                                        class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Sistem
+                                        Komputer S1</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                        class="custom-checkbox w-5 h-5 rounded text-primary border-gray-300 focus:ring-primary focus:ring-offset-0"
+                                        type="checkbox" value="Sistem Informasi S1" />
+                                    <span
+                                        class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Sistem
+                                        Informasi S1</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                        class="custom-checkbox w-5 h-5 rounded text-primary border-gray-300 focus:ring-primary focus:ring-offset-0"
+                                        type="checkbox" value="Bisnis Digital S1" />
+                                    <span
+                                        class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Bisnis
+                                        Digital S1</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                        class="custom-checkbox w-5 h-5 rounded text-primary border-gray-300 focus:ring-primary focus:ring-offset-0"
+                                        type="checkbox" value="Teknik Informatika S1" />
+                                    <span
+                                        class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Teknik
+                                        Informatika S1</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex gap-3 bg-primary/5 dark:bg-primary/10 p-4 rounded-lg border border-primary/10 dark:border-primary/20 items-start">
+                            <span class="material-symbols-outlined text-primary text-[20px] mt-0.5">info</span>
+                            <p class="text-[13px] text-gray-600 dark:text-gray-400 leading-snug">
+                                Pastikan pilihan program studi sudah sesuai dengan minat Anda. Pilihan tidak dapat
+                                diubah setelah pembayaran formulir dikonfirmasi.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="px-8 py-5 bg-[#fcfcfd] dark:bg-[#1e2532] border-t border-[#dbdfe6] dark:border-gray-700 flex flex-col-reverse sm:flex-row gap-3 justify-end items-center">
+                        <label for="modal-1"
+                            class="flex w-full sm:w-auto min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm font-bold leading-normal tracking-[0.015em] transition-colors">
+                            <span class="truncate">Batal</span>
+                        </label>
+                        <label for="modal-1" id="btn-save-prodi"
+                            class="bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-500 cursor-not-allowed pointer-events-none flex w-full sm:w-auto min-w-[160px] items-center justify-center overflow-hidden rounded-lg h-10 px-8 text-sm font-bold leading-normal tracking-[0.015em] transition-all">
+                            <span class="truncate">Simpan &amp; Lanjutkan</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const checkboxes = document.querySelectorAll('#prodi-options input[type="checkbox"]');
+                    const counter = document.getElementById('prodi-counter');
+                    const errorMsg = document.getElementById('prodi-error');
+                    const saveBtn = document.getElementById('btn-save-prodi');
+                    const realInput = document.getElementById('real-pilihan-prodi');
+
+                    checkboxes.forEach(cb => {
+                        cb.addEventListener('change', updateState);
+                    });
+
+                    function updateState() {
+                        const selected = Array.from(checkboxes).filter(c => c.checked).map(c => c.value);
+                        const count = selected.length;
+
+                        // Updates
+                        counter.textContent = `${count}/3 terpilih`;
+                        realInput.value = selected.join(', ');
+
+                        // Validation Logic (Min 2, Max 3)
+                        if (count >= 2 && count <= 3) {
+                            // Valid
+                            errorMsg.style.display = 'none';
+                            counter.classList.remove('text-red-500');
+                            counter.classList.add('text-green-600');
+
+                            // Enable Button
+                            saveBtn.classList.remove('bg-gray-300', 'dark:bg-gray-700', 'text-gray-500', 'dark:text-gray-500', 'cursor-not-allowed', 'pointer-events-none');
+                            saveBtn.classList.add('bg-primary', 'text-white', 'hover:bg-primary-dark', 'cursor-pointer');
+                        } else {
+                            // Invalid
+                            errorMsg.style.display = 'block';
+                            counter.classList.remove('text-green-600');
+                            if (count > 3) counter.classList.add('text-red-500');
+
+                            // Disable Button
+                            saveBtn.classList.add('bg-gray-300', 'dark:bg-gray-700', 'text-gray-500', 'dark:text-gray-500', 'cursor-not-allowed', 'pointer-events-none');
+                            saveBtn.classList.remove('bg-primary', 'text-white', 'hover:bg-primary-dark', 'cursor-pointer');
+                        }
+
+                        // Prevent selecting more than 3
+                        if (count >= 3) {
+                            checkboxes.forEach(cb => {
+                                if (!cb.checked) cb.disabled = true;
+                            });
+                        } else {
+                            checkboxes.forEach(cb => cb.disabled = false);
+                        }
+                    }
+                });
+            </script>
+
+            <!-- Modal 2: Identitas Diri -->
+            <div
+                class="fixed inset-0 z-[60] hidden peer-checked/modal2:flex items-center justify-center p-4 sm:p-6 opacity-0 peer-checked/modal2:opacity-100 transition-opacity duration-300">
+                <label class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+                    for="modal-2"></label>
+                <div
+                    class="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-dark rounded-2xl shadow-2xl flex flex-col modal-animate">
+                    <div
+                        class="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800 bg-white/95 dark:bg-surface-dark/95 backdrop-blur-md">
+                        <h3 class="text-xl font-bold font-display text-slate-900 dark:text-white">II. Identitas Diri
+                        </h3>
+                        <label
+                            class="cursor-pointer p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors text-slate-500 dark:text-slate-400"
+                            for="modal-2">
+                            <span class="material-symbols-outlined">close</span>
+                        </label>
+                    </div>
+                    <div class="p-6 md:p-8 grid grid-cols-12 gap-6">
+                        <!-- Row 1 -->
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">NIK <span
+                                    class="text-red-500">*</span></label>
+                            <input name="nik" value="{{ old('nik') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" placeholder="16 digit NIK" required />
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">NISN</label>
+                            <input name="nisn" value="{{ old('nisn') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" placeholder="10 digit NISN" />
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Nama Lengkap <span
+                                    class="text-red-500">*</span></label>
+                            <input name="nama_lengkap" value="{{ old('nama_lengkap') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" placeholder="Sesuai ijazah terakhir" required />
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Jenis Kelamin <span
+                                    class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <select name="jenis_kelamin"
+                                    class="w-full h-11 appearance-none rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer">
+                                    <option value="" disabled selected>Pilih...</option>
+                                    <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki
+                                    </option>
+                                    <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan
+                                    </option>
+                                </select>
+                                <span
+                                    class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[20px]">expand_more</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Tempat Lahir <span
+                                    class="text-red-500">*</span></label>
+                            <input name="tempat_lahir" value="{{ old('tempat_lahir') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" placeholder="Kota kelahiran" required />
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Tanggal Lahir <span
+                                    class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <input name="tanggal_lahir" value="{{ old('tanggal_lahir') }}"
+                                    class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                    type="date" required />
+                                <span
+                                    class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">calendar_today</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 4 -->
+                        <div class="col-span-6 md:col-span-3 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Tinggi (cm)</label>
+                            <input name="tinggi_badan" value="{{ old('tinggi_badan') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="number" placeholder="0" />
+                        </div>
+                        <div class="col-span-6 md:col-span-3 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Berat (kg)</label>
+                            <input name="berat_badan" value="{{ old('berat_badan') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="number" placeholder="0" />
+                        </div>
+                        <div class="col-span-6 md:col-span-3 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Gol. Darah</label>
+                            <div class="relative">
+                                <select name="golongan_darah"
+                                    class="w-full h-11 appearance-none rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer">
+                                    <option value="">-</option>
+                                    <option value="A" {{ old('golongan_darah') == 'A' ? 'selected' : '' }}>A</option>
+                                    <option value="B" {{ old('golongan_darah') == 'B' ? 'selected' : '' }}>B</option>
+                                    <option value="AB" {{ old('golongan_darah') == 'AB' ? 'selected' : '' }}>AB</option>
+                                    <option value="O" {{ old('golongan_darah') == 'O' ? 'selected' : '' }}>O</option>
+                                </select>
+                                <span
+                                    class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[20px]">expand_more</span>
+                            </div>
+                        </div>
+                        <div class="col-span-6 md:col-span-3 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Agama <span
+                                    class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <select name="agama"
+                                    class="w-full h-11 appearance-none rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer">
+                                    <option value="" disabled selected>Pilih...</option>
+                                    <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                                    <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen
+                                    </option>
+                                    <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik
+                                    </option>
+                                    <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                    <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha
+                                    </option>
+                                    <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu
+                                    </option>
+                                </select>
+                                <span
+                                    class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[20px]">expand_more</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 5 -->
+                        <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Kewarganegaraan</label>
+                            <div class="relative">
+                                <select name="kewarganegaraan"
+                                    class="w-full h-11 appearance-none rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer">
+                                    <option value="WNI" {{ old('kewarganegaraan') == 'WNI' ? 'selected' : '' }}>WNI
+                                    </option>
+                                    <option value="WNA" {{ old('kewarganegaraan') == 'WNA' ? 'selected' : '' }}>WNA
+                                    </option>
+                                </select>
+                                <span
+                                    class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[20px]">expand_more</span>
+                            </div>
+                        </div>
+                        <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Status Pernikahan</label>
+                            <div class="relative">
+                                <select name="status_pernikahan"
+                                    class="w-full h-11 appearance-none rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer">
+                                    <option value="Belum Menikah" {{ old('status_pernikahan') == 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
+                                    <option value="Sudah Menikah" {{ old('status_pernikahan') == 'Sudah Menikah' ? 'selected' : '' }}>Sudah Menikah</option>
+                                </select>
+                                <span
+                                    class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[20px]">expand_more</span>
+                            </div>
+                        </div>
+                        <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Nomor NPWP</label>
+                            <input name="npwp" value="{{ old('npwp') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" placeholder="00.000.000.0-000.000" />
+                        </div>
+
+                        <!-- Row 6 -->
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Penerima KPS</label>
+                            <div class="relative">
+                                <select name="penerima_kps"
+                                    class="w-full h-11 appearance-none rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer">
+                                    <option value="0" {{ old('penerima_kps') == '0' ? 'selected' : '' }}>Tidak</option>
+                                    <option value="1" {{ old('penerima_kps') == '1' ? 'selected' : '' }}>Ya</option>
+                                </select>
+                                <span
+                                    class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[20px]">expand_more</span>
+                            </div>
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Nomor KPS (jika Ya)</label>
+                            <input name="no_kps" value="{{ old('no_kps') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" placeholder="Nomor KPS" />
+                        </div>
+
+                        <!-- Row 7 -->
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Peserta KIP</label>
+                            <div class="relative">
+                                <select name="peserta_kip"
+                                    class="w-full h-11 appearance-none rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer">
+                                    <option value="0" {{ old('peserta_kip') == '0' ? 'selected' : '' }}>Tidak</option>
+                                    <option value="1" {{ old('peserta_kip') == '1' ? 'selected' : '' }}>Ya</option>
+                                </select>
+                                <span
+                                    class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[20px]">expand_more</span>
+                            </div>
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Nomor KIP (jika Ya)</label>
+                            <input name="no_kip" value="{{ old('no_kip') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" placeholder="Nomor KIP" />
+                        </div>
+
+                        <!-- Row 8 -->
+                        <div class="col-span-12 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Kendaraan ke kampus</label>
+                            <input name="transportasi" value="{{ old('transportasi') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" placeholder="Contoh: Sepeda Motor, Angkutan Umum, dll" />
+                        </div>
+
+                        <!-- Address Section -->
+                        <div class="col-span-12 border-t border-slate-200 dark:border-slate-700 pt-6 mt-2">
+                            <h4 class="font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
+                                <span class="material-symbols-outlined text-primary">location_on</span> ALAMAT LENGKAP
+                                (SESUAI KTP)
+                            </h4>
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Tinggal Bersama <span
+                                    class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <select name="tinggal_bersama"
+                                    class="w-full h-11 appearance-none rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer">
+                                    <option value="Orang Tua" {{ old('tinggal_bersama') == 'Orang Tua' ? 'selected' : '' }}>Orang Tua</option>
+                                    <option value="Wali" {{ old('tinggal_bersama') == 'Wali' ? 'selected' : '' }}>Wali
+                                    </option>
+                                    <option value="Kost" {{ old('tinggal_bersama') == 'Kost' ? 'selected' : '' }}>Kost
+                                    </option>
+                                    <option value="Asrama" {{ old('tinggal_bersama') == 'Asrama' ? 'selected' : '' }}>
+                                        Asrama</option>
+                                </select>
+                                <span
+                                    class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[20px]">expand_more</span>
+                            </div>
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Jalan <span
+                                    class="text-red-500">*</span></label>
+                            <input name="alamat_lengkap" value="{{ old('alamat_lengkap') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" placeholder="Nama Jalan, Blok, Nomor Rumah" />
+                        </div>
+
+                        <div class="col-span-6 md:col-span-3 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">RT</label>
+                            <input name="rt" value="{{ old('rt') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="number" placeholder="000" />
+                        </div>
+                        <div class="col-span-6 md:col-span-3 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">RW</label>
+                            <input name="rw" value="{{ old('rw') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="number" placeholder="000" />
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Desa / Kelurahan <span
+                                    class="text-red-500">*</span></label>
+                            <input name="kelurahan" value="{{ old('kelurahan') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" placeholder="Nama Desa/Kelurahan" />
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Kecamatan <span
+                                    class="text-red-500">*</span></label>
+                            <input name="kecamatan" value="{{ old('kecamatan') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" placeholder="Nama Kecamatan" />
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Kabupaten / Kota <span
+                                    class="text-red-500">*</span></label>
+                            <input name="kabupaten" value="{{ old('kabupaten') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" placeholder="Nama Kota" />
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Provinsi <span
+                                    class="text-red-500">*</span></label>
+                            <input name="provinsi" value="{{ old('provinsi') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" />
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Negara <span
+                                    class="text-red-500">*</span></label>
+                            <input name="negara" value="{{ old('negara') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="text" />
+                        </div>
+
+                        <div class="col-span-12 border-t border-slate-200 dark:border-slate-700 pt-6 mt-2">
+                            <h4 class="font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4"><span
+                                    class="material-symbols-outlined text-primary">contacts</span> Kontak</h4>
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Email <span
+                                    class="text-red-500">*</span></label>
+                            <input name="email" value="{{ old('email') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="email" placeholder="email@example.com" required />
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">No. Handphone <span
+                                    class="text-red-500">*</span></label>
+                            <input name="no_hp" value="{{ old('no_hp') }}"
+                                class="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-surface-dark px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400"
+                                type="tel" placeholder="08xxxxxxxxxx" required />
+                        </div>
+                    </div>
+                    <div
+                        class="p-6 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 bg-white dark:bg-surface-dark rounded-b-2xl">
+                        <label
+                            class="px-6 py-2.5 rounded-lg font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors"
+                            for="modal-2">Batal</label>
+                        <label
+                            class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary text-white font-bold shadow-lg shadow-blue-500/30 hover:bg-primary-dark cursor-pointer transition-colors"
+                            for="modal-2">
+                            <span>Simpan &amp; Lanjutkan</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal 3: Identitas SMA/Sederajat -->
+            <div
+                class="fixed inset-0 z-[60] hidden peer-checked/modal3:flex items-center justify-center p-4 sm:p-6 opacity-0 peer-checked/modal3:opacity-100 transition-opacity duration-300">
+                <label class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+                    for="modal-3"></label>
+                <div
+                    class="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-dark rounded-xl shadow-2xl flex flex-col modal-animate">
+
+                    <!-- Header -->
+                    <div
+                        class="px-6 py-6 border-b border-slate-100 dark:border-slate-800 sticky top-0 bg-white dark:bg-surface-dark z-10">
+                        <div class="flex items-start justify-between">
+                            <div class="flex flex-col gap-1">
+                                <h2
+                                    class="text-[#111318] dark:text-white text-2xl font-bold leading-tight tracking-tight">
+                                    III. Identitas SMA / Sederajat</h2>
+                                <p class="text-[#616f89] dark:text-slate-400 text-sm font-normal">Lengkapi data sekolah
+                                    asal Anda sesuai dengan ijazah kelulusan.</p>
+                            </div>
+                            <label
+                                class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer"
+                                for="modal-3">
+                                <span class="material-symbols-outlined">close</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="flex-1 overflow-y-auto max-h-[70vh] p-6 space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Nama Sekolah -->
+                            <div class="col-span-1 md:col-span-2">
+                                <label class="flex flex-col">
+                                    <p
+                                        class="text-[#111318] dark:text-slate-200 text-sm font-medium leading-normal pb-2">
+                                        Nama Sekolah</p>
+                                    <input name="nama_sekolah" value="{{ old('nama_sekolah') }}"
+                                        class="flex w-full rounded-lg text-[#111318] dark:bg-slate-900 dark:text-white border border-[#dbdfe6] dark:border-slate-700 h-12 px-4 text-base focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all outline-none placeholder:text-slate-400"
+                                        placeholder="Contoh: SMA Negeri 1 Jakarta" type="text" required />
+                                </label>
+                            </div>
+
+                            <!-- Jurusan -->
+                            <div class="col-span-1">
+                                <label class="flex flex-col">
+                                    <p
+                                        class="text-[#111318] dark:text-slate-200 text-sm font-medium leading-normal pb-2">
+                                        Jurusan / Program</p>
+                                    <div class="relative">
+                                        <select name="jurusan_sekolah"
+                                            class="flex w-full rounded-lg text-[#111318] dark:bg-slate-900 dark:text-white border border-[#dbdfe6] dark:border-slate-700 h-12 px-4 pr-10 text-base focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all outline-none appearance-none">
+                                            <option value="">Pilih Jurusan</option>
+                                            <option value="ipa" {{ old('jurusan_sekolah') == 'ipa' ? 'selected' : '' }}>
+                                                MIPA / IPA</option>
+                                            <option value="ips" {{ old('jurusan_sekolah') == 'ips' ? 'selected' : '' }}>
+                                                IPS</option>
+                                            <option value="bahasa" {{ old('jurusan_sekolah') == 'bahasa' ? 'selected' : '' }}>Bahasa</option>
+                                            <option value="smk" {{ old('jurusan_sekolah') == 'smk' ? 'selected' : '' }}>
+                                                SMK / Kejuruan</option>
+                                            <option value="lainnya" {{ old('jurusan_sekolah') == 'lainnya' ? 'selected' : '' }}>Lainnya</option>
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl pointer-events-none">expand_more</span>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- Nilai -->
+                            <div class="col-span-1">
+                                <label class="flex flex-col">
+                                    <p
+                                        class="text-[#111318] dark:text-slate-200 text-sm font-medium leading-normal pb-2">
+                                        Nilai UN / Rata-rata Ijazah</p>
+                                    <input name="nilai_rata_rata" value="{{ old('nilai_rata_rata') }}"
+                                        class="flex w-full rounded-lg text-[#111318] dark:bg-slate-900 dark:text-white border border-[#dbdfe6] dark:border-slate-700 h-12 px-4 text-base focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all outline-none placeholder:text-slate-400"
+                                        placeholder="0.00" type="number" step="0.01" />
+                                </label>
+                            </div>
+
+                            <!-- Tahun Lulus -->
+                            <div class="col-span-1">
+                                <label class="flex flex-col">
+                                    <p
+                                        class="text-[#111318] dark:text-slate-200 text-sm font-medium leading-normal pb-2">
+                                        Tahun Lulus</p>
+                                    <div class="relative">
+                                        <select name="tahun_lulus"
+                                            class="flex w-full rounded-lg text-[#111318] dark:bg-slate-900 dark:text-white border border-[#dbdfe6] dark:border-slate-700 h-12 px-4 pr-10 text-base focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all outline-none appearance-none">
+                                            <option value="">Pilih Tahun</option>
+                                            @for ($i = date('Y'); $i >= date('Y') - 10; $i--)
+                                                <option value="{{ $i }}" {{ old('tahun_lulus') == $i ? 'selected' : '' }}>
+                                                    {{ $i }}
+                                                </option>
+                                            @endfor
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl pointer-events-none">expand_more</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+                            <h3
+                                class="text-[#111318] dark:text-white text-lg font-bold leading-tight tracking-tight mb-4 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-xl">location_on</span>
+                                Alamat Sekolah Lengkap
+                            </h3>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div class="col-span-1">
+                                    <label class="flex flex-col">
+                                        <p
+                                            class="text-[#111318] dark:text-slate-200 text-sm font-medium leading-normal pb-2">
+                                            Alamat Sekolah</p>
+                                        <textarea name="alamat_sekolah"
+                                            class="flex w-full min-h-[120px] rounded-lg text-[#111318] dark:bg-slate-900 dark:text-white border border-[#dbdfe6] dark:border-slate-700 p-4 text-base focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all outline-none placeholder:text-slate-400"
+                                            placeholder="Tuliskan alamat lengkap sekolah (Jalan, No, Kelurahan, Kecamatan, Kota, Provinsi)">{{ old('alamat_sekolah') }}</textarea>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div
+                        class="px-6 py-5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex flex-col-reverse sm:flex-row justify-end gap-3 rounded-b-xl">
+                        <label
+                            class="px-6 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer text-center"
+                            for="modal-3">
+                            Batal
+                        </label>
+                        <label
+                            class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg font-medium shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                            for="modal-4" onclick="document.getElementById('modal-3').checked = false;">
+                            <span>Simpan & Lanjutkan</span>
+                            <span class="material-symbols-outlined text-base">arrow_forward</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal 4: Identitas Orang Tua / Wali -->
+            <div
+                class="fixed inset-0 z-[60] hidden peer-checked/modal4:flex items-center justify-center p-4 sm:p-6 opacity-0 peer-checked/modal4:opacity-100 transition-opacity duration-300">
+                <label class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+                    for="modal-4"></label>
+                <div class="relative w-full max-w-[1000px] max-h-[90vh] flex flex-col bg-white dark:bg-surface-dark rounded-xl shadow-2xl overflow-hidden modal-animate"
+                    x-data="{ activeTab: 'ayah' }">
+                    <!-- Header -->
+                    <div
+                        class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-surface-dark z-10">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary text-2xl font-semibold">group</span>
+                            <h2
+                                class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">
+                                IV. Identitas Orang Tua / Wali</h2>
+                        </div>
+                        <label
+                            class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors rounded-full p-1 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                            for="modal-4">
+                            <span class="material-symbols-outlined">close</span>
+                        </label>
+                    </div>
+
+                    <!-- Tabs & Body -->
+                    <div class="flex-1 overflow-y-auto custom-scrollbar bg-slate-50 dark:bg-black/20">
+                        <!-- Tabs Header -->
+                        <div class="px-6 pt-4 bg-white dark:bg-surface-dark sticky top-0 z-20 shadow-sm">
+                            <div class="flex border-b border-slate-200 dark:border-slate-700 gap-8">
+                                <button type="button" @click="activeTab = 'ayah'"
+                                    :class="activeTab === 'ayah' ? 'border-primary text-primary' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'"
+                                    class="flex flex-col items-center justify-center border-b-[3px] pb-[13px] pt-2 px-2 transition-all">
+                                    <p class="text-sm font-bold leading-normal tracking-[0.015em]">Ayah Kandung</p>
+                                </button>
+                                <button type="button" @click="activeTab = 'ibu'"
+                                    :class="activeTab === 'ibu' ? 'border-primary text-primary' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'"
+                                    class="flex flex-col items-center justify-center border-b-[3px] pb-[13px] pt-2 px-2 transition-all">
+                                    <p class="text-sm font-bold leading-normal tracking-[0.015em]">Ibu Kandung</p>
+                                </button>
+                                <button type="button" @click="activeTab = 'wali'"
+                                    :class="activeTab === 'wali' ? 'border-primary text-primary' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'"
+                                    class="flex flex-col items-center justify-center border-b-[3px] pb-[13px] pt-2 px-2 transition-all">
+                                    <p class="text-sm font-bold leading-normal tracking-[0.015em]">Wali</p>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="p-6 space-y-10">
+                            <!-- Tab Content: Ayah -->
+                            <div x-show="activeTab === 'ayah'"
+                                class="space-y-10 animate-in fade-in slide-in-from-left-4 duration-300">
+                                <div class="space-y-3">
+                                    <p class="text-slate-900 dark:text-white text-sm font-semibold">Status Kehidupan
+                                        Ayah Kandung</p>
+                                    <div class="flex flex-wrap gap-3">
+                                        <label class="group relative cursor-pointer">
+                                            <input type="radio" name="status_ayah" value="hidup"
+                                                class="peer invisible absolute" checked />
+                                            <div
+                                                class="flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 px-6 h-11 text-slate-900 dark:text-white bg-white dark:bg-surface-dark peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all">
+                                                <span
+                                                    class="material-symbols-outlined text-lg mr-2 text-slate-400 peer-checked:text-primary">favorite</span>
+                                                <span class="text-sm font-medium">Masih Hidup</span>
+                                            </div>
+                                        </label>
+                                        <label class="group relative cursor-pointer">
+                                            <input type="radio" name="status_ayah" value="meninggal"
+                                                class="peer invisible absolute" />
+                                            <div
+                                                class="flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 px-6 h-11 text-slate-900 dark:text-white bg-white dark:bg-surface-dark peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all">
+                                                <span
+                                                    class="material-symbols-outlined text-lg mr-2 text-slate-400 peer-checked:text-primary">church</span>
+                                                <span class="text-sm font-medium">Meninggal</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-6">
+                                    <h3
+                                        class="text-slate-900 dark:text-white text-base font-bold flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary text-xl">person</span> Data
+                                        Diri
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">Nama
+                                                Lengkap <span class="text-red-500">*</span></p>
+                                            <input name="nama_ayah" value="{{ old('nama_ayah') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Sesuai KTP" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">NIK
+                                                <span class="text-red-500">*</span>
+                                            </p>
+                                            <input name="nik_ayah" value="{{ old('nik_ayah') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="16 digit angka" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">Agama
+                                            </p>
+                                            <select name="agama_ayah"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none">
+                                                <option disabled selected>Pilih Agama</option>
+                                                <option value="Islam">Islam</option>
+                                                <option value="Kristen">Kristen</option>
+                                                <option value="Katolik">Katolik</option>
+                                                <option value="Hindu">Hindu</option>
+                                                <option value="Buddha">Buddha</option>
+                                                <option value="Konghucu">Konghucu</option>
+                                            </select>
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Tempat Lahir</p>
+                                            <input name="tempat_lahir_ayah" value="{{ old('tempat_lahir_ayah') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Kota Kelahiran" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Tanggal Lahir</p>
+                                            <input name="tanggal_lahir_ayah" value="{{ old('tanggal_lahir_ayah') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                type="date" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">No.
+                                                Telepon / HP <span class="text-red-500">*</span></p>
+                                            <input name="hp_ayah" value="{{ old('hp_ayah') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="08xxxxxxxxxx" type="tel" />
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-slate-200 dark:border-slate-700"></div>
+
+                                <div class="space-y-6">
+                                    <h3
+                                        class="text-slate-900 dark:text-white text-base font-bold flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary text-xl">location_on</span>
+                                        Alamat Lengkap
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <label class="flex flex-col md:col-span-2 lg:col-span-3">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Alamat (Jalan/Dusun) <span class="text-red-500">*</span></p>
+                                            <input name="alamat_ayah" value="{{ old('alamat_ayah') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Nama Jalan, Blok, atau No. Rumah" />
+                                        </label>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <label class="flex flex-col">
+                                                <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                    RT</p>
+                                                <input name="rt_ayah" value="{{ old('rt_ayah') }}"
+                                                    class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                    placeholder="000" />
+                                            </label>
+                                            <label class="flex flex-col">
+                                                <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                    RW</p>
+                                                <input name="rw_ayah" value="{{ old('rw_ayah') }}"
+                                                    class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                    placeholder="000" />
+                                            </label>
+                                        </div>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Desa/Kelurahan <span class="text-red-500">*</span></p>
+                                            <input name="kelurahan_ayah" value="{{ old('kelurahan_ayah') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Nama Desa/Kelurahan" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Kecamatan <span class="text-red-500">*</span></p>
+                                            <input name="kecamatan_ayah" value="{{ old('kecamatan_ayah') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Nama Kecamatan" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Kabupaten/Kota <span class="text-red-500">*</span></p>
+                                            <input name="kota_ayah" value="{{ old('kota_ayah') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Nama Kabupaten/Kota" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Provinsi <span class="text-red-500">*</span></p>
+                                            <input name="provinsi_ayah" value="{{ old('provinsi_ayah') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Nama Provinsi" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Negara <span class="text-red-500">*</span></p>
+                                            <input name="negara_ayah" value="{{ old('negara_ayah', 'Indonesia') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Contoh: Indonesia" />
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-slate-200 dark:border-slate-700"></div>
+
+                                <div class="space-y-6">
+                                    <h3
+                                        class="text-slate-900 dark:text-white text-base font-bold flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary text-xl">work</span>
+                                        Pekerjaan & Pendidikan
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Pendidikan Terakhir</p>
+                                            <select name="pendidikan_ayah"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none">
+                                                <option disabled selected>Pilih Pendidikan</option>
+                                                <option value="SD">SD / Sederajat</option>
+                                                <option value="SMP">SMP / Sederajat</option>
+                                                <option value="SMA">SMA / Sederajat</option>
+                                                <option value="Diploma">Diploma (D1/D2/D3)</option>
+                                                <option value="S1">Sarjana (S1)</option>
+                                                <option value="S2">Magister (S2)</option>
+                                                <option value="S3">Doktor (S3)</option>
+                                            </select>
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Pekerjaan</p>
+                                            <select name="pekerjaan_ayah"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none">
+                                                <option disabled selected>Pilih Pekerjaan</option>
+                                                <option value="PNS">PNS / TNI / POLRI</option>
+                                                <option value="Swasta">Karyawan Swasta</option>
+                                                <option value="Wiraswasta">Wiraswasta</option>
+                                                <option value="Petani">Petani / Nelayan</option>
+                                                <option value="Buruh">Buruh</option>
+                                                <option value="Pensiunan">Pensiunan</option>
+                                                <option value="Lainnya">Lainnya / Tidak Bekerja</option>
+                                            </select>
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Penghasilan Bulanan</p>
+                                            <select name="penghasilan_ayah"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none">
+                                                <option disabled selected>Pilih Rentang Penghasilan</option>
+                                                <option value="< 1 Juta">
+                                                    < Rp 1.000.000</option>
+                                                <option value="1-3 Juta">Rp 1.000.000 - Rp 3.000.000</option>
+                                                <option value="3-5 Juta">Rp 3.000.000 - Rp 5.000.000</option>
+                                                <option value="5-10 Juta">Rp 5.000.000 - Rp 10.000.000</option>
+                                                <option value="> 10 Juta">> Rp 10.000.000</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab Content: Ibu -->
+                            <div x-show="activeTab === 'ibu'"
+                                class="space-y-10 animate-in fade-in slide-in-from-left-4 duration-300">
+                                <div class="space-y-3">
+                                    <p class="text-slate-900 dark:text-white text-sm font-semibold">Status Kehidupan Ibu
+                                        Kandung</p>
+                                    <div class="flex flex-wrap gap-3">
+                                        <label class="group relative cursor-pointer">
+                                            <input type="radio" name="status_ibu" value="hidup"
+                                                class="peer invisible absolute" checked />
+                                            <div
+                                                class="flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 px-6 h-11 text-slate-900 dark:text-white bg-white dark:bg-surface-dark peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all">
+                                                <span
+                                                    class="material-symbols-outlined text-lg mr-2 text-slate-400 peer-checked:text-primary">favorite</span>
+                                                <span class="text-sm font-medium">Masih Hidup</span>
+                                            </div>
+                                        </label>
+                                        <label class="group relative cursor-pointer">
+                                            <input type="radio" name="status_ibu" value="meninggal"
+                                                class="peer invisible absolute" />
+                                            <div
+                                                class="flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 px-6 h-11 text-slate-900 dark:text-white bg-white dark:bg-surface-dark peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all">
+                                                <span
+                                                    class="material-symbols-outlined text-lg mr-2 text-slate-400 peer-checked:text-primary">church</span>
+                                                <span class="text-sm font-medium">Meninggal</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="space-y-6">
+                                    <h3
+                                        class="text-slate-900 dark:text-white text-base font-bold flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary text-xl">person</span> Data
+                                        Diri
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">Nama
+                                                Lengkap <span class="text-red-500">*</span></p>
+                                            <input name="nama_ibu" value="{{ old('nama_ibu') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Sesuai KTP" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">NIK
+                                                <span class="text-red-500">*</span>
+                                            </p>
+                                            <input name="nik_ibu" value="{{ old('nik_ibu') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="16 digit angka" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">No.
+                                                Telepon / HP <span class="text-red-500">*</span></p>
+                                            <input name="hp_ibu" value="{{ old('hp_ibu') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="08xxxxxxxxxx" type="tel" />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="border-t border-slate-200 dark:border-slate-700"></div>
+
+                                <div class="space-y-6">
+                                    <h3
+                                        class="text-slate-900 dark:text-white text-base font-bold flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary text-xl">location_on</span>
+                                        Alamat Lengkap
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <label class="flex flex-col md:col-span-2 lg:col-span-3">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Alamat (Jalan/Dusun) <span class="text-red-500">*</span></p>
+                                            <input name="alamat_ibu" value="{{ old('alamat_ibu') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Nama Jalan, Blok, atau No. Rumah" />
+                                        </label>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <label class="flex flex-col">
+                                                <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                    RT</p>
+                                                <input name="rt_ibu" value="{{ old('rt_ibu') }}"
+                                                    class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                    placeholder="000" />
+                                            </label>
+                                            <label class="flex flex-col">
+                                                <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                    RW</p>
+                                                <input name="rw_ibu" value="{{ old('rw_ibu') }}"
+                                                    class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                    placeholder="000" />
+                                            </label>
+                                        </div>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Desa/Kelurahan <span class="text-red-500">*</span></p>
+                                            <input name="kelurahan_ibu" value="{{ old('kelurahan_ibu') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Nama Desa/Kelurahan" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Kecamatan <span class="text-red-500">*</span></p>
+                                            <input name="kecamatan_ibu" value="{{ old('kecamatan_ibu') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Nama Kecamatan" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Kabupaten/Kota <span class="text-red-500">*</span></p>
+                                            <input name="kota_ibu" value="{{ old('kota_ibu') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Nama Kabupaten/Kota" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Provinsi <span class="text-red-500">*</span></p>
+                                            <input name="provinsi_ibu" value="{{ old('provinsi_ibu') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Nama Provinsi" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Negara <span class="text-red-500">*</span></p>
+                                            <input name="negara_ibu" value="{{ old('negara_ibu', 'Indonesia') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Contoh: Indonesia" />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="border-t border-slate-200 dark:border-slate-700"></div>
+                                <div class="space-y-6">
+                                    <h3
+                                        class="text-slate-900 dark:text-white text-base font-bold flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary text-xl">work</span>
+                                        Pekerjaan
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Pekerjaan</p>
+                                            <select name="pekerjaan_ibu"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none">
+                                                <option disabled selected>Pilih Pekerjaan</option>
+                                                <option value="PNS">PNS / TNI / POLRI</option>
+                                                <option value="Swasta">Karyawan Swasta</option>
+                                                <option value="Wiraswasta">Wiraswasta</option>
+                                                <option value="Petani">Petani / Nelayan</option>
+                                                <option value="Buruh">Buruh</option>
+                                                <option value="IbuRumahTangga">Ibu Rumah Tangga</option>
+                                                <option value="Lainnya">Lainnya</option>
+                                            </select>
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Penghasilan Bulanan</p>
+                                            <select name="penghasilan_ibu"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none">
+                                                <option disabled selected>Pilih Rentang Penghasilan</option>
+                                                <option value="< 1 Juta">
+                                                    < Rp 1.000.000</option>
+                                                <option value="1-3 Juta">Rp 1.000.000 - Rp 3.000.000</option>
+                                                <option value="3-5 Juta">Rp 3.000.000 - Rp 5.000.000</option>
+                                                <option value="5-10 Juta">Rp 5.000.000 - Rp 10.000.000</option>
+                                                <option value="> 10 Juta">> Rp 10.000.000</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab Content: Wali -->
+                            <div x-show="activeTab === 'wali'"
+                                class="space-y-10 animate-in fade-in slide-in-from-left-4 duration-300">
+                                <div class="space-y-6">
+                                    <h3
+                                        class="text-slate-900 dark:text-white text-base font-bold flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary text-xl">person</span> Data
+                                        Wali
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">Nama
+                                                Wali</p>
+                                            <input name="nama_wali" value="{{ old('nama_wali') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="Sesuai KTP" />
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">
+                                                Hubungan</p>
+                                            <select name="hubungan_wali"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none">
+                                                <option disabled selected>Pilih Hubungan</option>
+                                                <option value="Paman">Paman</option>
+                                                <option value="Bibi">Bibi</option>
+                                                <option value="Kakek">Kakek</option>
+                                                <option value="Nenek">Nenek</option>
+                                                <option value="Kakak">Kakak</option>
+                                                <option value="Lainnya">Lainnya</option>
+                                            </select>
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <p class="text-slate-900 dark:text-slate-300 text-sm font-medium pb-2">No.
+                                                Telepon / HP</p>
+                                            <input name="no_hp_wali" value="{{ old('no_hp_wali') }}"
+                                                class="w-full rounded-lg text-slate-900 dark:text-white dark:bg-surface-dark border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base outline-none"
+                                                placeholder="08xxxxxxxxxx" type="tel" />
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Common Section: Pembiayaan (Always Visible) -->
+                            <div class="border-t border-slate-200 dark:border-slate-700"></div>
+                            <div
+                                class="bg-blue-50 dark:bg-blue-900/20 p-5 rounded-xl border border-blue-100 dark:border-blue-800/50 space-y-4">
+                                <h3 class="text-slate-900 dark:text-white text-base font-bold flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary text-xl">payments</span>
+                                    Pembiayaan Kuliah
+                                </h3>
+                                <div class="space-y-3">
+                                    <p class="text-slate-900 dark:text-slate-300 text-sm font-medium">Biaya Kuliah dari
+                                        <span class="text-red-500">*</span>
+                                    </p>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                                        <label class="group relative cursor-pointer">
+                                            <input type="radio" name="sumber_biaya" value="ayah"
+                                                class="peer invisible absolute" {{ old('sumber_biaya') == 'ayah' ? 'checked' : '' }} required />
+                                            <div
+                                                class="flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 px-4 py-3 text-slate-900 dark:text-white bg-white dark:bg-surface-dark peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all shadow-sm hover:shadow-md">
+                                                <span class="text-sm font-medium">Ayah Kandung</span>
+                                            </div>
+                                        </label>
+                                        <label class="group relative cursor-pointer">
+                                            <input type="radio" name="sumber_biaya" value="ibu"
+                                                class="peer invisible absolute" {{ old('sumber_biaya') == 'ibu' ? 'checked' : '' }} />
+                                            <div
+                                                class="flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 px-4 py-3 text-slate-900 dark:text-white bg-white dark:bg-surface-dark peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all shadow-sm hover:shadow-md">
+                                                <span class="text-sm font-medium">Ibu Kandung</span>
+                                            </div>
+                                        </label>
+                                        <label class="group relative cursor-pointer">
+                                            <input type="radio" name="sumber_biaya" value="wali"
+                                                class="peer invisible absolute" {{ old('sumber_biaya') == 'wali' ? 'checked' : '' }} />
+                                            <div
+                                                class="flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 px-4 py-3 text-slate-900 dark:text-white bg-white dark:bg-surface-dark peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all shadow-sm hover:shadow-md">
+                                                <span class="text-sm font-medium">Wali</span>
+                                            </div>
+                                        </label>
+                                        <label class="group relative cursor-pointer">
+                                            <input type="radio" name="sumber_biaya" value="beasiswa"
+                                                class="peer invisible absolute" {{ old('sumber_biaya') == 'beasiswa' ? 'checked' : '' }} />
+                                            <div
+                                                class="flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 px-4 py-3 text-slate-900 dark:text-white bg-white dark:bg-surface-dark peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all shadow-sm hover:shadow-md">
+                                                <span class="text-sm font-medium">Beasiswa</span>
+                                            </div>
+                                        </label>
+                                        <label class="group relative cursor-pointer">
+                                            <input type="radio" name="sumber_biaya" value="sendiri"
+                                                class="peer invisible absolute" {{ old('sumber_biaya') == 'sendiri' ? 'checked' : '' }} />
+                                            <div
+                                                class="flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 px-4 py-3 text-slate-900 dark:text-white bg-white dark:bg-surface-dark peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all shadow-sm hover:shadow-md">
+                                                <span class="text-sm font-medium">Mandiri / Sendiri</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div
+                        class="flex items-center justify-end px-6 py-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-surface-dark gap-3 z-10">
+                        <label
+                            class="flex items-center justify-center h-11 px-6 rounded-lg text-sm font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+                            for="modal-4">
+                            Batal
+                        </label>
+                        <label
+                            class="flex items-center justify-center h-11 px-8 rounded-lg text-sm font-bold text-white bg-primary hover:bg-blue-700 shadow-lg shadow-primary/20 transition-all gap-2 cursor-pointer"
+                            for="modal-4">
+                            <span class="material-symbols-outlined text-[18px]">save</span>
+                            <span>Simpan & Lanjutkan</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal 5: Mahasiswa Transfer -->
+            <div
+                class="fixed inset-0 z-[60] hidden peer-checked/modal5:flex items-center justify-center p-4 sm:p-6 opacity-0 peer-checked/modal5:opacity-100 transition-opacity duration-300">
+                <label class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+                    for="modal-5"></label>
+                <div
+                    class="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-dark rounded-xl shadow-2xl flex flex-col modal-animate">
+
+                    <!-- Modal Header -->
+                    <div
+                        class="flex items-center justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-700">
+                        <h2 class="text-slate-900 dark:text-white text-[22px] font-bold leading-tight">
+                            V. Mahasiswa Transfer (Pindahan)
+                        </h2>
+                        <label
+                            class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors cursor-pointer"
+                            for="modal-5">
+                            <span class="material-symbols-outlined">close</span>
+                        </label>
+                    </div>
+
+                    <!-- Modal Content -->
+                    <div class="flex-1 overflow-y-auto px-6 py-6">
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">
+                            Mohon lengkapi data pendidikan asal Anda dengan akurat sesuai dengan ijazah atau transkrip
+                            nilai terakhir.
+                        </p>
+
+                        <div class="space-y-6">
+                            <!-- Asal Perguruan Tinggi Field -->
+                            <div class="flex flex-col gap-2">
+                                <label class="flex flex-col flex-1">
+                                    <p class="text-slate-900 dark:text-white text-base font-medium leading-normal pb-2">
+                                        Asal Perguruan Tinggi</p>
+                                    <input name="univ_asal" value="{{ old('univ_asal') }}"
+                                        class="flex w-full rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-surface-dark focus:border-primary h-14 placeholder:text-slate-400 px-4 text-base transition-all"
+                                        placeholder="Contoh: Universitas Indonesia" type="text" />
+                                </label>
+                            </div>
+
+                            <!-- Asal Program Studi Field -->
+                            <div class="flex flex-col gap-2">
+                                <label class="flex flex-col flex-1">
+                                    <p class="text-slate-900 dark:text-white text-base font-medium leading-normal pb-2">
+                                        Asal Program Studi</p>
+                                    <input name="prodi_asal" value="{{ old('prodi_asal') }}"
+                                        class="flex w-full rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-surface-dark focus:border-primary h-14 placeholder:text-slate-400 px-4 text-base transition-all"
+                                        placeholder="Contoh: Teknik Informatika" type="text" />
+                                </label>
+                            </div>
+
+                            <!-- Status Terakreditasi -->
+                            <div class="flex flex-col gap-3">
+                                <h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight text-left">
+                                    Status Terakreditasi</h2>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    <label
+                                        class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-700 px-4 h-12 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:ring-2 has-[:checked]:ring-primary relative cursor-pointer">
+                                        Terakreditasi A
+                                        <input type="radio" name="status_akreditasi_asal" value="A"
+                                            class="invisible absolute" {{ old('status_akreditasi_asal') == 'A' ? 'checked' : '' }} />
+                                    </label>
+                                    <label
+                                        class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-700 px-4 h-12 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:ring-2 has-[:checked]:ring-primary relative cursor-pointer">
+                                        Terakreditasi B
+                                        <input type="radio" name="status_akreditasi_asal" value="B"
+                                            class="invisible absolute" {{ old('status_akreditasi_asal') == 'B' ? 'checked' : '' }} />
+                                    </label>
+                                    <label
+                                        class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-700 px-4 h-12 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:ring-2 has-[:checked]:ring-primary relative cursor-pointer">
+                                        Terakreditasi C
+                                        <input type="radio" name="status_akreditasi_asal" value="C"
+                                            class="invisible absolute" {{ old('status_akreditasi_asal') == 'C' ? 'checked' : '' }} />
+                                    </label>
+                                    <label
+                                        class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-700 px-4 h-12 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:ring-2 has-[:checked]:ring-primary relative cursor-pointer">
+                                        Belum
+                                        <input type="radio" name="status_akreditasi_asal" value="Belum"
+                                            class="invisible absolute" {{ old('status_akreditasi_asal') == 'Belum' ? 'checked' : '' }} />
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div
+                        class="flex items-center justify-end px-6 py-6 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-surface-dark gap-3 z-10 rounded-b-xl">
+                        <label
+                            class="flex items-center justify-center px-6 py-2.5 rounded-lg text-sm font-bold text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 transition-all cursor-pointer"
+                            for="modal-5">
+                            Batal
+                        </label>
+                        <button type="button" onclick="showExitModal()"
+                            class="flex items-center justify-center bg-primary hover:bg-primary/90 px-6 py-2.5 rounded-lg text-sm font-bold text-white shadow-lg shadow-primary/20 transition-all">
+                            Simpan & Lanjutkan
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Exit Confirmation / Notifikasi Simpan -->
+            <div id="modal-exit-confirmation"
+                class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+                <!-- Overlay with Glass Effect -->
+                <div class="absolute inset-0 bg-slate-900/30 backdrop-blur-md z-10" onclick="closeExitModal()"></div>
+
+                <div class="relative z-20 w-full max-w-md transform transition-all duration-300 modal-animate">
+                    <div
+                        class="bg-white dark:bg-surface-dark rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden border border-slate-100 dark:border-slate-800">
+                        <div class="p-10 flex flex-col items-center text-center">
+                            <div class="mb-6">
+                                <div
+                                    class="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined text-4xl">pending_actions</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 mb-8">
+                                <h2 class="text-xl font-bold text-slate-800 dark:text-white tracking-tight">
+                                    Ups! Data Belum Tersimpan
+                                </h2>
+                                <p
+                                    class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-[280px] mx-auto">
+                                    Pastikan Anda menyimpan progres pengisian formulir agar data tidak hilang.
+                                </p>
+                            </div>
+                            <div class="flex flex-row items-center justify-center gap-3 w-full">
+                                <button type="submit" name="action" value="draft"
+                                    class="flex-1 px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-900 hover:shadow-lg transition-all active:scale-95">
+                                    Simpan Draft
+                                </button>
+                                <button type="button" onclick="closeExitModal()"
+                                    class="flex-1 px-5 py-2.5 bg-transparent text-slate-500 dark:text-slate-400 text-sm font-semibold rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-all active:scale-95">
+                                    Tetap di Halaman
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <p
+                        class="mt-6 text-center text-slate-400 text-xs font-medium flex items-center justify-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">support_agent</span>
+                        Butuh bantuan? Hubungi IT Support kami
+                    </p>
+                </div>
+            </div>
+        </form>
+
+        <!-- Footer -->
+        <footer class="w-full bg-white dark:bg-surface-dark border-t border-border-light dark:border-border-dark py-10">
+            <div class="flex justify-center px-4 md:px-8 lg:px-12">
+                <div class="max-w-7xl w-full flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center size-8 rounded-lg bg-primary/10 text-primary">
+                            <span class="material-symbols-outlined text-sm">school</span>
+                        </div>
+                        <p class="text-sm font-medium text-slate-500 dark:text-slate-400">© 2024 Kampus Merdeka. All
+                            rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function showExitModal() {
+            const modal = document.getElementById('modal-exit-confirmation');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeExitModal() {
+            const modal = document.getElementById('modal-exit-confirmation');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function switchOrtuTab(tabName) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(c => c.classList.add('hidden'));
+
+            const buttons = document.querySelectorAll('.ortu-tab-btn');
+            buttons.forEach(b => {
+                b.classList.remove('border-primary', 'text-primary');
+                b.classList.add('border-transparent', 'text-slate-500');
+            });
+
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+            const activeBtn = document.getElementById('tab-btn-' + tabName);
+            activeBtn.classList.remove('border-transparent', 'text-slate-500');
+            activeBtn.classList.add('border-primary', 'text-primary');
+        }
+    </script>
+</body>
+
+</html>

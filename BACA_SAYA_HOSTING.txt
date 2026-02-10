@@ -1,0 +1,17 @@
+=== PANDUAN PENTING SAAT MENG-HOSTING ===
+
+Saya (AI Assistant) telah menyiapkan file konfigurasi siap pakai bernama `.env.production.example` di dalam folder ini.
+
+Langkah yang HARUS dilakukan SAAT DI HOSTING (cPanel):
+
+1.  Upload SEMUA file project ini ke Hosting.
+2.  Didalam File Manager Hosting, cari file bernama `.env`.
+3.  HAPUS file `.env` tersebut (karena itu punya laptop, bukan hosting).
+4.  Cari file bernama `.env.production.example`.
+5.  RENAME (Ganti Nama) file tersebut menjadi `.env`.
+6.  EDIT file `.env` baru itu, lalu masukkan Password Database Hosting Anda.
+
+=== SELESAI ===
+
+Jangan jalankan langkah ini di Laptop, nanti error!
+Hanya lakukan di Hosting.
