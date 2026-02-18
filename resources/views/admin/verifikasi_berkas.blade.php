@@ -368,7 +368,7 @@
                         { name: 'Transkrip Nilai', icon: 'receipt_long', key: 'transkrip', uploaded: false, url: null },
                         { name: 'Bukti Pembayaran', icon: 'payments', key: 'bukti_pembayaran', uploaded: false, url: null }
                     ],
-                    uploadedDocs: @json($dokumen->keyBy('jenis_dokumen') ?? (object) []),
+                    uploadedDocs: @json($dokumen ?: (object)[]),
 
                     init() {
                         console.log('Init App V2', this.uploadedDocs);
