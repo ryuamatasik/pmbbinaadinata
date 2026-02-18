@@ -299,6 +299,7 @@
                             aside.classList.add('hidden');
                             aside.classList.remove('fixed', 'inset-y-0', 'left-0', 'shadow-2xl', 'z-50');
                             newBackdrop.remove();
+                            backdrop = null; // Clear reference
                         });
                         backdrop = newBackdrop;
                     }

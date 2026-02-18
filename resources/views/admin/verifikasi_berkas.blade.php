@@ -103,8 +103,8 @@
                                         <button @click="setActiveDoc(doc)"
                                             class="w-full flex items-center justify-between p-2.5 rounded text-[11px] transition-all group border"
                                             :class="activeDoc.name === doc.name ? 
-                                                                                                                                                                                            'bg-primary/10 border-primary/20 text-primary font-bold shadow-sm' : 
-                                                                                                                                                                                            'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium'">
+                                                                                                                                                                                                    'bg-primary/10 border-primary/20 text-primary font-bold shadow-sm' : 
+                                                                                                                                                                                                    'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium'">
                                             <span class="flex items-center gap-2.5">
                                                 <span class="material-symbols-outlined text-[16px]"
                                                     :class="activeDoc.name === doc.name ? 'font-normal' : 'text-slate-400'"
@@ -368,7 +368,7 @@
                         { name: 'Transkrip Nilai', icon: 'receipt_long', key: 'transkrip', uploaded: false, url: null },
                         { name: 'Bukti Pembayaran', icon: 'payments', key: 'bukti_pembayaran', uploaded: false, url: null }
                     ],
-                    uploadedDocs: @json($dokumen ?? []),
+                    uploadedDocs: @json($dokumen->keyBy('jenis_dokumen') ?? (object) []),
 
                     init() {
                         console.log('Init App V2', this.uploadedDocs);
