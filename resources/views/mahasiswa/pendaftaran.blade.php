@@ -597,13 +597,13 @@
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">NIK <span
                                     class="text-red-500">*</span></label>
-                            <input name="nik" value="{{ old('nik') }}"
+                                <input name="nik" value="{{ old('nik', $pendaftar->nik ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="text" placeholder="16 digit NIK" required />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">NISN</label>
-                            <input name="nisn" value="{{ old('nisn') }}"
+                            <input name="nisn" value="{{ old('nisn', $pendaftar->nisn ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="text" placeholder="Optional" />
                         </div>
@@ -612,7 +612,7 @@
                         <div class="col-span-12 md:col-span-8 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Nama Lengkap <span
                                     class="text-red-500">*</span></label>
-                            <input name="nama_lengkap" value="{{ old('nama_lengkap', Auth::user()->name ?? '') }}"
+                            <input name="nama_lengkap" value="{{ old('nama_lengkap', $pendaftar->nama_lengkap ?? Auth::user()->name ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="text" placeholder="Sesuai ijazah" required />
                         </div>
@@ -622,8 +622,8 @@
                             <select name="jenis_kelamin"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
                                 <option value="" disabled>Pilih</option>
-                                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                                <option value="L" {{ (old('jenis_kelamin', $pendaftar->jenis_kelamin ?? '') == 'L') ? 'selected' : '' }}>Laki-laki</option>
+                                <option value="P" {{ (old('jenis_kelamin', $pendaftar->jenis_kelamin ?? '') == 'P') ? 'selected' : '' }}>Perempuan</option>
                             </select>
                         </div>
 
@@ -631,14 +631,14 @@
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Tempat Lahir <span
                                     class="text-red-500">*</span></label>
-                            <input name="tempat_lahir" value="{{ old('tempat_lahir') }}"
+                            <input name="tempat_lahir" value="{{ old('tempat_lahir', $pendaftar->tempat_lahir ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="text" />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Tanggal Lahir <span
                                     class="text-red-500">*</span></label>
-                            <input name="tanggal_lahir" value="{{ old('tanggal_lahir') }}"
+                            <input name="tanggal_lahir" value="{{ old('tanggal_lahir', $pendaftar->tanggal_lahir ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="date" />
                         </div>
@@ -649,23 +649,23 @@
                                     class="text-red-500">*</span></label>
                             <select name="agama"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                                <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
-                                <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
-                                <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
-                                <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
-                                <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
-                                <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu
+                                <option value="Islam" {{ (old('agama', $pendaftar->agama ?? '') == 'Islam') ? 'selected' : '' }}>Islam</option>
+                                <option value="Kristen" {{ (old('agama', $pendaftar->agama ?? '') == 'Kristen') ? 'selected' : '' }}>Kristen</option>
+                                <option value="Katolik" {{ (old('agama', $pendaftar->agama ?? '') == 'Katolik') ? 'selected' : '' }}>Katolik</option>
+                                <option value="Hindu" {{ (old('agama', $pendaftar->agama ?? '') == 'Hindu') ? 'selected' : '' }}>Hindu</option>
+                                <option value="Buddha" {{ (old('agama', $pendaftar->agama ?? '') == 'Buddha') ? 'selected' : '' }}>Buddha</option>
+                                <option value="Konghucu" {{ (old('agama', $pendaftar->agama ?? '') == 'Konghucu') ? 'selected' : '' }}>Konghucu
                                 </option>
                             </select>
                         </div>
                         <div class="col-span-6 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Tinggi (cm)</label>
-                            <input name="tinggi_badan" value="{{ old('tinggi_badan') }}" type="number"
+                            <input name="tinggi_badan" value="{{ old('tinggi_badan', $pendaftar->tinggi_badan ?? '') }}" type="number"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm" />
                         </div>
                         <div class="col-span-6 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Berat (kg)</label>
-                            <input name="berat_badan" value="{{ old('berat_badan') }}" type="number"
+                            <input name="berat_badan" value="{{ old('berat_badan', $pendaftar->berat_badan ?? '') }}" type="number"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm" />
                         </div>
 
@@ -676,47 +676,47 @@
                         <div class="col-span-12 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Jalan / Dusun / Lingkungan
                                 <span class="text-red-500">*</span></label>
-                            <input name="alamat_lengkap" value="{{ old('alamat_lengkap') }}"
+                            <input name="alamat_lengkap" value="{{ old('alamat_lengkap', $pendaftar->alamat_lengkap ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="text" />
                         </div>
                         <div class="col-span-6 md:col-span-3 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">RT</label>
-                            <input name="rt" value="{{ old('rt') }}"
+                            <input name="rt" value="{{ old('rt', $pendaftar->rt ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 type="number" />
                         </div>
                         <div class="col-span-6 md:col-span-3 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">RW</label>
-                            <input name="rw" value="{{ old('rw') }}"
+                            <input name="rw" value="{{ old('rw', $pendaftar->rw ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 type="number" />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Kelurahan/Desa <span
                                     class="text-red-500">*</span></label>
-                            <input name="kelurahan" value="{{ old('kelurahan') }}"
+                            <input name="kelurahan" value="{{ old('kelurahan', $pendaftar->kelurahan ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 type="text" />
                         </div>
                         <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Kecamatan <span
                                     class="text-red-500">*</span></label>
-                            <input name="kecamatan" value="{{ old('kecamatan') }}"
+                            <input name="kecamatan" value="{{ old('kecamatan', $pendaftar->kecamatan ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 type="text" />
                         </div>
                         <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Kabupaten/Kota <span
                                     class="text-red-500">*</span></label>
-                            <input name="kabupaten" value="{{ old('kabupaten') }}"
+                            <input name="kabupaten" value="{{ old('kabupaten', $pendaftar->kabupaten ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 type="text" />
                         </div>
                         <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Provinsi <span
                                     class="text-red-500">*</span></label>
-                            <input name="provinsi" value="{{ old('provinsi') }}"
+                            <input name="provinsi" value="{{ old('provinsi', $pendaftar->provinsi ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 type="text" />
                         </div>
@@ -725,14 +725,14 @@
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Email <span
                                     class="text-red-500">*</span></label>
-                            <input name="email" value="{{ old('email', Auth::user()->email ?? '') }}"
+                            <input name="email" value="{{ old('email', $pendaftar->email ?? Auth::user()->email ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 type="email" />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">No HP / WA <span
                                     class="text-red-500">*</span></label>
-                            <input name="no_hp" value="{{ old('no_hp') }}"
+                            <input name="no_hp" value="{{ old('no_hp', $pendaftar->no_hp ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 type="tel" />
                         </div>

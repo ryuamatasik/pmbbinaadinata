@@ -11,7 +11,11 @@ class PendaftaranController extends Controller
 {
     public function index()
     {
-        return view('mahasiswa.pendaftaran');
+        $pendaftar = null;
+        if (Auth::check()) {
+            $pendaftar = Pendaftar::where('user_id', Auth::id())->first();
+        }
+        return view('mahasiswa.pendaftaran', compact('pendaftar'));
     }
 
     public function store(Request $request)
