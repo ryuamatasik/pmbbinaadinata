@@ -91,7 +91,8 @@
                     </div>
 
                     <!-- Middle Sidebar (Bottom Left): Checklist Dokumen -->
-                    <div class="max-h-60 lg:max-h-none lg:h-72 border-t border-slate-200 dark:border-slate-800 flex flex-col bg-white dark:bg-gray-900">
+                    <div
+                        class="max-h-60 lg:max-h-none lg:h-72 border-t border-slate-200 dark:border-slate-800 flex flex-col bg-white dark:bg-gray-900">
                         <div
                             class="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex-shrink-0">
                             <p class="text-[10px] font-bold uppercase text-slate-400">Checklist Dokumen</p>
@@ -103,8 +104,8 @@
                                         <button @click="setActiveDoc(doc)"
                                             class="w-full flex items-center justify-between p-2.5 rounded text-[11px] transition-all group border"
                                             :class="activeDoc.name === doc.name ? 
-                                                                                                                                                                                                     'bg-primary/10 border-primary/20 text-primary font-bold shadow-sm' : 
-                                                                                                                                                                                                     'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium'">
+                                                                                                                                                                                                             'bg-primary/10 border-primary/20 text-primary font-bold shadow-sm' : 
+                                                                                                                                                                                                             'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium'">
                                             <span class="flex items-center gap-2.5">
                                                 <span class="material-symbols-outlined text-[16px]"
                                                     :class="activeDoc.name === doc.name ? 'font-normal' : 'text-slate-400'"
@@ -174,7 +175,8 @@
                                         <button @click="zoomIn()" class="p-1 hover:text-primary transition-colors"><span
                                                 class="material-symbols-outlined text-[16px]">zoom_in</span></button>
                                     </div>
-                                    <button @click="rotate()" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded flex items-center"><span
+                                    <button @click="rotate()"
+                                        class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded flex items-center"><span
                                             class="material-symbols-outlined text-[16px]">rotate_right</span></button>
                                     <a :href="activeDoc.url" target="_blank"
                                         :class="!activeDoc.url ? 'pointer-events-none opacity-50' : ''"
@@ -230,7 +232,7 @@
 
                 <!-- Right Sidebar: Panel Verifikasi -->
                 <div
-                    class="w-80 shrink-0 bg-white dark:bg-gray-900 border-l border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden">
+                    class="w-full lg:w-80 shrink-0 bg-white dark:bg-gray-900 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden">
                     <div class="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
                         <h3 class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Panel Verifikasi
                         </h3>
@@ -370,7 +372,7 @@
                         { name: 'Transkrip Nilai', icon: 'receipt_long', key: 'transkrip', uploaded: false, url: null },
                         { name: 'Bukti Pembayaran', icon: 'payments', key: 'bukti_pembayaran', uploaded: false, url: null }
                     ],
-                    uploadedDocs: @json($dokumen ?: (object)[]),
+                    uploadedDocs: @json($dokumen ?: (object) []),
 
                     init() {
                         console.log('Init App V2', this.uploadedDocs);
