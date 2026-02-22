@@ -51,7 +51,7 @@
                 <!-- Left Sidebar: Antrean Pendaftar -->
                 <div
                     class="w-full lg:w-72 shrink-0 bg-white dark:bg-gray-900 border-r-0 lg:border-r border-b lg:border-b-0 border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden h-auto lg:h-full">
-                    <div class="h-48 lg:flex-1 flex flex-col min-h-0">
+                    <div class="max-h-48 lg:max-h-none lg:flex-1 flex flex-col min-h-0">
                         <div
                             class="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex-shrink-0">
                             <h3 class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Antrean Pendaftar
@@ -91,9 +91,9 @@
                     </div>
 
                     <!-- Middle Sidebar (Bottom Left): Checklist Dokumen -->
-                    <div class="h-72 border-t border-slate-200 dark:border-slate-800 flex flex-col">
+                    <div class="max-h-60 lg:max-h-none lg:h-72 border-t border-slate-200 dark:border-slate-800 flex flex-col bg-white dark:bg-gray-900">
                         <div
-                            class="p-4 border-b border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex-shrink-0">
+                            class="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex-shrink-0">
                             <p class="text-[10px] font-bold uppercase text-slate-400">Checklist Dokumen</p>
                         </div>
                         <div class="flex-1 overflow-y-auto p-4 custom-scrollbar">
@@ -103,8 +103,8 @@
                                         <button @click="setActiveDoc(doc)"
                                             class="w-full flex items-center justify-between p-2.5 rounded text-[11px] transition-all group border"
                                             :class="activeDoc.name === doc.name ? 
-                                                                                                                                                                                                    'bg-primary/10 border-primary/20 text-primary font-bold shadow-sm' : 
-                                                                                                                                                                                                    'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium'">
+                                                                                                                                                                                                     'bg-primary/10 border-primary/20 text-primary font-bold shadow-sm' : 
+                                                                                                                                                                                                     'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium'">
                                             <span class="flex items-center gap-2.5">
                                                 <span class="material-symbols-outlined text-[16px]"
                                                     :class="activeDoc.name === doc.name ? 'font-normal' : 'text-slate-400'"
@@ -130,55 +130,57 @@
                 <div class="flex-1 flex flex-col bg-slate-100 dark:bg-slate-900 min-w-0">
                     @if(isset($pendaftar))
                         <div
-                            class="h-12 flex items-center justify-between bg-white dark:bg-gray-900 border-b border-slate-200 dark:border-slate-800 px-4 flex-none">
-                            <div class="flex items-center gap-2">
+                            class="min-h-12 flex flex-wrap items-center justify-between bg-white dark:bg-gray-900 border-b border-slate-200 dark:border-slate-800 px-4 py-2 flex-none gap-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-2">
                                 <span class="text-xs font-bold text-slate-700 dark:text-slate-300"
                                     x-text="activeDoc.name || 'Pilih Dokumen'"></span>
                                 <template x-if="activeDoc.uploaded">
                                     <span
-                                        class="bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">Terverifikasi
+                                        class="w-fit bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">Terverifikasi
                                         Sistem</span>
                                 </template>
                                 <template x-if="!activeDoc.uploaded">
                                     <span
-                                        class="bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">Belum
+                                        class="w-fit bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">Belum
                                         Upload</span>
                                 </template>
                             </div>
-                            <div class="flex items-center gap-3">
+                            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                                 <!-- Status Controls for Active Document -->
                                 <template x-if="activeDoc.uploaded">
-                                    <div class="flex items-center gap-1 mr-2">
+                                    <div class="flex items-center gap-1 mr-1">
                                         <button @click="updateDocStatus('valid')"
                                             :class="activeDoc.status == 'valid' ? 'bg-green-100 text-green-700 ring-2 ring-green-500' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-green-50 hover:text-green-600'"
-                                            class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
+                                            class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition-all whitespace-nowrap"
                                             title="Tandai Valid">
-                                            <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                                            <span class="material-symbols-outlined text-[14px]">check_circle</span>
                                             Valid
                                         </button>
                                         <button @click="openRejectionModal()"
                                             :class="activeDoc.status == 'invalid' ? 'bg-red-100 text-red-700 ring-2 ring-red-500' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-red-50 hover:text-red-600'"
-                                            class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
+                                            class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition-all whitespace-nowrap"
                                             title="Tandai Revisi">
-                                            <span class="material-symbols-outlined text-[16px]">cancel</span>
+                                            <span class="material-symbols-outlined text-[14px]">cancel</span>
                                             Revisi
                                         </button>
                                     </div>
                                 </template>
 
-                                <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded px-1">
-                                    <button @click="zoomOut()" class="p-1 hover:text-primary transition-colors"><span
-                                            class="material-symbols-outlined text-sm">zoom_out</span></button>
-                                    <span class="text-[10px] font-bold px-2 w-10 text-center" x-text="zoomLevel + '%'"></span>
-                                    <button @click="zoomIn()" class="p-1 hover:text-primary transition-colors"><span
-                                            class="material-symbols-outlined text-sm">zoom_in</span></button>
+                                <div class="flex items-center gap-1">
+                                    <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded px-1">
+                                        <button @click="zoomOut()" class="p-1 hover:text-primary transition-colors"><span
+                                                class="material-symbols-outlined text-[16px]">zoom_out</span></button>
+                                        <span class="text-[9px] font-bold px-1 w-8 text-center" x-text="zoomLevel + '%'"></span>
+                                        <button @click="zoomIn()" class="p-1 hover:text-primary transition-colors"><span
+                                                class="material-symbols-outlined text-[16px]">zoom_in</span></button>
+                                    </div>
+                                    <button @click="rotate()" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded flex items-center"><span
+                                            class="material-symbols-outlined text-[16px]">rotate_right</span></button>
+                                    <a :href="activeDoc.url" target="_blank"
+                                        :class="!activeDoc.url ? 'pointer-events-none opacity-50' : ''"
+                                        class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded flex items-center"><span
+                                            class="material-symbols-outlined text-[16px] text-primary">download</span></a>
                                 </div>
-                                <button @click="rotate()" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded"><span
-                                        class="material-symbols-outlined text-sm">rotate_right</span></button>
-                                <a :href="activeDoc.url" target="_blank"
-                                    :class="!activeDoc.url ? 'pointer-events-none opacity-50' : ''"
-                                    class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded"><span
-                                        class="material-symbols-outlined text-sm text-primary">download</span></a>
                             </div>
                         </div>
 
