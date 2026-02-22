@@ -275,7 +275,7 @@
                 </div>
                 <div
                     class="bg-white dark:bg-gray-900 rounded-xl border border-[#f0f2f4] dark:border-gray-800 shadow-sm p-6">
-                    <h3 class="font-bold text-lg text-[#111318] dark:text-white mb-4">Sebaran Pendaftar</h3>
+                    <h3 class="font-bold text-lg text-[#111318] dark:text-white mb-4">Prosentase Diterima</h3>
                     <div class="flex flex-col gap-4">
                         @foreach($sebaranProdi as $prodi)
                             <div class="space-y-1">

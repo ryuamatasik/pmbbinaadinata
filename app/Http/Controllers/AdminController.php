@@ -26,8 +26,10 @@ class AdminController extends Controller
         $sebaranProdi = [];
 
         foreach ($prodiList as $prodi) {
-            $count = Pendaftar::where('pilihan_prodi', $prodi)->count();
-            $percentage = $totalPendaftar > 0 ? round(($count / $totalPendaftar) * 100) : 0;
+            $totalInProdi = Pendaftar::where('pilihan_prodi', $prodi)->count();
+            $acceptedInProdi = Pendaftar::where('pilihan_prodi', $prodi)->where('status', 'Diterima')->count();
+
+            $percentage = $totalInProdi > 0 ? round(($acceptedInProdi / $totalInProdi) * 100) : 0;
 
             // Assign color based on prodi for consistent UI
             $color = match ($prodi) {
@@ -39,7 +41,8 @@ class AdminController extends Controller
 
             $sebaranProdi[] = [
                 'nama' => $prodi,
-                'count' => $count,
+                'count' => $acceptedInProdi,
+                'total' => $totalInProdi,
                 'percentage' => $percentage,
                 'color' => $color
             ];

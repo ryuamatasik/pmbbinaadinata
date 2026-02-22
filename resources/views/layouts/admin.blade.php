@@ -118,12 +118,6 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-4">
-                    <button
-                        class="relative p-2 text-gray-500 hover:text-primary transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
-                        <span class="material-symbols-outlined">notifications</span>
-                        <span
-                            class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white dark:border-gray-900"></span>
-                    </button>
                     <div class="h-8 w-[1px] bg-gray-200 dark:bg-gray-700 mx-1"></div>
                     <a href="{{ route('profile.edit') }}"
                         class="flex items-center gap-3 cursor-pointer p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
