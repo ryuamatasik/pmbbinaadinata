@@ -31,14 +31,14 @@
                 
                 <div class="relative mt-8 mb-4 flex flex-col items-center gap-4">
                     <div class="relative group">
-                        <div class="size-32 rounded-full border-4 border-white dark:border-surface-dark shadow-md overflow-hidden bg-slate-100 relative group-hover:scale-105 transition-transform duration-300">
-                            @if(auth()->user()->profile_photo_path)
-                                <img src="{{ Storage::url(auth()->user()->profile_photo_path) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
-                            @else
-                                <div class="w-full h-full flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-slate-400">
-                                    <span class="material-symbols-outlined text-6xl">person</span>
-                                </div>
-                            @endif
+                        <div class="size-32 rounded-full border-4 border-white dark:border-surface-dark shadow-md overflow-hidden bg-slate-100 relative group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
+                            <img id="profile-preview" src="{{ auth()->user()->profile_photo_path ? Storage::url(auth()->user()->profile_photo_path) : '' }}" 
+                                alt="{{ auth()->user()->name }}" 
+                                class="w-full h-full object-cover {{ auth()->user()->profile_photo_path ? '' : 'hidden' }}">
+                            
+                            <div id="profile-icon" class="w-full h-full flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-slate-400 {{ auth()->user()->profile_photo_path ? 'hidden' : '' }}">
+                                <span class="material-symbols-outlined text-6xl">person</span>
+                            </div>
                             
                             <!-- Photo Upload Overlay (Desktop Hover) -->
                             <label for="photo-upload" class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-10">
@@ -186,10 +186,16 @@
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
-                // Find the image element in the previous sibling container or by traversal
-                // Since layout is specific, we can target the img inside the relative container
-                const img = input.parentElement.querySelector('img');
-                if(img) img.src = e.target.result;
+                const img = document.getElementById('profile-preview');
+                const icon = document.getElementById('profile-icon');
+                
+                if(img) {
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                }
+                if(icon) {
+                    icon.classList.add('hidden');
+                }
             }
             reader.readAsDataURL(input.files[0]);
         }
