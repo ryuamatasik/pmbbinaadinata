@@ -4,7 +4,7 @@
 )
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 lg:pb-8">
     
     <!-- Header -->
     <div class="mb-8">
@@ -171,7 +171,7 @@
             </div>
 
             <!-- Sticky Save Button (Mobile) or Standard (Desktop) -->
-            <div class="flex justify-end pt-4">
+            <div class="flex justify-end pt-8 pb-12 md:pb-0">
                 <button type="submit" class="flex items-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-xl shadow-lg shadow-blue-500/30 hover:bg-blue-700 hover:-translate-y-0.5 transition-all w-full md:w-auto justify-center">
                     <span class="material-symbols-outlined">save</span>
                     Simpan Perubahan
