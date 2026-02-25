@@ -114,11 +114,11 @@
                             href="#tentang-kami">Tentang Kami</a>
                     </div>
                     <div class="flex gap-2 ml-4">
-                        <a href="{{ route('login') }}"
+                        <a href="{{ route('login', ['mode' => 'login']) }}"
                             class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary hover:bg-primary-dark transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em]">
                             <span class="truncate">Masuk</span>
                         </a>
-                        <a href="{{ route('login') }}"
+                        <a href="{{ route('login', ['mode' => 'register']) }}"
                             class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#f0f2f4] hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors text-[#111318] dark:text-white text-sm font-bold leading-normal tracking-[0.015em]">
                             <span class="truncate">Daftar</span>
                         </a>
@@ -156,11 +156,11 @@
 
                 <div class="flex flex-col gap-4 mt-8 menu-item opacity-0 translate-y-4 transition-all duration-500 ease-out"
                     style="transition-delay: 600ms;">
-                    <a href="{{ route('login') }}"
+                    <a href="{{ route('login', ['mode' => 'login']) }}"
                         class="flex w-full items-center justify-center rounded-xl h-14 bg-primary text-white font-bold text-lg shadow-lg hover:bg-primary-dark hover:scale-[1.02] active:scale-[0.98] transition-all">
                         Masuk Akun
                     </a>
-                    <a href="{{ route('login') }}"
+                    <a href="{{ route('login', ['mode' => 'register']) }}"
                         class="flex w-full items-center justify-center rounded-xl h-14 bg-gray-100 dark:bg-gray-800 text-[#111318] dark:text-white font-bold text-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                         Daftar Baru
                     </a>
@@ -225,11 +225,11 @@
                                 </h2>
                             </div>
                             <div class="flex flex-wrap gap-4 justify-center z-10 mt-4 reveal">
-                                <a href="{{ route('login') }}"
+                                <a href="{{ route('login', ['mode' => 'register']) }}"
                                     class="flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary hover:bg-primary-dark transition-all text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                                     <span class="truncate">Daftar Sekarang</span>
                                 </a>
-                                <a href="{{ route('login') }}"
+                                <a href="{{ route('login', ['mode' => 'login']) }}"
                                     class="flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 transition-all text-white text-base font-bold leading-normal tracking-[0.015em]">
                                     <span class="truncate">Masuk Akun</span>
                                 </a>

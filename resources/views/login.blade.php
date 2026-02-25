@@ -332,9 +332,12 @@
                     <div class="relative">
                         <span
                             class="absolute left-3 top-3 text-slate-400 material-symbols-outlined text-[20px]">lock</span>
-                        <input type="password" name="password" placeholder="Password"
-                            class="w-full pl-10 pr-4 py-3 rounded-lg border-gray-200 focus:border-primary focus:ring-primary dark:bg-slate-800 dark:border-gray-700 @error('password') border-red-500 @enderror"
+                        <input type="password" id="reg_password" name="password" placeholder="Password"
+                            class="w-full pl-10 pr-12 py-3 rounded-lg border-gray-200 focus:border-primary focus:ring-primary dark:bg-slate-800 dark:border-gray-700 @error('password') border-red-500 @enderror"
                             required />
+                        <button type="button" onclick="togglePassword('reg_password', this)" class="absolute right-3 top-3 text-slate-400 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">visibility</span>
+                        </button>
                         @error('password')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
@@ -399,9 +402,12 @@
                     <div class="relative">
                         <span
                             class="absolute left-3 top-3 text-slate-400 material-symbols-outlined text-[20px]">lock</span>
-                        <input type="password" name="password" placeholder="Password"
-                            class="w-full pl-10 pr-4 py-3 rounded-lg border-gray-200 focus:border-primary focus:ring-primary dark:bg-slate-800 dark:border-gray-700 @error('password') border-red-500 @enderror"
+                        <input type="password" id="login_password" name="password" placeholder="Password"
+                            class="w-full pl-10 pr-12 py-3 rounded-lg border-gray-200 focus:border-primary focus:ring-primary dark:bg-slate-800 dark:border-gray-700 @error('password') border-red-500 @enderror"
                             required />
+                        <button type="button" onclick="togglePassword('login_password', this)" class="absolute right-3 top-3 text-slate-400 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">visibility</span>
+                        </button>
                         @error('password')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
@@ -490,6 +496,32 @@
         // Mobile buttons
         const signUpMobile = document.getElementById('signUpMobile');
         const signInMobile = document.getElementById('signInMobile');
+
+        // Password Toggle Function
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('span');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+
+        // Deep Link: Panel Switch based on URL parameter
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+
+            if (mode === 'register') {
+                mainContainer.classList.add("right-panel-active");
+            } else if (mode === 'login') {
+                mainContainer.classList.remove("right-panel-active");
+            }
+        });
 
         // Check for specific registration errors to keep panel open
         // Logic: Login form doesn't have 'name'. If 'name' is in old input OR has error, it's a register attempt.
