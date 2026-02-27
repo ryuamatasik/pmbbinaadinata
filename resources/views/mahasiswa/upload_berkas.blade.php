@@ -73,6 +73,17 @@
                 <span class="material-symbols-outlined" id="mobile-menu-icon">menu</span>
             </button>
         </header>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-[#1a202c] border-b border-[#dbdfe6] dark:border-[#2a3441] px-4 py-3 shadow-md">
+            <nav class="flex flex-col space-y-3">
+                <a class="text-[#111318] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors px-2 py-1"
+                   href="{{ url('/') }}" onclick="confirmExit(event)">Beranda</a>
+                <a class="text-[#111318] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors px-2 py-1"
+                   href="{{ route('mahasiswa.dashboard') }}" onclick="confirmExit(event)">Dashboard</a>
+            </nav>
+        </div>
+
         <main class="flex-1 w-full max-w-[1200px] mx-auto px-4 md:px-10 py-8 pb-40 md:pb-20">
             <div class="mb-10 max-w-[800px] mx-auto">
                 <div class="flex flex-col gap-3">
@@ -328,23 +339,15 @@
         }
 
         function toggleMobileMenu() {
-            const nav = document.querySelector('header nav');
+            const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('mobile-menu-icon');
             
-            if (nav.classList.contains('hidden') || !nav.classList.contains('flex')) {
-                // Determine if it was hidden by our toggle or by default breakpoints
-                nav.classList.remove('hidden');
-                nav.classList.add('flex', 'absolute', 'top-full', 'left-0', 'right-0', 'bg-white', 'dark:bg-[#1a202c]', 'shadow-lg', 'border-b', 'border-[#dbdfe6]', 'dark:border-[#2a3441]', 'p-4', 'flex-col', 'z-50');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
                 icon.textContent = 'close';
             } else {
-                nav.classList.add('hidden');
-                nav.classList.remove('flex', 'absolute', 'top-full', 'left-0', 'right-0', 'bg-white', 'dark:bg-[#1a202c]', 'shadow-lg', 'border-b', 'border-[#dbdfe6]', 'dark:border-[#2a3441]', 'p-4', 'flex-col', 'z-50');
+                menu.classList.add('hidden');
                 icon.textContent = 'menu';
-                
-                // Reset to default desktop view classes so it doesn't break on resize
-                setTimeout(() => {
-                    nav.className = 'hidden md:flex flex-col md:flex-row items-center gap-4';
-                }, 10);
             }
         }
     </script>

@@ -435,21 +435,21 @@
                             <div class="flex flex-wrap gap-6">
                                 <label class="flex items-center gap-3 cursor-pointer group">
                                     <input class="custom-radio" name="gelombang" type="radio" value="1"
-                                        {{ old('gelombang') == '1' ? 'checked' : '' }} />
+                                        {{ old('gelombang', $pendaftar->gelombang ?? '') == '1' ? 'checked' : '' }} />
                                     <span
                                         class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Gelombang
                                         I</span>
                                 </label>
                                 <label class="flex items-center gap-3 cursor-pointer group">
                                     <input class="custom-radio" name="gelombang" type="radio" value="2"
-                                        {{ old('gelombang') == '2' ? 'checked' : '' }} />
+                                        {{ old('gelombang', $pendaftar->gelombang ?? '') == '2' ? 'checked' : '' }} />
                                     <span
                                         class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Gelombang
                                         II</span>
                                 </label>
                                 <label class="flex items-center gap-3 cursor-pointer group">
                                     <input class="custom-radio" name="gelombang" type="radio" value="3"
-                                        {{ old('gelombang') == '3' ? 'checked' : '' }} />
+                                        {{ old('gelombang', $pendaftar->gelombang ?? '') == '3' ? 'checked' : '' }} />
                                     <span
                                         class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Gelombang
                                         III</span>
@@ -774,7 +774,7 @@
                         <!-- Row 1: Nama Sekolah -->
                         <div class="col-span-12 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Nama Sekolah</label>
-                            <input name="nama_sekolah" value="{{ old('nama_sekolah') }}"
+                            <input name="nama_sekolah" value="{{ old('nama_sekolah', $pendaftar->nama_sekolah ?? '') }}"
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all"
                                 type="text" placeholder="Contoh: SMA Negeri 1 Jakarta" />
                         </div>
@@ -785,20 +785,20 @@
                             <select name="jurusan_sekolah"
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all">
                                 <option value="" disabled selected>Pilih Jurusan</option>
-                                <option value="IPA" {{ old('jurusan_sekolah') == 'IPA' ? 'selected' : '' }}>IPA</option>
-                                <option value="IPS" {{ old('jurusan_sekolah') == 'IPS' ? 'selected' : '' }}>IPS</option>
-                                <option value="Bahasa" {{ old('jurusan_sekolah') == 'Bahasa' ? 'selected' : '' }}>Bahasa
+                                <option value="IPA" {{ old('jurusan_sekolah', $pendaftar->jurusan_sekolah ?? '') == 'IPA' ? 'selected' : '' }}>IPA</option>
+                                <option value="IPS" {{ old('jurusan_sekolah', $pendaftar->jurusan_sekolah ?? '') == 'IPS' ? 'selected' : '' }}>IPS</option>
+                                <option value="Bahasa" {{ old('jurusan_sekolah', $pendaftar->jurusan_sekolah ?? '') == 'Bahasa' ? 'selected' : '' }}>Bahasa
                                 </option>
-                                <option value="Kejuruan" {{ old('jurusan_sekolah') == 'Kejuruan' ? 'selected' : '' }}>
+                                <option value="Kejuruan" {{ old('jurusan_sekolah', $pendaftar->jurusan_sekolah ?? '') == 'Kejuruan' ? 'selected' : '' }}>
                                     SMK/Kejuruan</option>
-                                <option value="Lainnya" {{ old('jurusan_sekolah') == 'Lainnya' ? 'selected' : '' }}>
+                                <option value="Lainnya" {{ old('jurusan_sekolah', $pendaftar->jurusan_sekolah ?? '') == 'Lainnya' ? 'selected' : '' }}>
                                     Lainnya</option>
                             </select>
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Nilai UN / Rata-rata
                                 Ijazah</label>
-                            <input name="nilai_rata_rata" value="{{ old('nilai_rata_rata') }}"
+                            <input name="nilai_rata_rata" value="{{ old('nilai_rata_rata', $pendaftar->nilai_rata_rata ?? '') }}"
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all"
                                 type="text" placeholder="0.00" />
                         </div>
@@ -810,7 +810,7 @@
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all">
                                 <option value="" disabled selected>Pilih Tahun</option>
                                 @for ($i = date('Y'); $i >= 2015; $i--)
-                                    <option value="{{ $i }}" {{ old('tahun_lulus') == $i ? 'selected' : '' }}>{{ $i }}
+                                    <option value="{{ $i }}" {{ old('tahun_lulus', $pendaftar->tahun_lulus ?? '') == $i ? 'selected' : '' }}>{{ $i }}
                                     </option>
                                 @endfor
                             </select>
@@ -827,7 +827,7 @@
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Alamat Sekolah</label>
                             <textarea name="alamat_sekolah"
                                 class="w-full h-32 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 p-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all resize-none"
-                                placeholder="Tuliskan alamat lengkap sekolah (Jalan, No, Kelurahan, Kecamatan, Kota, Provinsi)">{{ old('alamat_sekolah') }}</textarea>
+                                placeholder="Tuliskan alamat lengkap sekolah (Jalan, No, Kelurahan, Kecamatan, Kota, Provinsi)">{{ old('alamat_sekolah', $pendaftar->alamat_sekolah ?? '') }}</textarea>
                         </div>
                     </div>
                     <div
@@ -872,7 +872,7 @@
                         <div class="col-span-12 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Asal Perguruan
                                 Tinggi</label>
-                            <input name="asal_pt" value="{{ old('asal_pt') }}"
+                            <input name="asal_pt" value="{{ old('asal_pt', $pendaftar->asal_pt ?? '') }}"
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all"
                                 type="text" placeholder="Contoh: Universitas Indonesia" />
                         </div>
@@ -880,7 +880,7 @@
                         <!-- Asal Program Studi -->
                         <div class="col-span-12 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Asal Program Studi</label>
-                            <input name="asal_prodi" value="{{ old('asal_prodi') }}"
+                            <input name="asal_prodi" value="{{ old('asal_prodi', $pendaftar->asal_prodi ?? '') }}"
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all"
                                 type="text" placeholder="Contoh: Teknik Informatika" />
                         </div>
@@ -890,28 +890,28 @@
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Status Terakreditasi</label>
                             <div class="flex flex-wrap gap-4">
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="akreditasi_asal" value="A" class="peer sr-only" {{ old('akreditasi_asal') == 'A' ? 'checked' : '' }}>
+                                    <input type="radio" name="akreditasi_asal" value="A" class="peer sr-only" {{ old('akreditasi_asal', $pendaftar->akreditasi_asal ?? '') == 'A' ? 'checked' : '' }}>
                                     <div
                                         class="px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 peer-checked:border-primary peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 peer-checked:text-primary font-bold text-sm transition-all hover:bg-gray-50 dark:hover:bg-slate-700">
                                         Terakreditasi A
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="akreditasi_asal" value="B" class="peer sr-only" {{ old('akreditasi_asal') == 'B' ? 'checked' : '' }}>
+                                    <input type="radio" name="akreditasi_asal" value="B" class="peer sr-only" {{ old('akreditasi_asal', $pendaftar->akreditasi_asal ?? '') == 'B' ? 'checked' : '' }}>
                                     <div
                                         class="px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 peer-checked:border-primary peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 peer-checked:text-primary font-bold text-sm transition-all hover:bg-gray-50 dark:hover:bg-slate-700">
                                         Terakreditasi B
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="akreditasi_asal" value="C" class="peer sr-only" {{ old('akreditasi_asal') == 'C' ? 'checked' : '' }}>
+                                    <input type="radio" name="akreditasi_asal" value="C" class="peer sr-only" {{ old('akreditasi_asal', $pendaftar->akreditasi_asal ?? '') == 'C' ? 'checked' : '' }}>
                                     <div
                                         class="px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 peer-checked:border-primary peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 peer-checked:text-primary font-bold text-sm transition-all hover:bg-gray-50 dark:hover:bg-slate-700">
                                         Terakreditasi C
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="akreditasi_asal" value="Belum" class="peer sr-only" {{ old('akreditasi_asal') == 'Belum' ? 'checked' : '' }}>
+                                    <input type="radio" name="akreditasi_asal" value="Belum" class="peer sr-only" {{ old('akreditasi_asal', $pendaftar->akreditasi_asal ?? '') == 'Belum' ? 'checked' : '' }}>
                                     <div
                                         class="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 peer-checked:border-primary peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 peer-checked:text-primary font-bold text-sm transition-all hover:bg-gray-50 dark:hover:bg-slate-700 flex flex-col leading-tight items-start">
                                         <span>Belum</span>

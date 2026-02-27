@@ -45,7 +45,7 @@
                             <div class="flex flex-wrap gap-3">
                                 <label class="group relative cursor-pointer">
                                     <input class="peer invisible absolute" name="status_ayah" type="radio" value="hidup"
-                                        {{ old('status_ayah') == 'hidup' ? 'checked' : '' }} />
+                                        {{ old('status_ayah', $pendaftar->status_ayah ?? '') == 'hidup' ? 'checked' : '' }} />
                                     <div
                                         class="flex items-center justify-center rounded-lg border border-[#dbdfe6] dark:border-gray-600 px-6 h-11 text-[#111318] dark:text-white bg-white dark:bg-gray-800 peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all">
                                         <span
@@ -55,7 +55,7 @@
                                 </label>
                                 <label class="group relative cursor-pointer">
                                     <input class="peer invisible absolute" name="status_ayah" type="radio"
-                                        value="meninggal" {{ old('status_ayah') == 'meninggal' ? 'checked' : '' }} />
+                                        value="meninggal" {{ old('status_ayah', $pendaftar->status_ayah ?? '') == 'meninggal' ? 'checked' : '' }} />
                                     <div
                                         class="flex items-center justify-center rounded-lg border border-[#dbdfe6] dark:border-gray-600 px-6 h-11 text-[#111318] dark:text-white bg-white dark:bg-gray-800 peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all">
                                         <span
@@ -70,7 +70,7 @@
                                 Keluarga) <span class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nomor_kk" value="{{ old('nomor_kk') }}" placeholder="16 digit nomor KK"
+                                name="nomor_kk" value="{{ old('nomor_kk', $pendaftar->nomor_kk ?? '') }}" placeholder="16 digit nomor KK"
                                 type="text" />
                         </label>
                     </div>
@@ -80,14 +80,14 @@
                                 <span class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nama_ayah" value="{{ old('nama_ayah') }}" placeholder="Sesuai KTP" />
+                                name="nama_ayah" value="{{ old('nama_ayah', $pendaftar->nama_ayah ?? '') }}" placeholder="Sesuai KTP" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">NIK <span
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nik_ayah" value="{{ old('nik_ayah') }}" placeholder="16 digit angka"
+                                name="nik_ayah" value="{{ old('nik_ayah', $pendaftar->nik_ayah ?? '') }}" placeholder="16 digit angka"
                                 type="text" />
                         </label>
                         <label class="flex flex-col">
@@ -95,7 +95,7 @@
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="hp_ayah" value="{{ old('hp_ayah') }}" placeholder="08xxxxxxxxxx" type="tel" />
+                                name="hp_ayah" value="{{ old('hp_ayah', $pendaftar->hp_ayah ?? '') }}" placeholder="08xxxxxxxxxx" type="tel" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Pendidikan Terakhir
@@ -103,19 +103,19 @@
                             <select name="pendidikan_ayah"
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
                                 <option disabled selected>Pilih Pendidikan</option>
-                                <option value="SD" {{ old('pendidikan_ayah') == 'SD' ? 'selected' : '' }}>SD / Sederajat
+                                <option value="SD" {{ old('pendidikan_ayah', $pendaftar->pendidikan_ayah ?? '') == 'SD' ? 'selected' : '' }}>SD / Sederajat
                                 </option>
-                                <option value="SMP" {{ old('pendidikan_ayah') == 'SMP' ? 'selected' : '' }}>SMP /
+                                <option value="SMP" {{ old('pendidikan_ayah', $pendaftar->pendidikan_ayah ?? '') == 'SMP' ? 'selected' : '' }}>SMP /
                                     Sederajat</option>
-                                <option value="SMA" {{ old('pendidikan_ayah') == 'SMA' ? 'selected' : '' }}>SMA /
+                                <option value="SMA" {{ old('pendidikan_ayah', $pendaftar->pendidikan_ayah ?? '') == 'SMA' ? 'selected' : '' }}>SMA /
                                     Sederajat</option>
-                                <option value="Diploma" {{ old('pendidikan_ayah') == 'Diploma' ? 'selected' : '' }}>
+                                <option value="Diploma" {{ old('pendidikan_ayah', $pendaftar->pendidikan_ayah ?? '') == 'Diploma' ? 'selected' : '' }}>
                                     Diploma (D1/D2/D3)</option>
-                                <option value="S1" {{ old('pendidikan_ayah') == 'S1' ? 'selected' : '' }}>Sarjana (S1)
+                                <option value="S1" {{ old('pendidikan_ayah', $pendaftar->pendidikan_ayah ?? '') == 'S1' ? 'selected' : '' }}>Sarjana (S1)
                                 </option>
-                                <option value="S2" {{ old('pendidikan_ayah') == 'S2' ? 'selected' : '' }}>Magister (S2)
+                                <option value="S2" {{ old('pendidikan_ayah', $pendaftar->pendidikan_ayah ?? '') == 'S2' ? 'selected' : '' }}>Magister (S2)
                                 </option>
-                                <option value="S3" {{ old('pendidikan_ayah') == 'S3' ? 'selected' : '' }}>Doktor (S3)
+                                <option value="S3" {{ old('pendidikan_ayah', $pendaftar->pendidikan_ayah ?? '') == 'S3' ? 'selected' : '' }}>Doktor (S3)
                                 </option>
                             </select>
                         </label>
@@ -124,17 +124,17 @@
                             <select name="pekerjaan_ayah"
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
                                 <option disabled selected>Pilih Pekerjaan</option>
-                                <option value="PNS" {{ old('pekerjaan_ayah') == 'PNS' ? 'selected' : '' }}>PNS / TNI /
+                                <option value="PNS" {{ old('pekerjaan_ayah', $pendaftar->pekerjaan_ayah ?? '') == 'PNS' ? 'selected' : '' }}>PNS / TNI /
                                     POLRI</option>
-                                <option value="Swasta" {{ old('pekerjaan_ayah') == 'Swasta' ? 'selected' : '' }}>Karyawan
+                                <option value="Swasta" {{ old('pekerjaan_ayah', $pendaftar->pekerjaan_ayah ?? '') == 'Swasta' ? 'selected' : '' }}>Karyawan
                                     Swasta</option>
-                                <option value="Wiraswasta" {{ old('pekerjaan_ayah') == 'Wiraswasta' ? 'selected' : '' }}>
+                                <option value="Wiraswasta" {{ old('pekerjaan_ayah', $pendaftar->pekerjaan_ayah ?? '') == 'Wiraswasta' ? 'selected' : '' }}>
                                     Wiraswasta</option>
-                                <option value="Petani" {{ old('pekerjaan_ayah') == 'Petani' ? 'selected' : '' }}>Petani /
+                                <option value="Petani" {{ old('pekerjaan_ayah', $pendaftar->pekerjaan_ayah ?? '') == 'Petani' ? 'selected' : '' }}>Petani /
                                     Nelayan</option>
-                                <option value="Buruh" {{ old('pekerjaan_ayah') == 'Buruh' ? 'selected' : '' }}>Buruh
+                                <option value="Buruh" {{ old('pekerjaan_ayah', $pendaftar->pekerjaan_ayah ?? '') == 'Buruh' ? 'selected' : '' }}>Buruh
                                 </option>
-                                <option value="Lainnya" {{ old('pekerjaan_ayah') == 'Lainnya' ? 'selected' : '' }}>Lainnya
+                                <option value="Lainnya" {{ old('pekerjaan_ayah', $pendaftar->pekerjaan_ayah ?? '') == 'Lainnya' ? 'selected' : '' }}>Lainnya
                                 </option>
                             </select>
                         </label>
@@ -144,15 +144,15 @@
                             <select name="penghasilan_ayah"
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
                                 <option disabled selected>Pilih Penghasilan</option>
-                                <option value="< 1 Juta" {{ old('penghasilan_ayah') == '< 1 Juta' ? 'selected' : '' }}>
+                                <option value="< 1 Juta" {{ old('penghasilan_ayah', $pendaftar->penghasilan_ayah ?? '') == '< 1 Juta' ? 'selected' : '' }}>
                                     < Rp 1.000.000</option>
-                                <option value="1-3 Juta" {{ old('penghasilan_ayah') == '1-3 Juta' ? 'selected' : '' }}>Rp
+                                <option value="1-3 Juta" {{ old('penghasilan_ayah', $pendaftar->penghasilan_ayah ?? '') == '1-3 Juta' ? 'selected' : '' }}>Rp
                                     1.000.000 - Rp 3.000.000</option>
-                                <option value="3-5 Juta" {{ old('penghasilan_ayah') == '3-5 Juta' ? 'selected' : '' }}>Rp
+                                <option value="3-5 Juta" {{ old('penghasilan_ayah', $pendaftar->penghasilan_ayah ?? '') == '3-5 Juta' ? 'selected' : '' }}>Rp
                                     3.000.000 - Rp 5.000.000</option>
-                                <option value="5-10 Juta" {{ old('penghasilan_ayah') == '5-10 Juta' ? 'selected' : '' }}>
+                                <option value="5-10 Juta" {{ old('penghasilan_ayah', $pendaftar->penghasilan_ayah ?? '') == '5-10 Juta' ? 'selected' : '' }}>
                                     Rp 5.000.000 - Rp 10.000.000</option>
-                                <option value="> 10 Juta" {{ old('penghasilan_ayah') == '> 10 Juta' ? 'selected' : '' }}>>
+                                <option value="> 10 Juta" {{ old('penghasilan_ayah', $pendaftar->penghasilan_ayah ?? '') == '> 10 Juta' ? 'selected' : '' }}>>
                                     Rp 10.000.000</option>
                             </select>
                         </label>
@@ -169,7 +169,7 @@
                                     (Jalan/Dusun) <span class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="alamat_ayah" value="{{ old('alamat_ayah') }}"
+                                    name="alamat_ayah" value="{{ old('alamat_ayah', $pendaftar->alamat_ayah ?? '') }}"
                                     placeholder="Nama Jalan, Blok, atau No. Rumah" />
                             </label>
                             <div class="grid grid-cols-2 gap-4">
@@ -177,13 +177,13 @@
                                     <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">RT</p>
                                     <input
                                         class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                        name="rt_ayah" value="{{ old('rt_ayah') }}" placeholder="000" />
+                                        name="rt_ayah" value="{{ old('rt_ayah', $pendaftar->rt_ayah ?? '') }}" placeholder="000" />
                                 </label>
                                 <label class="flex flex-col">
                                     <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">RW</p>
                                     <input
                                         class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                        name="rw_ayah" value="{{ old('rw_ayah') }}" placeholder="000" />
+                                        name="rw_ayah" value="{{ old('rw_ayah', $pendaftar->rw_ayah ?? '') }}" placeholder="000" />
                                 </label>
                             </div>
                             <label class="flex flex-col">
@@ -191,7 +191,7 @@
                                     <span class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kelurahan_ayah" value="{{ old('kelurahan_ayah') }}"
+                                    name="kelurahan_ayah" value="{{ old('kelurahan_ayah', $pendaftar->kelurahan_ayah ?? '') }}"
                                     placeholder="Nama Desa/Kelurahan" />
                             </label>
                             <label class="flex flex-col">
@@ -199,7 +199,7 @@
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kecamatan_ayah" value="{{ old('kecamatan_ayah') }}"
+                                    name="kecamatan_ayah" value="{{ old('kecamatan_ayah', $pendaftar->kecamatan_ayah ?? '') }}"
                                     placeholder="Nama Kecamatan" />
                             </label>
                             <label class="flex flex-col">
@@ -207,14 +207,14 @@
                                     <span class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kota_ayah" value="{{ old('kota_ayah') }}" placeholder="Nama Kabupaten/Kota" />
+                                    name="kota_ayah" value="{{ old('kota_ayah', $pendaftar->kota_ayah ?? '') }}" placeholder="Nama Kabupaten/Kota" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Provinsi <span
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="provinsi_ayah" value="{{ old('provinsi_ayah') }}"
+                                    name="provinsi_ayah" value="{{ old('provinsi_ayah', $pendaftar->provinsi_ayah ?? '') }}"
                                     placeholder="Nama Provinsi" />
                             </label>
                             <label class="flex flex-col">
@@ -222,7 +222,7 @@
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="negara_ayah" value="{{ old('negara_ayah', 'Indonesia') }}"
+                                    name="negara_ayah" value="{{ old('negara_ayah', $pendaftar->negara_ayah ?? 'Indonesia) }}"
                                     placeholder="Contoh: Indonesia" />
                             </label>
                         </div>
@@ -242,7 +242,7 @@
                         </p>
                         <div class="flex flex-wrap gap-3">
                             <label class="group relative cursor-pointer">
-                                <input class="peer invisible absolute" name="status_ibu" type="radio" value="hidup" {{ old('status_ibu') == 'hidup' ? 'checked' : '' }} />
+                                <input class="peer invisible absolute" name="status_ibu" type="radio" value="hidup" {{ old('status_ibu', $pendaftar->status_ibu ?? '') == 'hidup' ? 'checked' : '' }} />
                                 <div
                                     class="flex items-center justify-center rounded-lg border border-[#dbdfe6] dark:border-gray-600 px-6 h-11 text-[#111318] dark:text-white bg-white dark:bg-gray-800 peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all">
                                     <span
@@ -252,7 +252,7 @@
                             </label>
                             <label class="group relative cursor-pointer">
                                 <input class="peer invisible absolute" name="status_ibu" type="radio" value="meninggal"
-                                    {{ old('status_ibu') == 'meninggal' ? 'checked' : '' }} />
+                                    {{ old('status_ibu', $pendaftar->status_ibu ?? '') == 'meninggal' ? 'checked' : '' }} />
                                 <div
                                     class="flex items-center justify-center rounded-lg border border-[#dbdfe6] dark:border-gray-600 px-6 h-11 text-[#111318] dark:text-white bg-white dark:bg-gray-800 peer-checked:border-[2px] peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all">
                                     <span
@@ -268,21 +268,21 @@
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nama_ibu" value="{{ old('nama_ibu') }}" placeholder="Sesuai KTP" />
+                                name="nama_ibu" value="{{ old('nama_ibu', $pendaftar->nama_ibu ?? '') }}" placeholder="Sesuai KTP" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">NIK <span
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nik_ibu" value="{{ old('nik_ibu') }}" placeholder="16 digit angka" type="text" />
+                                name="nik_ibu" value="{{ old('nik_ibu', $pendaftar->nik_ibu ?? '') }}" placeholder="16 digit angka" type="text" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">No. Telepon / HP <span
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="hp_ibu" value="{{ old('hp_ibu') }}" placeholder="08xxxxxxxxxx" type="tel" />
+                                name="hp_ibu" value="{{ old('hp_ibu', $pendaftar->hp_ibu ?? '') }}" placeholder="08xxxxxxxxxx" type="tel" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Pendidikan Terakhir
@@ -290,19 +290,19 @@
                             <select name="pendidikan_ibu"
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
                                 <option disabled selected>Pilih Pendidikan</option>
-                                <option value="SD" {{ old('pendidikan_ibu') == 'SD' ? 'selected' : '' }}>SD / Sederajat
+                                <option value="SD" {{ old('pendidikan_ibu', $pendaftar->pendidikan_ibu ?? '') == 'SD' ? 'selected' : '' }}>SD / Sederajat
                                 </option>
-                                <option value="SMP" {{ old('pendidikan_ibu') == 'SMP' ? 'selected' : '' }}>SMP / Sederajat
+                                <option value="SMP" {{ old('pendidikan_ibu', $pendaftar->pendidikan_ibu ?? '') == 'SMP' ? 'selected' : '' }}>SMP / Sederajat
                                 </option>
-                                <option value="SMA" {{ old('pendidikan_ibu') == 'SMA' ? 'selected' : '' }}>SMA / Sederajat
+                                <option value="SMA" {{ old('pendidikan_ibu', $pendaftar->pendidikan_ibu ?? '') == 'SMA' ? 'selected' : '' }}>SMA / Sederajat
                                 </option>
-                                <option value="Diploma" {{ old('pendidikan_ibu') == 'Diploma' ? 'selected' : '' }}>Diploma
+                                <option value="Diploma" {{ old('pendidikan_ibu', $pendaftar->pendidikan_ibu ?? '') == 'Diploma' ? 'selected' : '' }}>Diploma
                                     (D1/D2/D3)</option>
-                                <option value="S1" {{ old('pendidikan_ibu') == 'S1' ? 'selected' : '' }}>Sarjana (S1)
+                                <option value="S1" {{ old('pendidikan_ibu', $pendaftar->pendidikan_ibu ?? '') == 'S1' ? 'selected' : '' }}>Sarjana (S1)
                                 </option>
-                                <option value="S2" {{ old('pendidikan_ibu') == 'S2' ? 'selected' : '' }}>Magister (S2)
+                                <option value="S2" {{ old('pendidikan_ibu', $pendaftar->pendidikan_ibu ?? '') == 'S2' ? 'selected' : '' }}>Magister (S2)
                                 </option>
-                                <option value="S3" {{ old('pendidikan_ibu') == 'S3' ? 'selected' : '' }}>Doktor (S3)
+                                <option value="S3" {{ old('pendidikan_ibu', $pendaftar->pendidikan_ibu ?? '') == 'S3' ? 'selected' : '' }}>Doktor (S3)
                                 </option>
                             </select>
                         </label>
@@ -311,18 +311,18 @@
                             <select name="pekerjaan_ibu"
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
                                 <option disabled selected>Pilih Pekerjaan</option>
-                                <option value="IbuRumahTangga" {{ old('pekerjaan_ibu') == 'IbuRumahTangga' ? 'selected' : '' }}>Ibu Rumah Tangga</option>
-                                <option value="PNS" {{ old('pekerjaan_ibu') == 'PNS' ? 'selected' : '' }}>PNS / TNI /
+                                <option value="IbuRumahTangga" {{ old('pekerjaan_ibu', $pendaftar->pekerjaan_ibu ?? '') == 'IbuRumahTangga' ? 'selected' : '' }}>Ibu Rumah Tangga</option>
+                                <option value="PNS" {{ old('pekerjaan_ibu', $pendaftar->pekerjaan_ibu ?? '') == 'PNS' ? 'selected' : '' }}>PNS / TNI /
                                     POLRI</option>
-                                <option value="Swasta" {{ old('pekerjaan_ibu') == 'Swasta' ? 'selected' : '' }}>Karyawan
+                                <option value="Swasta" {{ old('pekerjaan_ibu', $pendaftar->pekerjaan_ibu ?? '') == 'Swasta' ? 'selected' : '' }}>Karyawan
                                     Swasta</option>
-                                <option value="Wiraswasta" {{ old('pekerjaan_ibu') == 'Wiraswasta' ? 'selected' : '' }}>
+                                <option value="Wiraswasta" {{ old('pekerjaan_ibu', $pendaftar->pekerjaan_ibu ?? '') == 'Wiraswasta' ? 'selected' : '' }}>
                                     Wiraswasta</option>
-                                <option value="Petani" {{ old('pekerjaan_ibu') == 'Petani' ? 'selected' : '' }}>Petani /
+                                <option value="Petani" {{ old('pekerjaan_ibu', $pendaftar->pekerjaan_ibu ?? '') == 'Petani' ? 'selected' : '' }}>Petani /
                                     Nelayan</option>
-                                <option value="Buruh" {{ old('pekerjaan_ibu') == 'Buruh' ? 'selected' : '' }}>Buruh
+                                <option value="Buruh" {{ old('pekerjaan_ibu', $pendaftar->pekerjaan_ibu ?? '') == 'Buruh' ? 'selected' : '' }}>Buruh
                                 </option>
-                                <option value="Lainnya" {{ old('pekerjaan_ibu') == 'Lainnya' ? 'selected' : '' }}>Lainnya
+                                <option value="Lainnya" {{ old('pekerjaan_ibu', $pendaftar->pekerjaan_ibu ?? '') == 'Lainnya' ? 'selected' : '' }}>Lainnya
                                 </option>
                             </select>
                         </label>
@@ -332,16 +332,16 @@
                             <select name="penghasilan_ibu"
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
                                 <option disabled selected>Pilih Penghasilan</option>
-                                <option value="Tidak Berpenghasilan" {{ old('penghasilan_ibu') == 'Tidak Berpenghasilan' ? 'selected' : '' }}>Tidak Berpenghasilan</option>
-                                <option value="< 1 Juta" {{ old('penghasilan_ibu') == '< 1 Juta' ? 'selected' : '' }}>
+                                <option value="Tidak Berpenghasilan" {{ old('penghasilan_ibu', $pendaftar->penghasilan_ibu ?? '') == 'Tidak Berpenghasilan' ? 'selected' : '' }}>Tidak Berpenghasilan</option>
+                                <option value="< 1 Juta" {{ old('penghasilan_ibu', $pendaftar->penghasilan_ibu ?? '') == '< 1 Juta' ? 'selected' : '' }}>
                                     < Rp 1.000.000</option>
-                                <option value="1-3 Juta" {{ old('penghasilan_ibu') == '1-3 Juta' ? 'selected' : '' }}>Rp
+                                <option value="1-3 Juta" {{ old('penghasilan_ibu', $pendaftar->penghasilan_ibu ?? '') == '1-3 Juta' ? 'selected' : '' }}>Rp
                                     1.000.000 - Rp 3.000.000</option>
-                                <option value="3-5 Juta" {{ old('penghasilan_ibu') == '3-5 Juta' ? 'selected' : '' }}>Rp
+                                <option value="3-5 Juta" {{ old('penghasilan_ibu', $pendaftar->penghasilan_ibu ?? '') == '3-5 Juta' ? 'selected' : '' }}>Rp
                                     3.000.000 - Rp 5.000.000</option>
-                                <option value="5-10 Juta" {{ old('penghasilan_ibu') == '5-10 Juta' ? 'selected' : '' }}>Rp
+                                <option value="5-10 Juta" {{ old('penghasilan_ibu', $pendaftar->penghasilan_ibu ?? '') == '5-10 Juta' ? 'selected' : '' }}>Rp
                                     5.000.000 - Rp 10.000.000</option>
-                                <option value="> 10 Juta" {{ old('penghasilan_ibu') == '> 10 Juta' ? 'selected' : '' }}>>
+                                <option value="> 10 Juta" {{ old('penghasilan_ibu', $pendaftar->penghasilan_ibu ?? '') == '> 10 Juta' ? 'selected' : '' }}>>
                                     Rp 10.000.000</option>
                             </select>
                         </label>
@@ -368,7 +368,7 @@
                                     (Jalan/Dusun) <span class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="alamat_ibu" value="{{ old('alamat_ibu') }}"
+                                    name="alamat_ibu" value="{{ old('alamat_ibu', $pendaftar->alamat_ibu ?? '') }}"
                                     placeholder="Nama Jalan, Blok, atau No. Rumah" />
                             </label>
                             <div class="grid grid-cols-2 gap-4">
@@ -376,13 +376,13 @@
                                     <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">RT</p>
                                     <input
                                         class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                        name="rt_ibu" value="{{ old('rt_ibu') }}" placeholder="000" />
+                                        name="rt_ibu" value="{{ old('rt_ibu', $pendaftar->rt_ibu ?? '') }}" placeholder="000" />
                                 </label>
                                 <label class="flex flex-col">
                                     <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">RW</p>
                                     <input
                                         class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                        name="rw_ibu" value="{{ old('rw_ibu') }}" placeholder="000" />
+                                        name="rw_ibu" value="{{ old('rw_ibu', $pendaftar->rw_ibu ?? '') }}" placeholder="000" />
                                 </label>
                             </div>
                             <label class="flex flex-col">
@@ -390,7 +390,7 @@
                                     <span class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kelurahan_ibu" value="{{ old('kelurahan_ibu') }}"
+                                    name="kelurahan_ibu" value="{{ old('kelurahan_ibu', $pendaftar->kelurahan_ibu ?? '') }}"
                                     placeholder="Nama Desa/Kelurahan" />
                             </label>
                             <label class="flex flex-col">
@@ -398,7 +398,7 @@
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kecamatan_ibu" value="{{ old('kecamatan_ibu') }}"
+                                    name="kecamatan_ibu" value="{{ old('kecamatan_ibu', $pendaftar->kecamatan_ibu ?? '') }}"
                                     placeholder="Nama Kecamatan" />
                             </label>
                             <label class="flex flex-col">
@@ -406,21 +406,21 @@
                                     <span class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kota_ibu" value="{{ old('kota_ibu') }}" placeholder="Nama Kabupaten/Kota" />
+                                    name="kota_ibu" value="{{ old('kota_ibu', $pendaftar->kota_ibu ?? '') }}" placeholder="Nama Kabupaten/Kota" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Provinsi <span
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="provinsi_ibu" value="{{ old('provinsi_ibu') }}" placeholder="Nama Provinsi" />
+                                    name="provinsi_ibu" value="{{ old('provinsi_ibu', $pendaftar->provinsi_ibu ?? '') }}" placeholder="Nama Provinsi" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Negara <span
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="negara_ibu" value="{{ old('negara_ibu', 'Indonesia') }}"
+                                    name="negara_ibu" value="{{ old('negara_ibu', $pendaftar->negara_ibu ?? 'Indonesia) }}"
                                     placeholder="Contoh: Indonesia" />
                             </label>
                         </div>
@@ -442,9 +442,9 @@
                                 Indonesia Pintar)?</p>
                             <select name="peserta_kip"
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
-                                <option value="Tidak" {{ old('peserta_kip') == 'Tidak' ? 'selected' : '' }}>Bukan Peserta
+                                <option value="Tidak" {{ old('peserta_kip', $pendaftar->peserta_kip ?? '') == 'Tidak' ? 'selected' : '' }}>Bukan Peserta
                                     KIP</option>
-                                <option value="Ya" {{ old('peserta_kip') == 'Ya' ? 'selected' : '' }}>Ya, Peserta KIP
+                                <option value="Ya" {{ old('peserta_kip', $pendaftar->peserta_kip ?? '') == 'Ya' ? 'selected' : '' }}>Ya, Peserta KIP
                                 </option>
                             </select>
                         </label>
@@ -452,15 +452,15 @@
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Nomor KIP</p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="no_kip" value="{{ old('no_kip') }}" placeholder="Opsional (Jika ada)" />
+                                name="no_kip" value="{{ old('no_kip', $pendaftar->no_kip ?? '') }}" placeholder="Opsional (Jika ada)" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Penerima KPS/PKH?</p>
                             <select name="penerima_kps"
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
-                                <option value="Tidak" {{ old('penerima_kps') == 'Tidak' ? 'selected' : '' }}>Bukan
+                                <option value="Tidak" {{ old('penerima_kps', $pendaftar->penerima_kps ?? '') == 'Tidak' ? 'selected' : '' }}>Bukan
                                     Penerima</option>
-                                <option value="Ya" {{ old('penerima_kps') == 'Ya' ? 'selected' : '' }}>Ya, Penerima
+                                <option value="Ya" {{ old('penerima_kps', $pendaftar->penerima_kps ?? '') == 'Ya' ? 'selected' : '' }}>Ya, Penerima
                                 </option>
                             </select>
                         </label>
@@ -468,7 +468,7 @@
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Nomor KPS/PKH</p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="no_kps" value="{{ old('no_kps') }}" placeholder="Opsional (Jika ada)" />
+                                name="no_kps" value="{{ old('no_kps', $pendaftar->no_kps ?? '') }}" placeholder="Opsional (Jika ada)" />
                         </label>
                     </div>
                 </section>
@@ -486,20 +486,20 @@
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Nama Lengkap Wali</p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nama_wali" value="{{ old('nama_wali') }}" placeholder="Sesuai KTP" />
+                                name="nama_wali" value="{{ old('nama_wali', $pendaftar->nama_wali ?? '') }}" placeholder="Sesuai KTP" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">NIK Wali</p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nik_wali" value="{{ old('nik_wali') }}" placeholder="16 digit angka"
+                                name="nik_wali" value="{{ old('nik_wali', $pendaftar->nik_wali ?? '') }}" placeholder="16 digit angka"
                                 type="text" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">No. Telepon / HP</p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="no_hp_wali" value="{{ old('no_hp_wali') }}" placeholder="08xxxxxxxxxx"
+                                name="no_hp_wali" value="{{ old('no_hp_wali', $pendaftar->no_hp_wali ?? '') }}" placeholder="08xxxxxxxxxx"
                                 type="tel" />
                         </label>
                         <label class="flex flex-col">
@@ -508,13 +508,13 @@
                             <select name="hubungan_wali"
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
                                 <option disabled selected>Pilih Hubungan</option>
-                                <option value="Paman" {{ old('hubungan_wali') == 'Paman' ? 'selected' : '' }}>Paman / Bibi
+                                <option value="Paman" {{ old('hubungan_wali', $pendaftar->hubungan_wali ?? '') == 'Paman' ? 'selected' : '' }}>Paman / Bibi
                                 </option>
-                                <option value="Kakek" {{ old('hubungan_wali') == 'Kakek' ? 'selected' : '' }}>Kakek /
+                                <option value="Kakek" {{ old('hubungan_wali', $pendaftar->hubungan_wali ?? '') == 'Kakek' ? 'selected' : '' }}>Kakek /
                                     Nenek</option>
-                                <option value="Kakak" {{ old('hubungan_wali') == 'Kakak' ? 'selected' : '' }}>Kakak
+                                <option value="Kakak" {{ old('hubungan_wali', $pendaftar->hubungan_wali ?? '') == 'Kakak' ? 'selected' : '' }}>Kakak
                                     Kandung</option>
-                                <option value="Lainnya" {{ old('hubungan_wali') == 'Lainnya' ? 'selected' : '' }}>Lainnya
+                                <option value="Lainnya" {{ old('hubungan_wali', $pendaftar->hubungan_wali ?? '') == 'Lainnya' ? 'selected' : '' }}>Lainnya
                                 </option>
                             </select>
                         </label>
@@ -523,12 +523,12 @@
                             <select name="pekerjaan_wali"
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
                                 <option disabled selected>Pilih Pekerjaan</option>
-                                <option value="PNS" {{ old('pekerjaan_wali') == 'PNS' ? 'selected' : '' }}>PNS</option>
-                                <option value="Wiraswasta" {{ old('pekerjaan_wali') == 'Wiraswasta' ? 'selected' : '' }}>
+                                <option value="PNS" {{ old('pekerjaan_wali', $pendaftar->pekerjaan_wali ?? '') == 'PNS' ? 'selected' : '' }}>PNS</option>
+                                <option value="Wiraswasta" {{ old('pekerjaan_wali', $pendaftar->pekerjaan_wali ?? '') == 'Wiraswasta' ? 'selected' : '' }}>
                                     Wiraswasta</option>
-                                <option value="Karyawan" {{ old('pekerjaan_wali') == 'Karyawan' ? 'selected' : '' }}>
+                                <option value="Karyawan" {{ old('pekerjaan_wali', $pendaftar->pekerjaan_wali ?? '') == 'Karyawan' ? 'selected' : '' }}>
                                     Karyawan</option>
-                                <option value="Lainnya" {{ old('pekerjaan_wali') == 'Lainnya' ? 'selected' : '' }}>Lainnya
+                                <option value="Lainnya" {{ old('pekerjaan_wali', $pendaftar->pekerjaan_wali ?? '') == 'Lainnya' ? 'selected' : '' }}>Lainnya
                                 </option>
                             </select>
                         </label>
@@ -538,13 +538,13 @@
                             <select name="penghasilan_wali"
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
                                 <option disabled selected>Pilih Penghasilan</option>
-                                <option value="< 1 Juta" {{ old('penghasilan_wali') == '< 1 Juta' ? 'selected' : '' }}>
+                                <option value="< 1 Juta" {{ old('penghasilan_wali', $pendaftar->penghasilan_wali ?? '') == '< 1 Juta' ? 'selected' : '' }}>
                                     < Rp 1.000.000</option>
-                                <option value="1-3 Juta" {{ old('penghasilan_wali') == '1-3 Juta' ? 'selected' : '' }}>Rp
+                                <option value="1-3 Juta" {{ old('penghasilan_wali', $pendaftar->penghasilan_wali ?? '') == '1-3 Juta' ? 'selected' : '' }}>Rp
                                     1.000.000 - Rp 3.000.000</option>
-                                <option value="3-5 Juta" {{ old('penghasilan_wali') == '3-5 Juta' ? 'selected' : '' }}>Rp
+                                <option value="3-5 Juta" {{ old('penghasilan_wali', $pendaftar->penghasilan_wali ?? '') == '3-5 Juta' ? 'selected' : '' }}>Rp
                                     3.000.000 - Rp 5.000.000</option>
-                                <option value="> 5 Juta" {{ old('penghasilan_wali') == '> 5 Juta' ? 'selected' : '' }}>>
+                                <option value="> 5 Juta" {{ old('penghasilan_wali', $pendaftar->penghasilan_wali ?? '') == '> 5 Juta' ? 'selected' : '' }}>>
                                     Rp 5.000.000</option>
                             </select>
                         </label>
@@ -571,7 +571,7 @@
                                     (Jalan/Dusun)</p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="alamat_wali" value="{{ old('alamat_wali') }}"
+                                    name="alamat_wali" value="{{ old('alamat_wali', $pendaftar->alamat_wali ?? '') }}"
                                     placeholder="Nama Jalan, Blok, atau No. Rumah" />
                             </label>
                             <!-- (Other Wali Address fields omitted for brevity in thought but included in code) -->
