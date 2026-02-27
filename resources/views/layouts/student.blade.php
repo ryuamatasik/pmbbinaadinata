@@ -99,8 +99,7 @@
                     Bina Adinata
                 </h2>
             </div>
-            <div class="flex items-center gap-2 ml-auto">
-                {{-- Helper for checking active route --}}
+            <div class="flex items-center gap-6 ml-auto hidden md:flex">
                 @php
                     $isDashboard = request()->routeIs('mahasiswa.dashboard');
                     $isHome = request()->is('/');
@@ -112,32 +111,17 @@
                 <a class="px-4 py-2 rounded-lg {{ $isDashboard ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white' }} font-bold text-sm transition-colors"
                     href="{{ route('mahasiswa.dashboard') }}">Dashboard</a>
 
-                <div class="flex items-center gap-4 ml-2">
-
-
-                    @auth
-                        <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 group">
-                            <div class="hidden sm:flex flex-col items-end">
-                                <span
-                                    class="text-xs font-bold text-[#111318] dark:text-white group-hover:text-primary transition-colors">{{ Auth::user()->name }}</span>
-                                <span class="text-xs text-gray-500">Calon Mahasiswa</span>
-                            </div>
-                            <div class="relative shrink-0">
-                                @if(Auth::user()->profile_photo_path)
-                                    <img src="{{ Storage::url(Auth::user()->profile_photo_path) }}" alt="Profile"
-                                        class="rounded-full size-10 border-2 border-white dark:border-gray-700 shadow-sm object-cover aspect-square group-hover:border-primary transition-colors">
-                                @else
-                                    <div
-                                        class="rounded-full size-10 border-2 border-white dark:border-gray-700 shadow-sm bg-slate-200 flex items-center justify-center text-slate-500 group-hover:border-primary transition-colors">
-                                        <span class="material-symbols-outlined text-xl">person</span>
-                                    </div>
-                                @endif
-                            </div>
-                        </a>
-                    @endauth
-                </div>
+                @auth
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit"
+                            class="text-red-500 hover:text-red-700 font-bold text-sm px-4 py-2 transition-colors">
+                            Keluar
+                        </button>
+                    </form>
+                @endauth
             </div>
-            <button class="md:hidden text-[#111318] dark:text-white p-2" onclick="toggleMobileMenu()">
+            <button class="md:hidden text-[#111318] dark:text-white p-2 ml-auto" onclick="toggleMobileMenu()">
                 <span class="material-symbols-outlined" id="mobile-menu-icon">menu</span>
             </button>
         </div>
