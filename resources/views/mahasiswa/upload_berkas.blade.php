@@ -66,11 +66,11 @@
                         <p class="text-xs text-[#616f89] dark:text-gray-400">Calon Mahasiswa</p>
                     </div>
                     <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20"
-                        style='background-image: url("https://ui-avatars.com/api/?name={{ urlencode($pendaftar->nama_lengkap ?? 'User') }}&background=135bec&color=fff");'>
+                        style='background-image: url("https://ui-avatars.com/api/?name={{ urlencode(optional($pendaftar)->nama_lengkap ?? 'User') }}&background=135bec&color=fff");'>
                     </div>
                 </div>
             </div>
-            <button class="md:hidden text-[#111318] dark:text-white p-2" onclick="toggleMobileMenu()">
+            <button class="md:hidden flex text-[#111318] dark:text-white p-2" onclick="toggleMobileMenu()">
                 <span class="material-symbols-outlined" id="mobile-menu-icon">menu</span>
             </button>
         </header>
@@ -157,11 +157,8 @@
                             ['id' => 'foto', 'title' => '6. Pass Foto', 'icon' => 'account_box', 'max' => '2MB', 'ext' => 'JPG/PNG'],
                             ['id' => 'transkrip', 'title' => '7. Transkrip Nilai', 'icon' => 'description', 'max' => '5MB', 'ext' => 'PDF/JPG'],
                             ['id' => 'bukti_pembayaran', 'title' => '8. Bukti Pembayaran', 'icon' => 'payments', 'max' => '2MB', 'ext' => 'JPG/PDF/PNG'],
+                            ['id' => 'kip', 'title' => '9. Kartu Indonesia Pintar', 'icon' => 'card_membership', 'max' => '2MB', 'ext' => 'PDF/JPG', 'optional' => true],
                         ];
-
-                        if ($pendaftar && (in_array($pendaftar->peserta_kip, ['Ya', 'ya', 'YA']) || !empty($pendaftar->no_kip) || isset($dokumen['kip']))) {
-                            $uploadItems[] = ['id' => 'kip', 'title' => '9. Kartu Indonesia Pintar', 'icon' => 'card_membership', 'max' => '2MB', 'ext' => 'PDF/JPG', 'optional' => true];
-                        }
                     @endphp
 
                     @foreach ($uploadItems as $item)
