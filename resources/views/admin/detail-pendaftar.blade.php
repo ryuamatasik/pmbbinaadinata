@@ -82,16 +82,7 @@
             </label>
         </div>
         <div class="flex flex-1 justify-end gap-4 items-center">
-            <button
-                class="flex items-center justify-center size-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-[#616f89] relative">
-                <span class="material-symbols-outlined">notifications</span>
-                <span
-                    class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-[#1a202c]"></span>
-            </button>
-            <div class="bg-center bg-no-repeat bg-cover rounded-full size-9 border border-gray-200 dark:border-gray-700"
-                data-alt="Admin profile picture placeholder"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAtQ1GqpuCqMcwFpUgy8prANkMNyBnm3KF6n42jwmY2gepWV_Ra4zSDQncgaz2weo-NUEj3kwPL3YtSD-3FPXZbzt6oNwRlJPRmbROtJhW34GUZDToCQyF9B46IERWOUlv40zqqauYNMUXD-0fZs0v1raU1T5fnHARD6Kl6gPuyDVVOzwfGO7ApezLutMgJAonlt5bFvaT_5IKHbgIpmIxj3WMlWayqz2eXrUDY3Zl8QFDSq8XWsVNYf-cTQniGyw_btC8nou1xuTI");'>
-            </div>
+            <!-- Removed notification and profile icons as requested -->
         </div>
     </header>
     <main class="flex-1 w-full max-w-[1280px] mx-auto p-4 md:p-6 lg:p-8">
@@ -503,45 +494,54 @@
                         Riwayat Pendaftaran
                     </h3>
                     <div class="relative space-y-0 ml-1.5">
+                        @php
+                            $latestUpload = $dokumen->sortByDesc('created_at')->first();
+                            $verifiedDocs = $dokumen->whereIn('status', ['valid', 'invalid', 'Terverifikasi', 'Revisi'])->count();
+                            $latestVerification = $dokumen->whereIn('status', ['valid', 'invalid', 'Terverifikasi', 'Revisi'])->sortByDesc('updated_at')->first();
+                        @endphp
+
+                        @if($latestUpload)
                         <div class="relative pl-8 pb-8">
-                            <div
-                                class="absolute left-[7px] top-[20px] bottom-0 w-[2px] bg-[#e5e7eb] dark:bg-[#2d3748]">
-                            </div>
-                            <div
-                                class="absolute left-0 top-[6px] size-4 bg-gray-200 dark:bg-gray-600 rounded-full border-2 border-white dark:border-[#1a202c] z-10">
-                            </div>
+                            <div class="absolute left-[7px] top-[20px] bottom-0 w-[2px] bg-[#e5e7eb] dark:bg-[#2d3748]"></div>
+                            <div class="absolute left-0 top-[6px] size-4 bg-gray-200 dark:bg-gray-600 rounded-full border-2 border-white dark:border-[#1a202c] z-10"></div>
                             <div class="flex flex-col gap-1">
-                                <span class="text-xs text-[#616f89]">Hari ini, 10:30 WIB</span>
-                                <p class="text-sm font-medium text-[#111318] dark:text-white">Dokumen <span
-                                        class="font-bold">Rapor Semester 1-5</span> diunggah oleh peserta.</p>
+                                <span class="text-xs text-[#616f89]">{{ $latestUpload->created_at->format('d M Y, H:i') }} WIB</span>
+                                <p class="text-sm font-medium text-[#111318] dark:text-white">Dokumen <span class="font-bold">Persyaratan</span> diunggah oleh peserta.</p>
                             </div>
                         </div>
+                        @endif
+
+                        @if($verifiedDocs > 0 && $latestVerification)
                         <div class="relative pl-8 pb-8">
-                            <div class="absolute left-[7px] top-0 bottom-0 w-[2px] bg-[#e5e7eb] dark:bg-[#2d3748]">
-                            </div>
-                            <div
-                                class="absolute left-0 top-[6px] size-4 bg-primary rounded-full border-2 border-white dark:border-[#1a202c] z-10">
-                            </div>
+                            <div class="absolute left-[7px] top-0 bottom-0 w-[2px] bg-[#e5e7eb] dark:bg-[#2d3748]"></div>
+                            <div class="absolute left-0 top-[6px] size-4 bg-primary rounded-full border-2 border-white dark:border-[#1a202c] z-10"></div>
                             <div class="flex flex-col gap-1">
-                                <span class="text-xs text-[#616f89]">13 Agt 2023, 14:20 WIB</span>
-                                <p class="text-sm font-medium text-[#111318] dark:text-white">Admin <span
-                                        class="font-bold">Andi Saputra</span> memverifikasi 3 dokumen.</p>
-                                <div
-                                    class="mt-1 p-2 bg-[#f6f6f8] dark:bg-[#2d3748] rounded text-xs text-[#616f89] italic">
-                                    "Dokumen lengkap, menunggu upload rapor terbaru."
+                                <span class="text-xs text-[#616f89]">{{ $latestVerification->updated_at->format('d M Y, H:i') }} WIB</span>
+                                <p class="text-sm font-medium text-[#111318] dark:text-white"><span class="font-bold">Admin</span> memverifikasi {{ $verifiedDocs }} dokumen.</p>
+                                @if(isset($latestVerification->catatan) && $latestVerification->catatan)
+                                <div class="mt-1 p-2 bg-[#f6f6f8] dark:bg-[#2d3748] rounded text-xs text-[#616f89] italic">
+                                    "{{ $latestVerification->catatan }}"
                                 </div>
+                                @endif
                             </div>
                         </div>
-                        <div class="relative pl-8">
-                            <div
-                                class="absolute left-0 top-[6px] size-4 bg-green-500 rounded-full border-2 border-white dark:border-[#1a202c] z-10">
-                            </div>
+                        @else
+                        <div class="relative pl-8 pb-8">
+                            <div class="absolute left-[7px] top-0 bottom-0 w-[2px] bg-[#e5e7eb] dark:bg-[#2d3748]"></div>
+                            <div class="absolute left-0 top-[6px] size-4 bg-gray-200 dark:bg-gray-600 rounded-full border-2 border-white dark:border-[#1a202c] z-10"></div>
                             <div class="flex flex-col gap-1">
-                                <span class="text-xs text-[#616f89]">12 Agt 2023, 09:15 WIB</span>
-                                <p class="text-sm font-medium text-[#111318] dark:text-white">Pendaftaran Baru
-                                    Diterima</p>
-                                <p class="text-xs text-[#616f89]">Peserta menyelesaikan formulir pendaftaran tahap 1.
-                                </p>
+                                <span class="text-xs text-[#616f89]">Menunggu Verifikasi</span>
+                                <p class="text-sm font-medium text-[#616f89] dark:text-gray-400">Belum ada dokumen yang diverifikasi oleh Admin.</p>
+                            </div>
+                        </div>
+                        @endif
+
+                        <div class="relative pl-8">
+                            <div class="absolute left-0 top-[6px] size-4 bg-green-500 rounded-full border-2 border-white dark:border-[#1a202c] z-10"></div>
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs text-[#616f89]">{{ $pendaftar->created_at ? $pendaftar->created_at->format('d M Y, H:i') : '-' }} WIB</span>
+                                <p class="text-sm font-medium text-[#111318] dark:text-white">Pendaftaran Baru Diterima</p>
+                                <p class="text-xs text-[#616f89]">Peserta menyelesaikan formulir pendaftaran tahap 1.</p>
                             </div>
                         </div>
                     </div>
