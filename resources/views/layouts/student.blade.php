@@ -137,19 +137,56 @@
                     @endauth
                 </div>
             </div>
-            <!-- Mobile Menu Removed -->
+            <button class="md:hidden text-[#111318] dark:text-white p-2" onclick="toggleMobileMenu()">
+                <span class="material-symbols-outlined" id="mobile-menu-icon">menu</span>
+            </button>
         </div>
 
-        <!-- Mobile Menu Removed -->
+        <!-- Mobile Menu Container -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-surface-light dark:bg-surface-dark border-b border-[#f0f2f4] dark:border-gray-800 px-6 py-4 shadow-lg animate-in slide-in-from-top duration-300">
+            <nav class="flex flex-col gap-4">
+                <a class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->is('/') ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-300' }} font-bold text-sm"
+                    href="{{ url('/') }}">
+                    <span class="material-symbols-outlined">home</span>
+                    Beranda
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('mahasiswa.dashboard') ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-300' }} font-bold text-sm"
+                    href="{{ route('mahasiswa.dashboard') }}">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+                @auth
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 font-bold text-sm"
+                        href="{{ route('profile.edit') }}">
+                        <span class="material-symbols-outlined">person</span>
+                        Profil Saya
+                    </a>
+                @endauth
+            </nav>
+        </div>
+    </nav>
 
-        <!-- Main Content -->
-        <main>
-            @yield('content')
-        </main>
+    <!-- Main Content -->
+    <main>
+        @yield('content')
+    </main>
 
-        @stack('scripts')
+    @stack('scripts')
 
-        <!-- Script Removed -->
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.textContent = 'close';
+            } else {
+                menu.classList.add('hidden');
+                icon.textContent = 'menu';
+            }
+        }
+    </script>
 </body>
 
 </html>

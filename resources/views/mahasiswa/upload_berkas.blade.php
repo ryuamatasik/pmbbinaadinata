@@ -52,12 +52,13 @@
                 </h2>
             </div>
             <div class="hidden md:flex items-center gap-6">
-                <nav class="flex flex-col md:flex-row items-center gap-4">
+                <nav class="flex items-center gap-4">
                     <a class="text-[#111318] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors px-4 py-2"
                         href="{{ url('/') }}" onclick="confirmExit(event)">Beranda</a>
-                    <a class="md:hidden text-[#111318] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors px-4 py-2"
+                    <a class="text-[#111318] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors px-4 py-2"
                         href="{{ route('mahasiswa.dashboard') }}" onclick="confirmExit(event)">Dashboard</a>
                 </nav>
+                <div class="flex items-center gap-4">
                     <div class="text-right hidden lg:block">
                         <p class="text-sm font-bold text-[#111318] dark:text-white">
                             {{ $pendaftar->nama_lengkap ?? 'Calon Mahasiswa' }}
@@ -65,22 +66,29 @@
                         <p class="text-xs text-[#616f89] dark:text-gray-400">Calon Mahasiswa</p>
                     </div>
                     <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20"
-                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDRMPXGH1LfFWSqx8FSMK_vXnjiMwri1eFE9j82w84myTzZuSdACcau1zm_pOPAk7MRYsWoJbW_DfIQn9isNRBA5xnX7wtpxq-cw-aL8koHQny_O_gg1Ycp3OHZ2w-CPa6q1AZiebpo84rlraz8CaJXDpV5v21GId2tcAC0m59lDT2Gq3ykIQfxtqt-_V27MzAnn1I0jzOThDOFcuk6gXfJMpiTL2iSoBrc3fDCgQNBVg4NvadlpWadFy4akkC2o3nZlCAJiobTtxE");'>
+                        style='background-image: url("https://ui-avatars.com/api/?name={{ urlencode($pendaftar->nama_lengkap ?? 'User') }}&background=135bec&color=fff");'>
                     </div>
                 </div>
             </div>
-            <button class="md:hidden text-[#111318] dark:text-white" onclick="toggleMobileMenu()">
+            <button class="md:hidden text-[#111318] dark:text-white p-2" onclick="toggleMobileMenu()">
                 <span class="material-symbols-outlined" id="mobile-menu-icon">menu</span>
             </button>
         </header>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-[#1a202c] border-b border-[#dbdfe6] dark:border-[#2a3441] px-4 py-3 shadow-md">
-            <nav class="flex flex-col space-y-3">
-                <a class="text-[#111318] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors px-2 py-1"
-                   href="{{ url('/') }}" onclick="confirmExit(event)">Beranda</a>
-                <a class="text-[#111318] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors px-2 py-1"
-                   href="{{ route('mahasiswa.dashboard') }}" onclick="confirmExit(event)">Dashboard</a>
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-white dark:bg-[#1a202c] border-b border-[#dbdfe6] dark:border-[#2a3441] px-6 py-4 shadow-lg animate-in slide-in-from-top duration-300">
+            <nav class="flex flex-col gap-4">
+                <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#111318] dark:text-gray-200 font-bold text-sm"
+                    href="{{ url('/') }}" onclick="confirmExit(event)">
+                    <span class="material-symbols-outlined">home</span>
+                    Beranda
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#111318] dark:text-gray-200 font-bold text-sm"
+                    href="{{ route('mahasiswa.dashboard') }}" onclick="confirmExit(event)">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
             </nav>
         </div>
 
@@ -105,7 +113,7 @@
                     class="text-[#111318] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em] mb-3">
                     Unggah Berkas Persyaratan</h1>
                 <p class="text-[#616f89] dark:text-gray-300 text-base md:text-lg font-normal leading-normal">Silakan
-                    unggah 7 dokumen wajib di bawah ini untuk memverifikasi pendaftaran Anda.</p>
+                    unggah dokumen wajib di bawah ini untuk memverifikasi pendaftaran Anda.</p>
             </div>
 
             <form action="{{ route('mahasiswa.upload.store') }}" method="POST" enctype="multipart/form-data"
@@ -151,7 +159,7 @@
                             ['id' => 'bukti_pembayaran', 'title' => '8. Bukti Pembayaran', 'icon' => 'payments', 'max' => '2MB', 'ext' => 'JPG/PDF/PNG'],
                         ];
 
-                        if ($pendaftar && $pendaftar->peserta_kip === 'Ya') {
+                        if ($pendaftar && (in_array($pendaftar->peserta_kip, ['Ya', 'ya', 'YA']) || !empty($pendaftar->no_kip) || isset($dokumen['kip']))) {
                             $uploadItems[] = ['id' => 'kip', 'title' => '9. Kartu Indonesia Pintar', 'icon' => 'card_membership', 'max' => '2MB', 'ext' => 'PDF/JPG', 'optional' => true];
                         }
                     @endphp
@@ -163,7 +171,9 @@
                             <div
                                 class="p-3 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
                                 <h3 class="font-bold text-[#111318] dark:text-white text-xs truncate mr-2">
-                                    {{ $item['title'] }}@if(isset($item['optional']) && $item['optional']) <span class="text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-1 py-0.5 rounded ml-1 font-medium">Opsional</span> @endif
+                                    {{ $item['title'] }}@if(isset($item['optional']) && $item['optional']) <span
+                                        class="text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-1 py-0.5 rounded ml-1 font-medium">Opsional</span>
+                                    @endif
                                 </h3>
                                 <span class="material-symbols-outlined text-primary text-lg">{{ $item['icon'] }}</span>
                             </div>
@@ -341,7 +351,7 @@
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('mobile-menu-icon');
-            
+
             if (menu.classList.contains('hidden')) {
                 menu.classList.remove('hidden');
                 icon.textContent = 'close';
