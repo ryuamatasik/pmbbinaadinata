@@ -164,76 +164,78 @@
                     @foreach ($uploadItems as $item)
                         @php $hasDoc = isset($dokumen[$item['id']]); @endphp
                         <div
-                            class="flex flex-col rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
+                            class="{{ $item['id'] === 'kip' ? 'md:col-span-2 lg:col-span-1 xl:col-span-4 flex justify-center' : 'w-full' }}">
                             <div
-                                class="p-3 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
-                                <h3 class="font-bold text-[#111318] dark:text-white text-xs truncate mr-2">
-                                    {{ $item['title'] }}@if(isset($item['optional']) && $item['optional']) <span
-                                        class="text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-1 py-0.5 rounded ml-1 font-medium">Opsional</span>
-                                    @endif
-                                </h3>
-                                <span class="material-symbols-outlined text-primary text-lg">{{ $item['icon'] }}</span>
-                            </div>
-                            <div class="p-4 flex flex-col items-center justify-center border-2 border-dashed {{ $hasDoc ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30' }} m-3 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
-                                onclick="document.getElementById('file-{{ $item['id'] }}').click()">
-                                <span
-                                    class="material-symbols-outlined text-2xl {{ $hasDoc ? 'text-green-500' : 'text-[#9ca3af]' }} mb-1">{{ $hasDoc ? 'check_circle' : 'cloud_upload' }}</span>
-                                <div class="text-center mb-3 h-8 flex flex-col justify-center">
-                                    <p class="text-[11px] font-medium text-[#111318] dark:text-gray-200 line-clamp-2"
-                                        id="text-{{ $item['id'] }}">
-                                        {{ $hasDoc ? $dokumen[$item['id']]->original_name : 'Klik/Tarik file' }}
-                                    </p>
-                                    <p
-                                        class="text-[9px] {{ $hasDoc ? 'text-green-600 dark:text-green-400 font-bold' : 'text-[#616f89] dark:text-gray-400' }} mt-0.5">
-                                        {{ $hasDoc ? 'Tersimpan (Klik ubah)' : $item['ext'] . ', Maks: ' . $item['max'] }}
-                                    </p>
+                                class="flex flex-col w-full max-w-sm rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
+                                <div
+                                    class="p-3 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
+                                    <h3 class="font-bold text-[#111318] dark:text-white text-xs truncate mr-2">
+                                        {{ $item['title'] }}@if(isset($item['optional']) && $item['optional']) <span
+                                            class="text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-1 py-0.5 rounded ml-1 font-medium">Opsional</span>
+                                        @endif
+                                    </h3>
+                                    <span class="material-symbols-outlined text-primary text-lg">{{ $item['icon'] }}</span>
                                 </div>
-                                <button type="button"
-                                    class="flex items-center justify-center rounded-md h-7 px-3 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-[10px] font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors w-full">Pilih
-                                    Berkas</button>
-                                <input type="file" name="{{ $item['id'] }}" id="file-{{ $item['id'] }}" class="hidden"
-                                    accept=".pdf,.jpg,.jpeg,.png,.webp"
-                                    onchange="updateFileName('{{ $item['id'] }}', this)">
+                                <div class="p-4 flex flex-col items-center justify-center border-2 border-dashed {{ $hasDoc ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30' }} m-3 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
+                                    onclick="document.getElementById('file-{{ $item['id'] }}').click()">
+                                    <span
+                                        class="material-symbols-outlined text-2xl {{ $hasDoc ? 'text-green-500' : 'text-[#9ca3af]' }} mb-1">{{ $hasDoc ? 'check_circle' : 'cloud_upload' }}</span>
+                                    <div class="text-center mb-3 h-8 flex flex-col justify-center">
+                                        <p class="text-[11px] font-medium text-[#111318] dark:text-gray-200 line-clamp-2"
+                                            id="text-{{ $item['id'] }}">
+                                            {{ $hasDoc ? $dokumen[$item['id']]->original_name : 'Klik/Tarik file' }}
+                                        </p>
+                                        <p
+                                            class="text-[9px] {{ $hasDoc ? 'text-green-600 dark:text-green-400 font-bold' : 'text-[#616f89] dark:text-gray-400' }} mt-0.5">
+                                            {{ $hasDoc ? 'Tersimpan (Klik ubah)' : $item['ext'] . ', Maks: ' . $item['max'] }}
+                                        </p>
+                                    </div>
+                                    <button type="button"
+                                        class="flex items-center justify-center rounded-md h-7 px-3 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-[10px] font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors w-full">Pilih
+                                        Berkas</button>
+                                    <input type="file" name="{{ $item['id'] }}" id="file-{{ $item['id'] }}" class="hidden"
+                                        accept=".pdf,.jpg,.jpeg,.png,.webp"
+                                        onchange="updateFileName('{{ $item['id'] }}', this)">
+                                </div>
                             </div>
-                        </div>
                     @endforeach
-                </div>
+                    </div>
 
-                <div
-                    class="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#1a202c] border-t border-[#dbdfe6] dark:border-[#2a3441] p-4 shadow-lg md:relative md:bg-transparent md:border-t-0 md:shadow-none md:p-0">
-                    <div class="max-w-[1100px] mx-auto flex items-center justify-between gap-4">
-                        <a href="{{ route('mahasiswa.pendaftaran') }}"
-                            class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors">
-                            <span class="material-symbols-outlined mr-2 text-sm">arrow_back</span>
-                            <span class="truncate">Kembali</span>
-                        </a>
-                        <div class="flex gap-3">
-                            <button type="button" onclick="confirmExit(event)"
-                                class="hidden sm:flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 text-[#616f89] dark:text-gray-400 font-medium hover:text-[#111318] dark:hover:text-white transition-colors">
-                                <span class="material-symbols-outlined mr-2 text-[20px]">save</span>
-                                <span class="truncate">Simpan Draf</span>
-                            </button>
-                            <button type="submit" :disabled="isLoading"
-                                class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-blue-700 shadow-md transition-colors shadow-primary/30 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none">
-                                <span x-show="!isLoading" class="flex items-center">
-                                    <span class="truncate">Selesai</span>
-                                    <span class="material-symbols-outlined ml-2 text-sm">check_circle</span>
-                                </span>
-                                <span x-show="isLoading" class="flex items-center gap-2" style="display: none;">
-                                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                            stroke-width="4"></circle>
-                                        <path class="opacity-75" fill="currentColor"
-                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                        </path>
-                                    </svg>
-                                    Memproses...
-                                </span>
-                            </button>
+                    <div
+                        class="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#1a202c] border-t border-[#dbdfe6] dark:border-[#2a3441] p-4 shadow-lg md:relative md:bg-transparent md:border-t-0 md:shadow-none md:p-0">
+                        <div class="max-w-[1100px] mx-auto flex items-center justify-between gap-4">
+                            <a href="{{ route('mahasiswa.pendaftaran') }}"
+                                class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors">
+                                <span class="material-symbols-outlined mr-2 text-sm">arrow_back</span>
+                                <span class="truncate">Kembali</span>
+                            </a>
+                            <div class="flex gap-3">
+                                <button type="button" onclick="confirmExit(event)"
+                                    class="hidden sm:flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 text-[#616f89] dark:text-gray-400 font-medium hover:text-[#111318] dark:hover:text-white transition-colors">
+                                    <span class="material-symbols-outlined mr-2 text-[20px]">save</span>
+                                    <span class="truncate">Simpan Draf</span>
+                                </button>
+                                <button type="submit" :disabled="isLoading"
+                                    class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-blue-700 shadow-md transition-colors shadow-primary/30 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none">
+                                    <span x-show="!isLoading" class="flex items-center">
+                                        <span class="truncate">Selesai</span>
+                                        <span class="material-symbols-outlined ml-2 text-sm">check_circle</span>
+                                    </span>
+                                    <span x-show="isLoading" class="flex items-center gap-2" style="display: none;">
+                                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                                stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                            </path>
+                                        </svg>
+                                        Memproses...
+                                    </span>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
             </form>
         </main>
     </div>
