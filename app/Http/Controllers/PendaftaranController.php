@@ -136,6 +136,16 @@ class PendaftaranController extends Controller
         $data['penghasilan_ayah'] = $data['penghasilan_ayah'] ?? '< 1 Juta';
         $data['penghasilan_ibu'] = $data['penghasilan_ibu'] ?? '< 1 Juta';
 
+        // Ensure KPS/KIP are strings "Ya"/"Tidak" to match application logic
+        $data['penerima_kps'] = $data['penerima_kps'] ?? 'Tidak';
+        $data['peserta_kip'] = $data['peserta_kip'] ?? 'Tidak';
+
+        // Handle empty date strings to prevent MySQL strict mode errors (Invalid datetime format)
+        if (empty($data['tanggal_lahir_ayah']))
+            $data['tanggal_lahir_ayah'] = null;
+        if (empty($data['tanggal_lahir_ibu']))
+            $data['tanggal_lahir_ibu'] = null;
+
         // Check if user already has a pendaftar record
         $existingPendaftar = null;
         if (Auth::check()) {
