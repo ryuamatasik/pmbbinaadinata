@@ -10,9 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('profile_photo_path', 2048)->nullable()->after('password');
-        });
+        if (!Schema::hasColumn('users', 'profile_photo_path')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('profile_photo_path', 2048)->nullable()->after('password');
+            });
+        }
     }
 
     /**
