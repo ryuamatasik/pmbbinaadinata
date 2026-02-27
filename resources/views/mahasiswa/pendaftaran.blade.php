@@ -137,17 +137,21 @@
                             Bina Adinata
                         </h2>
                     </div>
-                    <div class="flex items-center gap-6">
-                        <nav class="flex items-center">
-                            <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors"
+                    <div class="flex items-center gap-6 ml-auto">
+                        <nav class="flex items-center gap-4">
+                            <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors px-4 py-2"
                                 href="{{ url('/') }}" @click="checkUnsaved($event, '{{ url('/') }}')">Beranda</a>
+                            <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors px-4 py-2"
+                                href="{{ route('mahasiswa.dashboard') }}" @click="checkUnsaved($event, '{{ route('mahasiswa.dashboard') }}')">Dashboard</a>
+                            @auth
+                                <form action="{{ route('logout') }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" class="text-red-500 hover:text-red-700 font-bold text-sm px-4 py-2 transition-colors">
+                                        Keluar
+                                    </button>
+                                </form>
+                            @endauth
                         </nav>
-                        <div class="flex">
-                            <a href="{{ route('login') }}" @click="checkUnsaved($event, '{{ route('login') }}')"
-                                class="flex items-center justify-center rounded-xl h-10 px-5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-600 transition-all">
-                                Masuk
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -51,26 +51,24 @@
                     Bina Adinata
                 </h2>
             </div>
-            <div class="hidden md:flex items-center gap-6">
+            <div class="hidden md:flex items-center gap-6 ml-auto">
                 <nav class="flex items-center gap-4">
                     <a class="text-[#111318] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors px-4 py-2"
                         href="{{ url('/') }}" onclick="confirmExit(event)">Beranda</a>
                     <a class="text-[#111318] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors px-4 py-2"
                         href="{{ route('mahasiswa.dashboard') }}" onclick="confirmExit(event)">Dashboard</a>
+                    @auth
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit"
+                                class="text-red-500 hover:text-red-700 font-bold text-sm px-4 py-2 transition-colors">
+                                Keluar
+                            </button>
+                        </form>
+                    @endauth
                 </nav>
-                <div class="flex items-center gap-4">
-                    <div class="text-right hidden lg:block">
-                        <p class="text-sm font-bold text-[#111318] dark:text-white">
-                            {{ $pendaftar->nama_lengkap ?? 'Calon Mahasiswa' }}
-                        </p>
-                        <p class="text-xs text-[#616f89] dark:text-gray-400">Calon Mahasiswa</p>
-                    </div>
-                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20"
-                        style='background-image: url("https://ui-avatars.com/api/?name={{ urlencode(optional($pendaftar)->nama_lengkap ?? 'User') }}&background=135bec&color=fff");'>
-                    </div>
-                </div>
             </div>
-            <button class="md:hidden flex text-[#111318] dark:text-white p-2" onclick="toggleMobileMenu()">
+            <button class="md:hidden flex text-[#111318] dark:text-white p-2 ml-auto" onclick="toggleMobileMenu()">
                 <span class="material-symbols-outlined" id="mobile-menu-icon">menu</span>
             </button>
         </header>
