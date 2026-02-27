@@ -52,11 +52,12 @@
                 </h2>
             </div>
             <div class="hidden md:flex items-center gap-6">
-                <nav class="flex items-center">
+                <nav class="flex flex-col md:flex-row items-center gap-4">
                     <a class="text-[#111318] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors px-4 py-2"
                         href="{{ url('/') }}" onclick="confirmExit(event)">Beranda</a>
+                    <a class="md:hidden text-[#111318] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors px-4 py-2"
+                        href="{{ route('mahasiswa.dashboard') }}" onclick="confirmExit(event)">Dashboard</a>
                 </nav>
-                <div class="flex items-center gap-4 border-l border-[#dbdfe6] dark:border-[#2a3441] pl-6">
                     <div class="text-right hidden lg:block">
                         <p class="text-sm font-bold text-[#111318] dark:text-white">
                             {{ $pendaftar->nama_lengkap ?? 'Calon Mahasiswa' }}
@@ -68,8 +69,8 @@
                     </div>
                 </div>
             </div>
-            <button class="md:hidden text-[#111318] dark:text-white">
-                <span class="material-symbols-outlined">menu</span>
+            <button class="md:hidden text-[#111318] dark:text-white" onclick="toggleMobileMenu()">
+                <span class="material-symbols-outlined" id="mobile-menu-icon">menu</span>
             </button>
         </header>
         <main class="flex-1 w-full max-w-[1200px] mx-auto px-4 md:px-10 py-8 pb-40 md:pb-20">
@@ -139,8 +140,8 @@
                             ['id' => 'bukti_pembayaran', 'title' => '8. Bukti Pembayaran', 'icon' => 'payments', 'max' => '2MB', 'ext' => 'JPG/PDF/PNG'],
                         ];
 
-                        if ($pendaftar->peserta_kip === 'Ya') {
-                            $uploadItems[] = ['id' => 'kip', 'title' => '9. Kartu Indonesia Pintar', 'icon' => 'card_membership', 'max' => '2MB', 'ext' => 'PDF/JPG'];
+                        if ($pendaftar && $pendaftar->peserta_kip === 'Ya') {
+                            $uploadItems[] = ['id' => 'kip', 'title' => '9. Kartu Indonesia Pintar', 'icon' => 'card_membership', 'max' => '2MB', 'ext' => 'PDF/JPG', 'optional' => true];
                         }
                     @endphp
 
@@ -151,7 +152,7 @@
                             <div
                                 class="p-3 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
                                 <h3 class="font-bold text-[#111318] dark:text-white text-xs truncate mr-2">
-                                    {{ $item['title'] }}
+                                    {{ $item['title'] }}@if(isset($item['optional']) && $item['optional']) <span class="text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-1 py-0.5 rounded ml-1 font-medium">Opsional</span> @endif
                                 </h3>
                                 <span class="material-symbols-outlined text-primary text-lg">{{ $item['icon'] }}</span>
                             </div>
@@ -324,6 +325,27 @@
             const modal = document.getElementById('modal-exit-confirmation');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
+        }
+
+        function toggleMobileMenu() {
+            const nav = document.querySelector('header nav');
+            const icon = document.getElementById('mobile-menu-icon');
+            
+            if (nav.classList.contains('hidden') || !nav.classList.contains('flex')) {
+                // Determine if it was hidden by our toggle or by default breakpoints
+                nav.classList.remove('hidden');
+                nav.classList.add('flex', 'absolute', 'top-full', 'left-0', 'right-0', 'bg-white', 'dark:bg-[#1a202c]', 'shadow-lg', 'border-b', 'border-[#dbdfe6]', 'dark:border-[#2a3441]', 'p-4', 'flex-col', 'z-50');
+                icon.textContent = 'close';
+            } else {
+                nav.classList.add('hidden');
+                nav.classList.remove('flex', 'absolute', 'top-full', 'left-0', 'right-0', 'bg-white', 'dark:bg-[#1a202c]', 'shadow-lg', 'border-b', 'border-[#dbdfe6]', 'dark:border-[#2a3441]', 'p-4', 'flex-col', 'z-50');
+                icon.textContent = 'menu';
+                
+                // Reset to default desktop view classes so it doesn't break on resize
+                setTimeout(() => {
+                    nav.className = 'hidden md:flex flex-col md:flex-row items-center gap-4';
+                }, 10);
+            }
         }
     </script>
 </body>
