@@ -125,251 +125,59 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1100px] mx-auto mb-6">
-                    <!-- 1. KTP -->
-                    <div
-                        class="flex flex-col rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
-                        <div
-                            class="p-4 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
-                            <h3 class="font-bold text-[#111318] dark:text-white text-sm">1. Kartu Identitas (KTP)</h3>
-                            <span class="material-symbols-outlined text-primary text-xl">badge</span>
-                        </div>
-                        @php $hasKtp = isset($dokumen['ktp']); @endphp
-                        <div class="p-5 flex flex-col items-center justify-center border-2 border-dashed {{ $hasKtp ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30' }} m-4 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
-                            onclick="document.getElementById('file-ktp').click()">
-                            <span
-                                class="material-symbols-outlined text-3xl {{ $hasKtp ? 'text-green-500' : 'text-[#9ca3af]' }} mb-2">{{ $hasKtp ? 'check_circle' : 'cloud_upload' }}</span>
-                            <div class="text-center mb-4">
-                                <p class="text-xs font-medium text-[#111318] dark:text-gray-200" id="text-ktp">
-                                    {{ $hasKtp ? $dokumen['ktp']->original_name : 'Klik atau tarik file ke sini' }}
-                                </p>
-                                <p
-                                    class="text-[10px] {{ $hasKtp ? 'text-green-600 dark:text-green-400 font-bold' : 'text-[#616f89] dark:text-gray-400' }} mt-1">
-                                    {{ $hasKtp ? 'Berkas Tersimpan (Klik untuk ganti)' : 'PDF/JPG, Maks: 2MB' }}
-                                </p>
-                            </div>
-                            <button type="button"
-                                class="flex items-center justify-center rounded-lg h-8 px-3 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-xs font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors">Pilih
-                                Berkas</button>
-                            <input type="file" name="ktp" id="file-ktp" class="hidden" accept=".pdf,.jpg,.jpeg,.png"
-                                onchange="updateFileName('ktp', this)">
-                        </div>
-                    </div>
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-[1200px] mx-auto mb-16">
+                    @php
+                        $uploadItems = [
+                            ['id' => 'ktp', 'title' => '1. Kartu Identitas (KTP)', 'icon' => 'badge', 'max' => '2MB', 'ext' => 'PDF/JPG'],
+                            ['id' => 'ktp_ortu', 'title' => '2. KTP Orang Tua/Wali', 'icon' => 'family_restroom', 'max' => '2MB', 'ext' => 'PDF/JPG'],
+                            ['id' => 'akte', 'title' => '3. Akte Kelahiran', 'icon' => 'child_care', 'max' => '3MB', 'ext' => 'PDF/JPG'],
+                            ['id' => 'ijazah', 'title' => '4. Ijazah/SKL', 'icon' => 'history_edu', 'max' => '5MB', 'ext' => 'PDF/JPG'],
+                            ['id' => 'kk', 'title' => '5. Kartu Keluarga', 'icon' => 'groups', 'max' => '3MB', 'ext' => 'PDF/JPG'],
+                            ['id' => 'foto', 'title' => '6. Pass Foto', 'icon' => 'account_box', 'max' => '2MB', 'ext' => 'JPG/PNG'],
+                            ['id' => 'transkrip', 'title' => '7. Transkrip Nilai', 'icon' => 'description', 'max' => '5MB', 'ext' => 'PDF/JPG'],
+                            ['id' => 'bukti_pembayaran', 'title' => '8. Bukti Pembayaran', 'icon' => 'payments', 'max' => '2MB', 'ext' => 'JPG/PDF/PNG'],
+                        ];
 
-                    <!-- 2. KTP Ortu -->
-                    <div
-                        class="flex flex-col rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
-                        <div
-                            class="p-4 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
-                            <h3 class="font-bold text-[#111318] dark:text-white text-sm">2. KTP Orang Tua / Wali</h3>
-                            <span class="material-symbols-outlined text-primary text-xl">family_restroom</span>
-                        </div>
-                        @php $hasKtpOrtu = isset($dokumen['ktp_ortu']); @endphp
-                        <div class="p-5 flex flex-col items-center justify-center border-2 border-dashed {{ $hasKtpOrtu ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30' }} m-4 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
-                            onclick="document.getElementById('file-ktp_ortu').click()">
-                            <span
-                                class="material-symbols-outlined text-3xl {{ $hasKtpOrtu ? 'text-green-500' : 'text-[#9ca3af]' }} mb-2">{{ $hasKtpOrtu ? 'check_circle' : 'cloud_upload' }}</span>
-                            <div class="text-center mb-4">
-                                <p class="text-xs font-medium text-[#111318] dark:text-gray-200" id="text-ktp_ortu">
-                                    {{ $hasKtpOrtu ? $dokumen['ktp_ortu']->original_name : 'Klik atau tarik file ke sini' }}
-                                </p>
-                                <p
-                                    class="text-[10px] {{ $hasKtpOrtu ? 'text-green-600 dark:text-green-400 font-bold' : 'text-[#616f89] dark:text-gray-400' }} mt-1">
-                                    {{ $hasKtpOrtu ? 'Berkas Tersimpan (Klik untuk ganti)' : 'PDF/JPG, Maks: 2MB' }}
-                                </p>
-                            </div>
-                            <button type="button"
-                                class="flex items-center justify-center rounded-lg h-8 px-3 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-xs font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors">Pilih
-                                Berkas</button>
-                            <input type="file" name="ktp_ortu" id="file-ktp_ortu" class="hidden"
-                                accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileName('ktp_ortu', this)">
-                        </div>
-                    </div>
+                        if ($pendaftar->peserta_kip === 'Ya') {
+                            $uploadItems[] = ['id' => 'kip', 'title' => '9. Kartu Indonesia Pintar', 'icon' => 'card_membership', 'max' => '2MB', 'ext' => 'PDF/JPG'];
+                        }
+                    @endphp
 
-                    <!-- 3. Akte -->
-                    <div
-                        class="flex flex-col rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
+                    @foreach ($uploadItems as $item)
+                        @php $hasDoc = isset($dokumen[$item['id']]); @endphp
                         <div
-                            class="p-4 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
-                            <h3 class="font-bold text-[#111318] dark:text-white text-sm">3. Akte Kelahiran</h3>
-                            <span class="material-symbols-outlined text-primary text-xl">child_care</span>
-                        </div>
-                        @php $hasAkte = isset($dokumen['akte']); @endphp
-                        <div class="p-5 flex flex-col items-center justify-center border-2 border-dashed {{ $hasAkte ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30' }} m-4 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
-                            onclick="document.getElementById('file-akte').click()">
-                            <span
-                                class="material-symbols-outlined text-3xl {{ $hasAkte ? 'text-green-500' : 'text-[#9ca3af]' }} mb-2">{{ $hasAkte ? 'check_circle' : 'cloud_upload' }}</span>
-                            <div class="text-center mb-4">
-                                <p class="text-xs font-medium text-[#111318] dark:text-gray-200" id="text-akte">
-                                    {{ $hasAkte ? $dokumen['akte']->original_name : 'Klik atau tarik file ke sini' }}
-                                </p>
-                                <p
-                                    class="text-[10px] {{ $hasAkte ? 'text-green-600 dark:text-green-400 font-bold' : 'text-[#616f89] dark:text-gray-400' }} mt-1">
-                                    {{ $hasAkte ? 'Berkas Tersimpan (Klik untuk ganti)' : 'PDF/JPG, Maks: 3MB' }}
-                                </p>
+                            class="flex flex-col rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
+                            <div
+                                class="p-3 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
+                                <h3 class="font-bold text-[#111318] dark:text-white text-xs truncate mr-2">
+                                    {{ $item['title'] }}
+                                </h3>
+                                <span class="material-symbols-outlined text-primary text-lg">{{ $item['icon'] }}</span>
                             </div>
-                            <button type="button"
-                                class="flex items-center justify-center rounded-lg h-8 px-3 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-xs font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors">Pilih
-                                Berkas</button>
-                            <input type="file" name="akte" id="file-akte" class="hidden" accept=".pdf,.jpg,.jpeg,.png"
-                                onchange="updateFileName('akte', this)">
-                        </div>
-                    </div>
-
-                    <!-- 4. Ijazah -->
-                    <div
-                        class="flex flex-col rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
-                        <div
-                            class="p-4 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
-                            <h3 class="font-bold text-[#111318] dark:text-white text-sm">4. Ijazah Terakhir / SKL</h3>
-                            <span class="material-symbols-outlined text-primary text-xl">history_edu</span>
-                        </div>
-                        @php $hasIjazah = isset($dokumen['ijazah']); @endphp
-                        <div class="p-5 flex flex-col items-center justify-center border-2 border-dashed {{ $hasIjazah ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30' }} m-4 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
-                            onclick="document.getElementById('file-ijazah').click()">
-                            <span
-                                class="material-symbols-outlined text-3xl {{ $hasIjazah ? 'text-green-500' : 'text-[#9ca3af]' }} mb-2">{{ $hasIjazah ? 'check_circle' : 'cloud_upload' }}</span>
-                            <div class="text-center mb-4">
-                                <p class="text-xs font-medium text-[#111318] dark:text-gray-200" id="text-ijazah">
-                                    {{ $hasIjazah ? $dokumen['ijazah']->original_name : 'Klik atau tarik file ke sini' }}
-                                </p>
-                                <p
-                                    class="text-[10px] {{ $hasIjazah ? 'text-green-600 dark:text-green-400 font-bold' : 'text-[#616f89] dark:text-gray-400' }} mt-1">
-                                    {{ $hasIjazah ? 'Berkas Tersimpan (Klik untuk ganti)' : 'PDF/JPG, Maks: 5MB' }}
-                                </p>
+                            <div class="p-4 flex flex-col items-center justify-center border-2 border-dashed {{ $hasDoc ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30' }} m-3 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
+                                onclick="document.getElementById('file-{{ $item['id'] }}').click()">
+                                <span
+                                    class="material-symbols-outlined text-2xl {{ $hasDoc ? 'text-green-500' : 'text-[#9ca3af]' }} mb-1">{{ $hasDoc ? 'check_circle' : 'cloud_upload' }}</span>
+                                <div class="text-center mb-3 h-8 flex flex-col justify-center">
+                                    <p class="text-[11px] font-medium text-[#111318] dark:text-gray-200 line-clamp-2"
+                                        id="text-{{ $item['id'] }}">
+                                        {{ $hasDoc ? $dokumen[$item['id']]->original_name : 'Klik/Tarik file' }}
+                                    </p>
+                                    <p
+                                        class="text-[9px] {{ $hasDoc ? 'text-green-600 dark:text-green-400 font-bold' : 'text-[#616f89] dark:text-gray-400' }} mt-0.5">
+                                        {{ $hasDoc ? 'Tersimpan (Klik ubah)' : $item['ext'] . ', Maks: ' . $item['max'] }}
+                                    </p>
+                                </div>
+                                <button type="button"
+                                    class="flex items-center justify-center rounded-md h-7 px-3 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-[10px] font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors w-full">Pilih
+                                    Berkas</button>
+                                <input type="file" name="{{ $item['id'] }}" id="file-{{ $item['id'] }}" class="hidden"
+                                    accept=".pdf,.jpg,.jpeg,.png,.webp"
+                                    onchange="updateFileName('{{ $item['id'] }}', this)">
                             </div>
-                            <button type="button"
-                                class="flex items-center justify-center rounded-lg h-8 px-3 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-xs font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors">Pilih
-                                Berkas</button>
-                            <input type="file" name="ijazah" id="file-ijazah" class="hidden"
-                                accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileName('ijazah', this)">
                         </div>
-                    </div>
-
-                    <!-- 5. Kartu Keluarga -->
-                    <div
-                        class="flex flex-col rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
-                        <div
-                            class="p-4 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
-                            <h3 class="font-bold text-[#111318] dark:text-white text-sm">5. Kartu Keluarga</h3>
-                            <span class="material-symbols-outlined text-primary text-xl">groups</span>
-                        </div>
-                        @php $hasKk = isset($dokumen['kk']); @endphp
-                        <div class="p-5 flex flex-col items-center justify-center border-2 border-dashed {{ $hasKk ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30' }} m-4 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
-                            onclick="document.getElementById('file-kk').click()">
-                            <span
-                                class="material-symbols-outlined text-3xl {{ $hasKk ? 'text-green-500' : 'text-[#9ca3af]' }} mb-2">{{ $hasKk ? 'check_circle' : 'cloud_upload' }}</span>
-                            <div class="text-center mb-4">
-                                <p class="text-xs font-medium text-[#111318] dark:text-gray-200" id="text-kk">
-                                    {{ $hasKk ? $dokumen['kk']->original_name : 'Klik atau tarik file ke sini' }}
-                                </p>
-                                <p
-                                    class="text-[10px] {{ $hasKk ? 'text-green-600 dark:text-green-400 font-bold' : 'text-[#616f89] dark:text-gray-400' }} mt-1">
-                                    {{ $hasKk ? 'Berkas Tersimpan (Klik untuk ganti)' : 'PDF/JPG, Maks: 3MB' }}
-                                </p>
-                            </div>
-                            <button type="button"
-                                class="flex items-center justify-center rounded-lg h-8 px-3 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-xs font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors">Pilih
-                                Berkas</button>
-                            <input type="file" name="kk" id="file-kk" class="hidden" accept=".pdf,.jpg,.jpeg,.png"
-                                onchange="updateFileName('kk', this)">
-                        </div>
-                    </div>
-
-                    <!-- 6. Pass Foto -->
-                    <div
-                        class="flex flex-col rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
-                        <div
-                            class="p-4 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
-                            <h3 class="font-bold text-[#111318] dark:text-white text-sm">6. Pass Foto (Baju Seragam
-                                Latar Biru)</h3>
-                            <span class="material-symbols-outlined text-primary text-xl">account_box</span>
-                        </div>
-                        @php $hasFoto = isset($dokumen['foto']); @endphp
-                        <div class="p-5 flex flex-col items-center justify-center border-2 border-dashed {{ $hasFoto ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30' }} m-4 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
-                            onclick="document.getElementById('file-foto').click()">
-                            <span
-                                class="material-symbols-outlined text-3xl {{ $hasFoto ? 'text-green-500' : 'text-[#9ca3af]' }} mb-2">{{ $hasFoto ? 'check_circle' : 'cloud_upload' }}</span>
-                            <div class="text-center mb-4">
-                                <p class="text-xs font-medium text-[#111318] dark:text-gray-200" id="text-foto">
-                                    {{ $hasFoto ? $dokumen['foto']->original_name : 'Klik atau tarik file ke sini' }}
-                                </p>
-                                <p
-                                    class="text-[10px] {{ $hasFoto ? 'text-green-600 dark:text-green-400 font-bold' : 'text-[#616f89] dark:text-gray-400' }} mt-1">
-                                    {{ $hasFoto ? 'Berkas Tersimpan (Klik untuk ganti)' : 'JPG/PNG, Maks: 2MB' }}
-                                </p>
-                            </div>
-                            <button type="button"
-                                class="flex items-center justify-center rounded-lg h-8 px-3 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-xs font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors">Pilih
-                                Berkas</button>
-                            <input type="file" name="foto" id="file-foto" class="hidden" accept=".jpg,.jpeg,.png"
-                                onchange="updateFileName('foto', this)">
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="flex flex-col md:flex-row justify-center gap-6 max-w-[1100px] mx-auto mb-16">
-                    <!-- 7. Transkrip Nilai -->
-                    <div
-                        class="flex-1 w-full max-w-[350px] flex flex-col rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
-                        <div
-                            class="p-4 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
-                            <h3 class="font-bold text-[#111318] dark:text-white text-sm">7. Transkrip Nilai</h3>
-                            <span class="material-symbols-outlined text-primary text-xl">description</span>
-                        </div>
-                        @php $hasTranskrip = isset($dokumen['transkrip']); @endphp
-                        <div class="p-5 flex flex-col items-center justify-center border-2 border-dashed {{ $hasTranskrip ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30' }} m-4 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
-                            onclick="document.getElementById('file-transkrip').click()">
-                            <span
-                                class="material-symbols-outlined text-3xl {{ $hasTranskrip ? 'text-green-500' : 'text-[#9ca3af]' }} mb-2">{{ $hasTranskrip ? 'check_circle' : 'cloud_upload' }}</span>
-                            <div class="text-center mb-4">
-                                <p class="text-xs font-medium text-[#111318] dark:text-gray-200" id="text-transkrip">
-                                    {{ $hasTranskrip ? $dokumen['transkrip']->original_name : 'Klik atau tarik file ke sini' }}
-                                </p>
-                                <p
-                                    class="text-[10px] {{ $hasTranskrip ? 'text-green-600 dark:text-green-400 font-bold' : 'text-[#616f89] dark:text-gray-400' }} mt-1">
-                                    {{ $hasTranskrip ? 'Berkas Tersimpan (Klik untuk ganti)' : 'PDF/JPG, Maks: 5MB' }}
-                                </p>
-                            </div>
-                            <button type="button"
-                                class="flex items-center justify-center rounded-lg h-8 px-3 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-xs font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors">Pilih
-                                Berkas</button>
-                            <input type="file" name="transkrip" id="file-transkrip" class="hidden"
-                                accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileName('transkrip', this)">
-                        </div>
-                    </div>
-
-                    <!-- 8. Bukti Pembayaran -->
-                    <div
-                        class="flex-1 w-full max-w-[350px] flex flex-col rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
-                        <div
-                            class="p-4 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
-                            <h3 class="font-bold text-[#111318] dark:text-white text-sm">8. Bukti Pembayaran</h3>
-                            <span class="material-symbols-outlined text-primary text-xl">payments</span>
-                        </div>
-                        @php $hasBukti = isset($dokumen['bukti_pembayaran']); @endphp
-                        <div class="p-5 flex flex-col items-center justify-center border-2 border-dashed {{ $hasBukti ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30' }} m-4 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
-                            onclick="document.getElementById('file-bukti_pembayaran').click()">
-                            <span
-                                class="material-symbols-outlined text-3xl {{ $hasBukti ? 'text-green-500' : 'text-[#9ca3af]' }} mb-2">{{ $hasBukti ? 'check_circle' : 'cloud_upload' }}</span>
-                            <div class="text-center mb-4">
-                                <p class="text-xs font-medium text-[#111318] dark:text-gray-200"
-                                    id="text-bukti_pembayaran">
-                                    {{ $hasBukti ? $dokumen['bukti_pembayaran']->original_name : 'Klik atau tarik file ke sini' }}
-                                </p>
-                                <p
-                                    class="text-[10px] {{ $hasBukti ? 'text-green-600 dark:text-green-400 font-bold' : 'text-[#616f89] dark:text-gray-400' }} mt-1">
-                                    {{ $hasBukti ? 'Berkas Tersimpan (Klik untuk ganti)' : 'JPG/PDF, Maks: 2MB' }}
-                                </p>
-                            </div>
-                            <button type="button"
-                                class="flex items-center justify-center rounded-lg h-8 px-3 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-xs font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors">Pilih
-                                Berkas</button>
-                            <input type="file" name="bukti_pembayaran" id="file-bukti_pembayaran" class="hidden"
-                                accept=".jpg,.jpeg,.png,.pdf,.webp" onchange="updateFileName('bukti_pembayaran', this)">
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
 
                 <div
@@ -461,7 +269,6 @@
                 const fileName = file.name;
                 const fileSize = file.size / 1024; // in KB
 
-                // Define max sizes (in KB) based on controller validation
                 const maxSizes = {
                     'ktp': 2048,
                     'ktp_ortu': 2048,
@@ -470,7 +277,8 @@
                     'kk': 3072,
                     'foto': 2048,
                     'transkrip': 5120,
-                    'bukti_pembayaran': 2048
+                    'bukti_pembayaran': 2048,
+                    'kip': 2048
                 };
 
                 const maxSize = maxSizes[id] || 2048; // default 2MB

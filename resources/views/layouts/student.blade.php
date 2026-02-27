@@ -113,12 +113,7 @@
                     href="{{ route('mahasiswa.dashboard') }}">Dashboard</a>
 
                 <div class="flex items-center gap-4 ml-2">
-                    <button
-                        class="relative p-2 text-[#616f89] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors">
-                        <span class="material-symbols-outlined">notifications</span>
-                        <span
-                            class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-gray-800"></span>
-                    </button>
+
 
                     @auth
                         <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 group">

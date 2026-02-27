@@ -216,6 +216,7 @@ class PendaftaranController extends Controller
             'foto' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
             'transkrip' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:5120',
             'bukti_pembayaran' => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:2048',
+            'kip' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:2048',
         ];
 
         $messages = [
@@ -234,11 +235,12 @@ class PendaftaranController extends Controller
             'foto' => 'Pas Foto',
             'transkrip' => 'Transkrip Nilai',
             'bukti_pembayaran' => 'Bukti Pembayaran',
+            'kip' => 'Kartu Indonesia Pintar',
         ];
 
         $request->validate($rules, $messages, $attributes);
 
-        $documents = ['ktp', 'ktp_ortu', 'akte', 'ijazah', 'kk', 'foto', 'transkrip', 'bukti_pembayaran'];
+        $documents = ['ktp', 'ktp_ortu', 'akte', 'ijazah', 'kk', 'foto', 'transkrip', 'bukti_pembayaran', 'kip'];
 
         foreach ($documents as $doc) {
             if ($request->hasFile($doc)) {

@@ -582,10 +582,10 @@
                                             <div class="w-0.5 h-full bg-gray-100 dark:bg-gray-700 rounded-full"></div>
                                         </div>
                                         <div class="pb-2">
-                                            <h4 class="font-bold text-[#111318] dark:text-white text-sm">Pembelian
-                                                Formulir</h4>
+                                            <h4 class="font-bold text-[#111318] dark:text-white text-sm">Biaya
+                                                Pendaftaran</h4>
                                             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
-                                                Calon mahasiswa membayar biaya formulir pendaftaran seharga <span
+                                                Calon mahasiswa membayar biaya pendaftaran seharga <span
                                                     class="text-[#111318] dark:text-white font-medium">Rp
                                                     150.000</span>.
                                             </p>
