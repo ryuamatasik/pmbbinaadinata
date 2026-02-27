@@ -222,7 +222,7 @@
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="negara_ayah" value="{{ old('negara_ayah', $pendaftar->negara_ayah ?? 'Indonesia) }}"
+                                    name="negara_ayah" value="{{ old('negara_ayah', $pendaftar->negara_ayah ?? 'Indonesia') }}"
                                     placeholder="Contoh: Indonesia" />
                             </label>
                         </div>
@@ -420,7 +420,7 @@
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="negara_ibu" value="{{ old('negara_ibu', $pendaftar->negara_ibu ?? 'Indonesia) }}"
+                                    name="negara_ibu" value="{{ old('negara_ibu', $pendaftar->negara_ibu ?? 'Indonesia') }}"
                                     placeholder="Contoh: Indonesia" />
                             </label>
                         </div>
