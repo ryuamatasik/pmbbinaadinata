@@ -74,10 +74,6 @@
                                 Logout
                             </button>
                         </form>
-                        <div class="h-9 w-9 overflow-hidden rounded-full border border-border-light dark:border-border-dark bg-slate-200 dark:bg-slate-700"
-                            data-alt="User profile picture placeholder, generic avatar"
-                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC4Tftme0TJI-5TRlysV097tZ65BKAL-DFuhrq9SdZ-uhHQ5YVJ0HKcYXLYJpesNPcztZY7jQ29fVKFRvvYX-dpXkbD9oMwR9DWHXQOfd5Ne-wG4Hb-e5Gfluhin_weeFLpTx1Oo4CgIVoAq_z-kOgXIWjmMCulg4isQKI6D-IJL2l7FuoGQUunNsX09Ygdz-jskGnhQjPK6zqVc28l8JpFwFAgx8ClZNnnbBwZ4nRdt-2EZ7Rg2oQ5rRGdPVk_xQ2HBYB7jdtU984"); background-size: cover;'>
-                        </div>
                         <!-- Mobile Menu Button -->
                         <button type="button" class="md:hidden text-slate-600 dark:text-slate-300 hover:text-primary"
                             onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
@@ -180,8 +176,13 @@
                                         <span
                                             class="text-xs font-medium text-primary dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 rounded-full">{{ $timeline['verifikasi_status'] }}</span>
                                     </div>
-                                    <p class="text-sm text-slate-600 dark:text-slate-300">Tim admin sedang memverifikasi
-                                        validitas dokumen yang Anda unggah. Proses ini memakan waktu 1-3 hari kerja.</p>
+                                    @php
+                                        $dokumen_terverifikasi = \App\Models\DokumenPendaftar::where('pendaftar_id', $pendaftar->id)->whereIn('status', ['valid', 'Terverifikasi'])->first();
+                                        $verifikasi_time = $dokumen_terverifikasi ? $dokumen_terverifikasi->updated_at->format('d M Y, H:i') . ' WIB' : 'Sedang diverifikasi (1-3 hari kerja)';
+                                    @endphp
+                                    <p class="text-sm text-slate-600 dark:text-slate-300">
+                                        {{ $timeline['verifikasi_status'] == 'Selesai' ? 'Dokumen berhasil diverifikasi pada ' . $verifikasi_time : 'Tim admin sedang memverifikasi validitas dokumen yang Anda unggah. Proses ini memakan waktu 1-3 hari kerja.' }}
+                                    </p>
                                     <div
                                         class="mt-3 inline-flex items-center gap-2 text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-3 py-2 rounded-lg border border-amber-100 dark:border-amber-800">
                                         <span class="material-symbols-outlined text-[16px]">info</span>
@@ -278,11 +279,11 @@
                                 </p>
                             </div>
                         </div>
-                        <button
+                        <a href="{{ route('mahasiswa.upload') }}"
                             class="mt-2 w-full flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-medium h-10 px-4 transition-colors shadow-sm shadow-blue-200 dark:shadow-none">
                             <span class="material-symbols-outlined text-[18px]">description</span>
                             Lihat Detail Berkas
-                        </button>
+                        </a>
                     </div>
                     <div
                         class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-5">
