@@ -145,8 +145,7 @@
                     </div>
                 </div>
 
-                <div
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-[1200px] mx-auto mb-16">
+                <div class="flex flex-wrap justify-center gap-4 max-w-[1200px] mx-auto mb-16">
                     @php
                         $uploadItems = [
                             ['id' => 'ktp', 'title' => '1. Kartu Identitas (KTP)', 'icon' => 'badge', 'max' => '2MB', 'ext' => 'PDF/JPG'],
@@ -163,10 +162,9 @@
 
                     @foreach ($uploadItems as $item)
                         @php $hasDoc = isset($dokumen[$item['id']]); @endphp
-                        <div
-                            class="{{ $item['id'] === 'kip' ? 'md:col-span-2 lg:col-span-1 xl:col-span-4 flex justify-center' : 'w-full' }}">
+                        <div class="w-full md:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.7rem)] xl:w-[calc(25%-0.75rem)]">
                             <div
-                                class="flex flex-col w-full max-w-sm rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
+                                class="flex flex-col h-full rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
                                 <div
                                     class="p-3 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
                                     <h3 class="font-bold text-[#111318] dark:text-white text-xs truncate mr-2">
