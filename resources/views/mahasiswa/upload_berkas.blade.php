@@ -198,44 +198,45 @@
                                         onchange="updateFileName('{{ $item['id'] }}', this)">
                                 </div>
                             </div>
+                        </div>
                     @endforeach
-                    </div>
+                </div>
 
-                    <div
-                        class="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#1a202c] border-t border-[#dbdfe6] dark:border-[#2a3441] p-4 shadow-lg md:relative md:bg-transparent md:border-t-0 md:shadow-none md:p-0">
-                        <div class="max-w-[1100px] mx-auto flex items-center justify-between gap-4">
-                            <a href="{{ route('mahasiswa.pendaftaran') }}"
-                                class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors">
-                                <span class="material-symbols-outlined mr-2 text-sm">arrow_back</span>
-                                <span class="truncate">Kembali</span>
-                            </a>
-                            <div class="flex gap-3">
-                                <button type="button" onclick="confirmExit(event)"
-                                    class="hidden sm:flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 text-[#616f89] dark:text-gray-400 font-medium hover:text-[#111318] dark:hover:text-white transition-colors">
-                                    <span class="material-symbols-outlined mr-2 text-[20px]">save</span>
-                                    <span class="truncate">Simpan Draf</span>
-                                </button>
-                                <button type="submit" :disabled="isLoading"
-                                    class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-blue-700 shadow-md transition-colors shadow-primary/30 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none">
-                                    <span x-show="!isLoading" class="flex items-center">
-                                        <span class="truncate">Selesai</span>
-                                        <span class="material-symbols-outlined ml-2 text-sm">check_circle</span>
-                                    </span>
-                                    <span x-show="isLoading" class="flex items-center gap-2" style="display: none;">
-                                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                                stroke-width="4"></circle>
-                                            <path class="opacity-75" fill="currentColor"
-                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                            </path>
-                                        </svg>
-                                        Memproses...
-                                    </span>
-                                </button>
-                            </div>
+                <div
+                    class="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#1a202c] border-t border-[#dbdfe6] dark:border-[#2a3441] p-4 shadow-lg md:relative md:bg-transparent md:border-t-0 md:shadow-none md:p-0">
+                    <div class="max-w-[1100px] mx-auto flex items-center justify-between gap-4">
+                        <a href="{{ route('mahasiswa.pendaftaran') }}"
+                            class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors">
+                            <span class="material-symbols-outlined mr-2 text-sm">arrow_back</span>
+                            <span class="truncate">Kembali</span>
+                        </a>
+                        <div class="flex gap-3">
+                            <button type="button" onclick="confirmExit(event)"
+                                class="hidden sm:flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 text-[#616f89] dark:text-gray-400 font-medium hover:text-[#111318] dark:hover:text-white transition-colors">
+                                <span class="material-symbols-outlined mr-2 text-[20px]">save</span>
+                                <span class="truncate">Simpan Draf</span>
+                            </button>
+                            <button type="submit" :disabled="isLoading"
+                                class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-blue-700 shadow-md transition-colors shadow-primary/30 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none">
+                                <span x-show="!isLoading" class="flex items-center">
+                                    <span class="truncate">Selesai</span>
+                                    <span class="material-symbols-outlined ml-2 text-sm">check_circle</span>
+                                </span>
+                                <span x-show="isLoading" class="flex items-center gap-2" style="display: none;">
+                                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
+                                    Memproses...
+                                </span>
+                            </button>
                         </div>
                     </div>
+                </div>
             </form>
         </main>
     </div>
