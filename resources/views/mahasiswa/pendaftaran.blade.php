@@ -157,7 +157,7 @@
             </div>
         </div>
 
-        <form id="pendaftaran-form" action="{{ route('mahasiswa.store') }}" method="POST" class="flex flex-col grow"
+        <form id="pendaftaran-form" action="{{ route('mahasiswa.store', [], false) }}" method="POST" class="flex flex-col grow"
             enctype="multipart/form-data" @submit="isLoading = true">
             @csrf
             <!-- Modal Toggles (using checkbox hack from User HTML) -->
