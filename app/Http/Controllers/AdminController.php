@@ -147,8 +147,9 @@ class AdminController extends Controller
 
         // Send Email notification
         try {
+            $emailStatus = ($request->status == 'Ditolak') ? 'Revisi' : $request->status;
             \Illuminate\Support\Facades\Mail::to($pendaftar->email)
-                ->send(new \App\Mail\StatusPendaftaranEmail($pendaftar, $request->status, $request->catatan));
+                ->send(new \App\Mail\StatusPendaftaranEmail($pendaftar, $emailStatus, $request->catatan));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Verifikasi Email Failed: ' . $e->getMessage());
         }

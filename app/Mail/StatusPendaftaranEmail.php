@@ -40,6 +40,8 @@ class StatusPendaftaranEmail extends Mailable
             $subject = 'Selamat! Anda Diterima di Iteb Bina Adinata 🎉';
         } elseif ($this->statusCheck == 'Ditolak') {
             $subject = 'Pemberitahuan Hasil Seleksi Pendaftaran';
+        } elseif ($this->statusCheck == 'Revisi') {
+            $subject = 'Pemberitahuan Perbaikan Berkas Pendaftaran 📝';
         } elseif ($this->statusCheck == 'Verifikasi') {
             $subject = 'Pendaftaran Sedang Diverifikasi - Iteb Bina Adinata';
         }

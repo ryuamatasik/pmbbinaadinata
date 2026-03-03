@@ -218,6 +218,12 @@
                             Mohon maaf, Anda belum lolos pada seleksi tahap ini.
                             <br>Tetap semangat dan coba lagi di kesempatan berikutnya.
                         </div>
+                    @elseif($statusCheck == 'Revisi')
+                        <div class="status-badge bg-amber">PERLU PERBAIKAN</div>
+                        <div class="message-text">
+                            Ada beberapa dokumen pendaftaran Anda yang perlu diperbaiki atau diunggah ulang.
+                            <br>Silakan cek catatan dari tim verifikasi di bawah ini.
+                        </div>
                     @elseif($statusCheck == 'Verifikasi')
                         <div class="status-badge bg-amber">SEDANG DIVERIFIKASI</div>
                         <div class="message-text">
