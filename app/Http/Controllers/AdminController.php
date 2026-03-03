@@ -115,7 +115,7 @@ class AdminController extends Controller
                     return [
                         $item->jenis_dokumen => [
                             'id' => $item->id,
-                            'url' => \Illuminate\Support\Facades\Storage::url($item->file_path),
+                            'url' => asset('storage/' . $item->file_path),
                             'status' => $item->status,
                             'catatan' => $item->catatan
                         ]
