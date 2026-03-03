@@ -11,6 +11,28 @@
 
 @section('content')
     <div class="flex flex-col max-w-[1280px] mx-auto px-6 lg:px-12 py-8 gap-8">
+        @if($hasRejection)
+            <div
+                class="animate-fade-in-up bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6 shadow-sm">
+                <div
+                    class="size-16 bg-red-100 dark:bg-red-900/50 rounded-full flex items-center justify-center text-red-600 dark:text-red-400 shrink-0">
+                    <span class="material-symbols-outlined text-4xl">gpp_bad</span>
+                </div>
+                <div class="flex-1 text-center md:text-left">
+                    <h3 class="text-xl font-black text-red-900 dark:text-red-200 tracking-tight">Perhatian: Ada Dokumen Yang
+                        Ditolak</h3>
+                    <p class="text-red-700 dark:text-red-300 text-sm mt-1 leading-relaxed">
+                        Beberapa dokumen pendaftaran Anda tidak valid atau memerlukan perbaikan sesuai catatan Admin. Mohon
+                        segera perbaiki agar proses pendaftaran dapat dilanjutkan.
+                    </p>
+                </div>
+                <a href="{{ route('mahasiswa.upload') }}"
+                    class="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-600/20 transition-all flex items-center gap-2 whitespace-nowrap">
+                    <span class="material-symbols-outlined text-lg">upload_file</span>
+                    Perbaiki Sekarang
+                </a>
+            </div>
+        @endif
         <div
             class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-2 border-b border-gray-100 dark:border-gray-800/50 animate-fade-in-up delay-100">
             <div class="flex flex-col gap-1">

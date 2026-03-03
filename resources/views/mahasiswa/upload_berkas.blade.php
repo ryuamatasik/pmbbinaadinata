@@ -172,10 +172,26 @@
                                     </h3>
                                     <span class="material-symbols-outlined text-primary text-lg">{{ $item['icon'] }}</span>
                                 </div>
-                                <div class="p-4 flex flex-col items-center justify-center border-2 border-dashed {{ $hasDoc ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30' }} m-3 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
+                                <div class="p-4 flex flex-col items-center justify-center border-2 border-dashed {{ $hasDoc && $dokumen[$item['id']]->status == 'invalid' ? 'border-red-500 bg-red-50 dark:bg-red-900/10' : ($hasDoc ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30') }} m-3 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
                                     onclick="document.getElementById('file-{{ $item['id'] }}').click()">
+
+                                    @if($hasDoc && $dokumen[$item['id']]->status == 'invalid')
+                                        <div
+                                            class="mb-3 w-full p-2 bg-red-100 dark:bg-red-900/40 rounded-lg border border-red-200 dark:border-red-800 text-center">
+                                            <p
+                                                class="text-[9px] font-bold text-red-700 dark:text-red-300 uppercase flex items-center justify-center gap-1">
+                                                <span class="material-symbols-outlined text-[14px]">warning</span> Revisi
+                                                Diperlukan
+                                            </p>
+                                            @if($dokumen[$item['id']]->catatan)
+                                                <p class="text-[10px] text-red-600 dark:text-red-400 mt-1 italic leading-tight">
+                                                    "{{ $dokumen[$item['id']]->catatan }}"</p>
+                                            @endif
+                                        </div>
+                                    @endif
+
                                     <span
-                                        class="material-symbols-outlined text-2xl {{ $hasDoc ? 'text-green-500' : 'text-[#9ca3af]' }} mb-1">{{ $hasDoc ? 'check_circle' : 'cloud_upload' }}</span>
+                                        class="material-symbols-outlined text-2xl {{ $hasDoc && $dokumen[$item['id']]->status == 'invalid' ? 'text-red-500' : ($hasDoc ? 'text-green-500' : 'text-[#9ca3af]') }} mb-1">{{ $hasDoc ? ($dokumen[$item['id']]->status == 'invalid' ? 'error' : 'check_circle') : 'cloud_upload' }}</span>
                                     <div class="text-center mb-3 h-8 flex flex-col justify-center">
                                         <p class="text-[11px] font-medium text-[#111318] dark:text-gray-200 line-clamp-2"
                                             id="text-{{ $item['id'] }}">

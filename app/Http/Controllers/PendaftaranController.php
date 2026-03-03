@@ -292,6 +292,7 @@ class PendaftaranController extends Controller
             }
         }
 
+        $hasRejection = false;
         if ($pendaftar) {
             // Fetch uploaded documents
             $dokumen = \App\Models\DokumenPendaftar::where('pendaftar_id', $pendaftar->id)
@@ -299,6 +300,8 @@ class PendaftaranController extends Controller
                 ->mapWithKeys(function ($item) {
                     return [$item->jenis_dokumen => $item];
                 });
+
+            $hasRejection = $dokumen->contains('status', 'invalid') || $pendaftar->status == 'Ditolak';
         }
 
         // Fetch Active Announcements
@@ -309,7 +312,7 @@ class PendaftaranController extends Controller
             ->orderBy('tanggal', 'asc')
             ->first();
 
-        return view('mahasiswa.dashboard', compact('pendaftar', 'dokumen', 'pengumuman', 'jadwalUjian'));
+        return view('mahasiswa.dashboard', compact('pendaftar', 'dokumen', 'pengumuman', 'jadwalUjian', 'hasRejection'));
     }
 
     public function status()
