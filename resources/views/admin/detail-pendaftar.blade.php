@@ -335,9 +335,14 @@
                                 {{ $pendaftar->nama_lengkap ?? '-' }}</p>
                         </div>
                         <div>
-                            <p class="text-xs text-[#616f89] mb-1">NIK (Nomor Induk Kependudukan)</p>
+                            <p class="text-xs text-[#616f89] mb-1">NIK</p>
                             <p class="text-sm font-medium text-[#111318] dark:text-white font-mono">
                                 {{ $pendaftar->nik ?? '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-[#616f89] mb-1">Status Pernikahan</p>
+                            <p class="text-sm font-medium text-[#111318] dark:text-white">
+                                {{ $pendaftar->status_pernikahan ?? '-' }}</p>
                         </div>
                         <div>
                             <p class="text-xs text-[#616f89] mb-1">Jenis Kelamin</p>
@@ -350,8 +355,23 @@
                                 {{ $pendaftar->tempat_lahir ?? '-' }}, {{ $pendaftar->tanggal_lahir ?? '-' }}</p>
                         </div>
                         <div>
+                            <p class="text-xs text-[#616f89] mb-1">NPWP</p>
+                            <p class="text-sm font-medium text-[#111318] dark:text-white">
+                                {{ $pendaftar->npwp ?? '-' }}</p>
+                        </div>
+                        <div>
                             <p class="text-xs text-[#616f89] mb-1">Agama</p>
                             <p class="text-sm font-medium text-[#111318] dark:text-white">{{ $pendaftar->agama ?? '-' }}
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-[#616f89] mb-1">Tinggal Bersama</p>
+                            <p class="text-sm font-medium text-[#111318] dark:text-white">{{ $pendaftar->tinggal_bersama ?? '-' }}
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-[#616f89] mb-1">Kode Pos</p>
+                            <p class="text-sm font-medium text-[#111318] dark:text-white">{{ $pendaftar->kode_pos ?? '-' }}
                             </p>
                         </div>
                         <div class="md:col-span-2 lg:col-span-3">
@@ -443,6 +463,64 @@
                             <p class="text-xs text-[#616f89] mb-1">No. Telp Orang Tua</p>
                             <p class="text-sm font-medium text-[#111318] dark:text-white font-mono">
                                 {{ $pendaftar->hp_ayah ?? $pendaftar->hp_ibu ?? '-' }}</p>
+                        </div>
+                    </div>
+                    <div class="my-6 border-t border-[#f0f2f4] dark:border-[#2d3748]"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Detail Pekerjaan -->
+                        <div>
+                            <h3 class="text-lg font-bold text-[#111318] dark:text-white flex items-center gap-2 mb-6">
+                                <span class="material-symbols-outlined text-primary">work</span>
+                                Detail Pekerjaan
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-xs text-[#616f89] mb-1">Nama Perusahaan</p>
+                                    <p class="text-sm font-medium text-[#111318] dark:text-white">{{ $pendaftar->nama_perusahaan ?? '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-[#616f89] mb-1">Jabatan</p>
+                                    <p class="text-sm font-medium text-[#111318] dark:text-white">{{ $pendaftar->jabatan ?? '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-[#616f89] mb-1">No. Telp Perusahaan</p>
+                                    <p class="text-sm font-medium text-[#111318] dark:text-white font-mono">{{ $pendaftar->telp_perusahaan ?? '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-[#616f89] mb-1">Alamat Perusahaan</p>
+                                    <p class="text-sm font-medium text-[#111318] dark:text-white">{{ $pendaftar->alamat_perusahaan ?? '-' }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Data KIP/KPS -->
+                        <div>
+                            <h3 class="text-lg font-bold text-[#111318] dark:text-white flex items-center gap-2 mb-6">
+                                <span class="material-symbols-outlined text-primary">card_membership</span>
+                                Data KIP/KPS
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-xs text-[#616f89] mb-1">Peserta KIP</p>
+                                    <p class="text-sm font-medium text-[#111318] dark:text-white">{{ $pendaftar->peserta_kip ?? 'Tidak' }}</p>
+                                </div>
+                                @if($pendaftar->peserta_kip == 'Ya')
+                                <div>
+                                    <p class="text-xs text-[#616f89] mb-1">Nomor KIP</p>
+                                    <p class="text-sm font-medium text-[#111318] dark:text-white font-mono">{{ $pendaftar->no_kip ?? '-' }}</p>
+                                </div>
+                                @endif
+                                <div>
+                                    <p class="text-xs text-[#616f89] mb-1">Penerima KPS/PKH</p>
+                                    <p class="text-sm font-medium text-[#111318] dark:text-white">{{ $pendaftar->penerima_kps ?? 'Tidak' }}</p>
+                                </div>
+                                @if($pendaftar->penerima_kps == 'Ya')
+                                <div>
+                                    <p class="text-xs text-[#616f89] mb-1">Nomor KPS/PKH</p>
+                                    <p class="text-sm font-medium text-[#111318] dark:text-white font-mono">{{ $pendaftar->no_kps ?? '-' }}</p>
+                                </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </section>
