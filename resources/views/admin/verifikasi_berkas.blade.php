@@ -57,7 +57,7 @@
                             <h3 class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Antrean Pendaftar
                             </h3>
                         </div>
-                        <div class="flex-1 overflow-y-auto">
+                        <div class="flex-1 overflow-y-auto custom-scrollbar">
                             @forelse($antrean as $item)
                                 <a href="{{ route('admin.verifikasi_berkas', $item->id) }}"
                                     class="block p-4 border-b border-slate-50 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-all {{ isset($pendaftar) && $pendaftar->id == $item->id ? 'bg-primary/5 border-l-4 border-l-primary' : 'border-l-4 border-l-transparent' }}">
@@ -104,8 +104,8 @@
                                         <button @click="setActiveDoc(doc)"
                                             class="w-full flex items-center justify-between p-2.5 rounded text-[11px] transition-all group border"
                                             :class="activeDoc.name === doc.name ? 
-                                                                                                                                                                                                             'bg-primary/10 border-primary/20 text-primary font-bold shadow-sm' : 
-                                                                                                                                                                                                             'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium'">
+                                                                                                                                                                                                                     'bg-primary/10 border-primary/20 text-primary font-bold shadow-sm' : 
+                                                                                                                                                                                                                     'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium'">
                                             <span class="flex items-center gap-2.5">
                                                 <span class="material-symbols-outlined text-[16px]"
                                                     :class="activeDoc.name === doc.name ? 'font-normal' : 'text-slate-400'"

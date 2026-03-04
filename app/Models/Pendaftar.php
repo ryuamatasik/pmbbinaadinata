@@ -114,6 +114,10 @@ class Pendaftar extends Model
         'kewarganegaraan',
         'status_pernikahan',
         'npwp',
+        'nama_perusahaan',
+        'alamat_perusahaan',
+        'telp_perusahaan',
+        'jabatan',
     ];
 
     public function dokumen()

@@ -142,11 +142,13 @@
                             <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors px-4 py-2"
                                 href="{{ url('/') }}" @click="checkUnsaved($event, '{{ url('/') }}')">Beranda</a>
                             <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors px-4 py-2"
-                                href="{{ route('mahasiswa.dashboard') }}" @click="checkUnsaved($event, '{{ route('mahasiswa.dashboard') }}')">Dashboard</a>
+                                href="{{ route('mahasiswa.dashboard') }}"
+                                @click="checkUnsaved($event, '{{ route('mahasiswa.dashboard') }}')">Dashboard</a>
                             @auth
                                 <form action="{{ route('logout') }}" method="POST" class="inline">
                                     @csrf
-                                    <button type="submit" class="text-red-500 hover:text-red-700 font-bold text-sm px-4 py-2 transition-colors">
+                                    <button type="submit"
+                                        class="text-red-500 hover:text-red-700 font-bold text-sm px-4 py-2 transition-colors">
                                         Keluar
                                     </button>
                                 </form>
@@ -157,8 +159,8 @@
             </div>
         </div>
 
-        <form id="pendaftaran-form" action="{{ route('mahasiswa.store', [], false) }}" method="POST" class="flex flex-col grow"
-            enctype="multipart/form-data" @submit="isLoading = true">
+        <form id="pendaftaran-form" action="{{ route('mahasiswa.store', [], false) }}" method="POST"
+            class="flex flex-col grow" enctype="multipart/form-data" @submit="isLoading = true">
             @csrf
             <!-- Modal Toggles (using checkbox hack from User HTML) -->
             <input class="peer/modal1 hidden modal-toggle" id="modal-1" type="checkbox" />
@@ -392,16 +394,21 @@
                         <button
                             class="flex items-center justify-center gap-2 h-14 px-10 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all transform w-full md:w-auto disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                             type="submit" name="action" value="submit" :disabled="isLoading">
-                            
+
                             <!-- Loading Spinner -->
-                            <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" style="display: none;">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                style="display: none;">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
                             </svg>
 
                             <!-- Button Text (Always Visible) -->
                             <span>Lanjut</span>
-                            
+
                             <!-- Icon (Hidden when loading) -->
                             <span x-show="!isLoading" class="material-symbols-outlined text-[20px]">arrow_forward</span>
                         </button>
@@ -417,9 +424,11 @@
                 <label class="absolute inset-0" for="modal-1"></label>
                 <div
                     class="relative w-full max-w-[580px] flex flex-col bg-white dark:bg-[#1a202c] rounded-xl shadow-2xl transform transition-all scale-100 overflow-hidden modal-animate">
-                    <div class="flex items-center justify-between px-6 py-5 border-b border-[#dbdfe6] dark:border-gray-700">
+                    <div
+                        class="flex items-center justify-between px-6 py-5 border-b border-[#dbdfe6] dark:border-gray-700">
                         <div class="flex flex-col">
-                            <h2 class="text-[#111318] dark:text-white text-[20px] font-bold leading-tight tracking-[-0.015em]">
+                            <h2
+                                class="text-[#111318] dark:text-white text-[20px] font-bold leading-tight tracking-[-0.015em]">
                                 I. Program Studi
                             </h2>
                         </div>
@@ -430,7 +439,8 @@
                     </div>
                     <div class="flex flex-col gap-6 px-8 py-8">
                         <div class="flex flex-col gap-1">
-                            <p class="text-sm text-gray-600 dark:text-gray-400 font-medium">Silakan pilih program studi utama
+                            <p class="text-sm text-gray-600 dark:text-gray-400 font-medium">Silakan pilih program studi
+                                utama
                                 dan cadangan Anda</p>
                         </div>
                         <div class="flex flex-col w-full">
@@ -438,22 +448,19 @@
                                 Gelombang</p>
                             <div class="flex flex-wrap gap-6">
                                 <label class="flex items-center gap-3 cursor-pointer group">
-                                    <input class="custom-radio" name="gelombang" type="radio" value="1"
-                                        {{ old('gelombang', $pendaftar->gelombang ?? '') == '1' ? 'checked' : '' }} />
+                                    <input class="custom-radio" name="gelombang" type="radio" value="1" {{ old('gelombang', $pendaftar->gelombang ?? '') == '1' ? 'checked' : '' }} />
                                     <span
                                         class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Gelombang
                                         I</span>
                                 </label>
                                 <label class="flex items-center gap-3 cursor-pointer group">
-                                    <input class="custom-radio" name="gelombang" type="radio" value="2"
-                                        {{ old('gelombang', $pendaftar->gelombang ?? '') == '2' ? 'checked' : '' }} />
+                                    <input class="custom-radio" name="gelombang" type="radio" value="2" {{ old('gelombang', $pendaftar->gelombang ?? '') == '2' ? 'checked' : '' }} />
                                     <span
                                         class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Gelombang
                                         II</span>
                                 </label>
                                 <label class="flex items-center gap-3 cursor-pointer group">
-                                    <input class="custom-radio" name="gelombang" type="radio" value="3"
-                                        {{ old('gelombang', $pendaftar->gelombang ?? '') == '3' ? 'checked' : '' }} />
+                                    <input class="custom-radio" name="gelombang" type="radio" value="3" {{ old('gelombang', $pendaftar->gelombang ?? '') == '3' ? 'checked' : '' }} />
                                     <span
                                         class="text-base text-[#111318] dark:text-gray-300 group-hover:text-primary transition-colors">Gelombang
                                         III</span>
@@ -462,7 +469,8 @@
                         </div>
                         <div class="flex flex-col w-full gap-5">
                             <div class="flex items-center justify-between">
-                                <p class="text-[#111318] dark:text-gray-200 text-base font-semibold leading-normal">Pilihan
+                                <p class="text-[#111318] dark:text-gray-200 text-base font-semibold leading-normal">
+                                    Pilihan
                                     Program Studi</p>
                                 <div class="flex flex-col items-end">
                                     <span id="prodi-counter-new"
@@ -470,7 +478,8 @@
                                         terpilih</span>
                                 </div>
                             </div>
-                            <p id="prodi-error-new" class="text-xs text-red-500 dark:text-red-400 -mt-4 font-medium">*Wajib
+                            <p id="prodi-error-new" class="text-xs text-red-500 dark:text-red-400 -mt-4 font-medium">
+                                *Wajib
                                 memilih minimal 2 program studi</p>
 
                             <!-- Hidden input for backend compatibility -->
@@ -480,7 +489,9 @@
                                 <div class="flex flex-col gap-2">
                                     <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Pilihan
                                         Utama</label>
-                                    <select class="form-select w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-[#1a202c] focus:border-primary focus:ring-primary text-sm h-11 transition-all" id="select-utama">
+                                    <select
+                                        class="form-select w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-[#1a202c] focus:border-primary focus:ring-primary text-sm h-11 transition-all"
+                                        id="select-utama">
                                         <option disabled="" selected="" value="">Pilih Program Studi Utama</option>
                                         <option value="Sistem Informasi S1">Sistem Informasi S1</option>
                                         <option value="Sistem Komputer S1">Sistem Komputer S1</option>
@@ -490,7 +501,9 @@
                                 <div class="flex flex-col gap-2">
                                     <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Pilihan
                                         Cadangan</label>
-                                    <select class="form-select w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-[#1a202c] focus:border-primary focus:ring-primary text-sm h-11 transition-all" id="select-cadangan">
+                                    <select
+                                        class="form-select w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-[#1a202c] focus:border-primary focus:ring-primary text-sm h-11 transition-all"
+                                        id="select-cadangan">
                                         <option disabled="" selected="" value="">Pilih Program Studi Cadangan</option>
                                         <option value="Sistem Informasi S1">Sistem Informasi S1</option>
                                         <option value="Sistem Komputer S1">Sistem Komputer S1</option>
@@ -503,7 +516,8 @@
                             class="flex gap-3 bg-primary/5 dark:bg-primary/10 p-4 rounded-lg border border-primary/10 dark:border-primary/20 items-start">
                             <span class="material-symbols-outlined text-primary text-[20px] mt-0.5">info</span>
                             <p class="text-[13px] text-gray-600 dark:text-gray-400 leading-snug">
-                                Pastikan pilihan program studi sudah sesuai dengan minat Anda. Pilihan tidak dapat diubah
+                                Pastikan pilihan program studi sudah sesuai dengan minat Anda. Pilihan tidak dapat
+                                diubah
                                 setelah pembayaran formulir dikonfirmasi.
                             </p>
                         </div>
@@ -564,14 +578,14 @@
                             } else {
                                 errorMsgNew.textContent = '*Wajib memilih minimal 2 program studi';
                             }
-                            
+
                             // Disable Button
                             saveBtnNew.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-400', 'dark:text-gray-500', 'cursor-not-allowed', 'pointer-events-none');
                             saveBtnNew.classList.remove('bg-primary', 'hover:bg-blue-700', 'text-white', 'shadow-md', 'cursor-pointer');
                         }
                     }
 
-                    if(selectUtama && selectCadangan) {
+                    if (selectUtama && selectCadangan) {
                         selectUtama.addEventListener('change', updateStateNew);
                         selectCadangan.addEventListener('change', updateStateNew);
                     }
@@ -600,7 +614,7 @@
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">NIK <span
                                     class="text-red-500">*</span></label>
-                                <input name="nik" value="{{ old('nik', $pendaftar->nik ?? '') }}"
+                            <input name="nik" value="{{ old('nik', $pendaftar->nik ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="text" placeholder="16 digit NIK" required />
                         </div>
@@ -611,11 +625,31 @@
                                 type="text" placeholder="Optional" />
                         </div>
 
+                        <!-- Status Pernikahan & NPWP -->
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Status Pernikahan <span
+                                    class="text-red-500">*</span></label>
+                            <select name="status_pernikahan"
+                                class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                                <option value="" disabled {{ !old('status_pernikahan', $pendaftar->status_pernikahan ?? '') ? 'selected' : '' }}>Pilih</option>
+                                <option value="Belum Menikah" {{ (old('status_pernikahan', $pendaftar->status_pernikahan ?? '') == 'Belum Menikah') ? 'selected' : '' }}>Belum Menikah</option>
+                                <option value="Menikah" {{ (old('status_pernikahan', $pendaftar->status_pernikahan ?? '') == 'Menikah') ? 'selected' : '' }}>Menikah</option>
+                                <option value="Janda/Duda" {{ (old('status_pernikahan', $pendaftar->status_pernikahan ?? '') == 'Janda/Duda') ? 'selected' : '' }}>Janda/Duda</option>
+                            </select>
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Nomor NPWP</label>
+                            <input name="npwp" value="{{ old('npwp', $pendaftar->npwp ?? '') }}"
+                                class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                                type="text" placeholder="Opsional (Jika ada)" />
+                        </div>
+
                         <!-- Row 2: Nama & Jenis Kelamin -->
                         <div class="col-span-12 md:col-span-8 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Nama Lengkap <span
                                     class="text-red-500">*</span></label>
-                            <input name="nama_lengkap" value="{{ old('nama_lengkap', $pendaftar->nama_lengkap ?? Auth::user()->name ?? '') }}"
+                            <input name="nama_lengkap"
+                                value="{{ old('nama_lengkap', $pendaftar->nama_lengkap ?? Auth::user()->name ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="text" placeholder="Sesuai ijazah" required />
                         </div>
@@ -641,7 +675,8 @@
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Tanggal Lahir <span
                                     class="text-red-500">*</span></label>
-                            <input name="tanggal_lahir" value="{{ old('tanggal_lahir', $pendaftar->tanggal_lahir ?? '') }}"
+                            <input name="tanggal_lahir"
+                                value="{{ old('tanggal_lahir', $pendaftar->tanggal_lahir ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="date" />
                         </div>
@@ -663,12 +698,14 @@
                         </div>
                         <div class="col-span-6 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Tinggi (cm)</label>
-                            <input name="tinggi_badan" value="{{ old('tinggi_badan', $pendaftar->tinggi_badan ?? '') }}" type="number"
+                            <input name="tinggi_badan" value="{{ old('tinggi_badan', $pendaftar->tinggi_badan ?? '') }}"
+                                type="number"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm" />
                         </div>
                         <div class="col-span-6 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Berat (kg)</label>
-                            <input name="berat_badan" value="{{ old('berat_badan', $pendaftar->berat_badan ?? '') }}" type="number"
+                            <input name="berat_badan" value="{{ old('berat_badan', $pendaftar->berat_badan ?? '') }}"
+                                type="number"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm" />
                         </div>
 
@@ -679,7 +716,8 @@
                         <div class="col-span-12 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Jalan / Dusun / Lingkungan
                                 <span class="text-red-500">*</span></label>
-                            <input name="alamat_lengkap" value="{{ old('alamat_lengkap', $pendaftar->alamat_lengkap ?? '') }}"
+                            <input name="alamat_lengkap"
+                                value="{{ old('alamat_lengkap', $pendaftar->alamat_lengkap ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="text" />
                         </div>
@@ -723,12 +761,33 @@
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 type="text" />
                         </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Tinggal Bersama <span
+                                    class="text-red-500">*</span></label>
+                            <select name="tinggal_bersama"
+                                class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                                <option value="" disabled {{ !old('tinggal_bersama', $pendaftar->tinggal_bersama ?? '') ? 'selected' : '' }}>Pilih</option>
+                                <option value="Orang Tua" {{ (old('tinggal_bersama', $pendaftar->tinggal_bersama ?? '') == 'Orang Tua') ? 'selected' : '' }}>Orang Tua</option>
+                                <option value="Wali" {{ (old('tinggal_bersama', $pendaftar->tinggal_bersama ?? '') == 'Wali') ? 'selected' : '' }}>Wali</option>
+                                <option value="Kos" {{ (old('tinggal_bersama', $pendaftar->tinggal_bersama ?? '') == 'Kos') ? 'selected' : '' }}>Kos</option>
+                                <option value="Asrama" {{ (old('tinggal_bersama', $pendaftar->tinggal_bersama ?? '') == 'Asrama') ? 'selected' : '' }}>Asrama</option>
+                                <option value="Lainnya" {{ (old('tinggal_bersama', $pendaftar->tinggal_bersama ?? '') == 'Lainnya') ? 'selected' : '' }}>Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Kode Pos <span
+                                    class="text-red-500">*</span></label>
+                            <input name="kode_pos" value="{{ old('kode_pos', $pendaftar->kode_pos ?? '') }}"
+                                class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                                type="text" placeholder="5 digit kode pos" />
+                        </div>
 
                         <!-- Row 6: Kontak -->
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Email <span
                                     class="text-red-500">*</span></label>
-                            <input name="email" value="{{ old('email', $pendaftar->email ?? Auth::user()->email ?? '') }}"
+                            <input name="email"
+                                value="{{ old('email', $pendaftar->email ?? Auth::user()->email ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 type="email" />
                         </div>
@@ -738,6 +797,73 @@
                             <input name="no_hp" value="{{ old('no_hp', $pendaftar->no_hp ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 type="tel" />
+                        </div>
+                    <!-- Data KIP/KPS (Moved from Keluarga) -->
+                        <div class="col-span-12 pt-6 border-t border-gray-100 dark:border-gray-700">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-[20px]">card_membership</span>
+                                <h4 class="font-bold text-primary text-sm uppercase tracking-wide">Data KIP/KPS (Opsional)</h4>
+                            </div>
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Peserta KIP (Kartu Indonesia Pintar)?</label>
+                            <select name="peserta_kip"
+                                class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                                <option value="Tidak" {{ old('peserta_kip', $pendaftar->peserta_kip ?? '') == 'Tidak' ? 'selected' : '' }}>Bukan Peserta KIP</option>
+                                <option value="Ya" {{ old('peserta_kip', $pendaftar->peserta_kip ?? '') == 'Ya' ? 'selected' : '' }}>Ya, Peserta KIP</option>
+                            </select>
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Nomor KIP</label>
+                            <input name="no_kip" value="{{ old('no_kip', $pendaftar->no_kip ?? '') }}"
+                                class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
+                                placeholder="Opsional (Jika ada)" />
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Penerima KPS/PKH?</label>
+                            <select name="penerima_kps"
+                                class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                                <option value="Tidak" {{ old('penerima_kps', $pendaftar->penerima_kps ?? '') == 'Tidak' ? 'selected' : '' }}>Bukan Penerima</option>
+                                <option value="Ya" {{ old('penerima_kps', $pendaftar->penerima_kps ?? '') == 'Ya' ? 'selected' : '' }}>Ya, Penerima</option>
+                            </select>
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Nomor KPS/PKH</label>
+                            <input name="no_kps" value="{{ old('no_kps', $pendaftar->no_kps ?? '') }}"
+                                class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
+                                placeholder="Opsional (Jika ada)" />
+                        </div>
+
+                        <!-- Row 7: Detail Pekerjaan -->
+                        <div class="col-span-12 pt-6 border-t border-gray-100 dark:border-gray-700">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-[20px]">work</span>
+                                <h4 class="font-bold text-primary text-sm uppercase tracking-wide">Detail Pekerjaan (Jika sudah bekerja)</h4>
+                            </div>
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Nama Perusahaan</label>
+                            <input name="nama_perusahaan" value="{{ old('nama_perusahaan', $pendaftar->nama_perusahaan ?? '') }}"
+                                class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
+                                placeholder="Nama perusahaan tempat bekerja" />
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">No. Telp Perusahaan</label>
+                            <input name="telp_perusahaan" value="{{ old('telp_perusahaan', $pendaftar->telp_perusahaan ?? '') }}"
+                                class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
+                                placeholder="Nomor telepon kantor" />
+                        </div>
+                        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Jabatan Saat Ini</label>
+                            <input name="jabatan" value="{{ old('jabatan', $pendaftar->jabatan ?? '') }}"
+                                class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
+                                placeholder="Posisi / Jabatan" />
+                        </div>
+                        <div class="col-span-12 md:col-span-12 flex flex-col gap-2">
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Alamat Perusahaan</label>
+                            <input name="alamat_perusahaan" value="{{ old('alamat_perusahaan', $pendaftar->alamat_perusahaan ?? '') }}"
+                                class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
+                                placeholder="Alamat lengkap perusahaan" />
                         </div>
                     </div>
                     <div
@@ -961,7 +1087,7 @@
                     this.step1Complete = !!(gelombang && prodi);
 
                     // Step 2: Identitas Diri
-                    const step2Fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp'];
+                    const step2Fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
                     this.step2Complete = step2Fields.every(name => {
                         const el = document.querySelector(`[name="${name}"]`);
                         return el && el.value.trim() !== '';

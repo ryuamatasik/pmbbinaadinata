@@ -70,32 +70,35 @@
                                 Keluarga) <span class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nomor_kk" value="{{ old('nomor_kk', $pendaftar->nomor_kk ?? '') }}" placeholder="16 digit nomor KK"
-                                type="text" />
+                                name="nomor_kk" value="{{ old('nomor_kk', $pendaftar->nomor_kk ?? '') }}"
+                                placeholder="16 digit nomor KK" type="text" />
                         </label>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Nama Lengkap Ayah
-                                <span class="text-red-500">*</span></p>
+                                <span class="text-red-500">*</span>
+                            </p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nama_ayah" value="{{ old('nama_ayah', $pendaftar->nama_ayah ?? '') }}" placeholder="Sesuai KTP" />
+                                name="nama_ayah" value="{{ old('nama_ayah', $pendaftar->nama_ayah ?? '') }}"
+                                placeholder="Sesuai KTP" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">NIK <span
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nik_ayah" value="{{ old('nik_ayah', $pendaftar->nik_ayah ?? '') }}" placeholder="16 digit angka"
-                                type="text" />
+                                name="nik_ayah" value="{{ old('nik_ayah', $pendaftar->nik_ayah ?? '') }}"
+                                placeholder="16 digit angka" type="text" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">No. Telepon / HP <span
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="hp_ayah" value="{{ old('hp_ayah', $pendaftar->hp_ayah ?? '') }}" placeholder="08xxxxxxxxxx" type="tel" />
+                                name="hp_ayah" value="{{ old('hp_ayah', $pendaftar->hp_ayah ?? '') }}"
+                                placeholder="08xxxxxxxxxx" type="tel" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Pendidikan Terakhir
@@ -177,21 +180,25 @@
                                     <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">RT</p>
                                     <input
                                         class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                        name="rt_ayah" value="{{ old('rt_ayah', $pendaftar->rt_ayah ?? '') }}" placeholder="000" />
+                                        name="rt_ayah" value="{{ old('rt_ayah', $pendaftar->rt_ayah ?? '') }}"
+                                        placeholder="000" />
                                 </label>
                                 <label class="flex flex-col">
                                     <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">RW</p>
                                     <input
                                         class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                        name="rw_ayah" value="{{ old('rw_ayah', $pendaftar->rw_ayah ?? '') }}" placeholder="000" />
+                                        name="rw_ayah" value="{{ old('rw_ayah', $pendaftar->rw_ayah ?? '') }}"
+                                        placeholder="000" />
                                 </label>
                             </div>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Desa/Kelurahan
-                                    <span class="text-red-500">*</span></p>
+                                    <span class="text-red-500">*</span>
+                                </p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kelurahan_ayah" value="{{ old('kelurahan_ayah', $pendaftar->kelurahan_ayah ?? '') }}"
+                                    name="kelurahan_ayah"
+                                    value="{{ old('kelurahan_ayah', $pendaftar->kelurahan_ayah ?? '') }}"
                                     placeholder="Nama Desa/Kelurahan" />
                             </label>
                             <label class="flex flex-col">
@@ -199,22 +206,26 @@
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kecamatan_ayah" value="{{ old('kecamatan_ayah', $pendaftar->kecamatan_ayah ?? '') }}"
+                                    name="kecamatan_ayah"
+                                    value="{{ old('kecamatan_ayah', $pendaftar->kecamatan_ayah ?? '') }}"
                                     placeholder="Nama Kecamatan" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Kabupaten/Kota
-                                    <span class="text-red-500">*</span></p>
+                                    <span class="text-red-500">*</span>
+                                </p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kota_ayah" value="{{ old('kota_ayah', $pendaftar->kota_ayah ?? '') }}" placeholder="Nama Kabupaten/Kota" />
+                                    name="kota_ayah" value="{{ old('kota_ayah', $pendaftar->kota_ayah ?? '') }}"
+                                    placeholder="Nama Kabupaten/Kota" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Provinsi <span
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="provinsi_ayah" value="{{ old('provinsi_ayah', $pendaftar->provinsi_ayah ?? '') }}"
+                                    name="provinsi_ayah"
+                                    value="{{ old('provinsi_ayah', $pendaftar->provinsi_ayah ?? '') }}"
                                     placeholder="Nama Provinsi" />
                             </label>
                             <label class="flex flex-col">
@@ -222,7 +233,8 @@
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="negara_ayah" value="{{ old('negara_ayah', $pendaftar->negara_ayah ?? 'Indonesia') }}"
+                                    name="negara_ayah"
+                                    value="{{ old('negara_ayah', $pendaftar->negara_ayah ?? 'Indonesia') }}"
                                     placeholder="Contoh: Indonesia" />
                             </label>
                         </div>
@@ -268,21 +280,24 @@
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nama_ibu" value="{{ old('nama_ibu', $pendaftar->nama_ibu ?? '') }}" placeholder="Sesuai KTP" />
+                                name="nama_ibu" value="{{ old('nama_ibu', $pendaftar->nama_ibu ?? '') }}"
+                                placeholder="Sesuai KTP" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">NIK <span
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nik_ibu" value="{{ old('nik_ibu', $pendaftar->nik_ibu ?? '') }}" placeholder="16 digit angka" type="text" />
+                                name="nik_ibu" value="{{ old('nik_ibu', $pendaftar->nik_ibu ?? '') }}"
+                                placeholder="16 digit angka" type="text" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">No. Telepon / HP <span
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="hp_ibu" value="{{ old('hp_ibu', $pendaftar->hp_ibu ?? '') }}" placeholder="08xxxxxxxxxx" type="tel" />
+                                name="hp_ibu" value="{{ old('hp_ibu', $pendaftar->hp_ibu ?? '') }}"
+                                placeholder="08xxxxxxxxxx" type="tel" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Pendidikan Terakhir
@@ -332,7 +347,8 @@
                             <select name="penghasilan_ibu"
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
                                 <option disabled selected>Pilih Penghasilan</option>
-                                <option value="Tidak Berpenghasilan" {{ old('penghasilan_ibu', $pendaftar->penghasilan_ibu ?? '') == 'Tidak Berpenghasilan' ? 'selected' : '' }}>Tidak Berpenghasilan</option>
+                                <option value="Tidak Berpenghasilan" {{ old('penghasilan_ibu', $pendaftar->penghasilan_ibu ?? '') == 'Tidak Berpenghasilan' ? 'selected' : '' }}>
+                                    Tidak Berpenghasilan</option>
                                 <option value="< 1 Juta" {{ old('penghasilan_ibu', $pendaftar->penghasilan_ibu ?? '') == '< 1 Juta' ? 'selected' : '' }}>
                                     < Rp 1.000.000</option>
                                 <option value="1-3 Juta" {{ old('penghasilan_ibu', $pendaftar->penghasilan_ibu ?? '') == '1-3 Juta' ? 'selected' : '' }}>Rp
@@ -376,21 +392,25 @@
                                     <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">RT</p>
                                     <input
                                         class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                        name="rt_ibu" value="{{ old('rt_ibu', $pendaftar->rt_ibu ?? '') }}" placeholder="000" />
+                                        name="rt_ibu" value="{{ old('rt_ibu', $pendaftar->rt_ibu ?? '') }}"
+                                        placeholder="000" />
                                 </label>
                                 <label class="flex flex-col">
                                     <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">RW</p>
                                     <input
                                         class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                        name="rw_ibu" value="{{ old('rw_ibu', $pendaftar->rw_ibu ?? '') }}" placeholder="000" />
+                                        name="rw_ibu" value="{{ old('rw_ibu', $pendaftar->rw_ibu ?? '') }}"
+                                        placeholder="000" />
                                 </label>
                             </div>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Desa/Kelurahan
-                                    <span class="text-red-500">*</span></p>
+                                    <span class="text-red-500">*</span>
+                                </p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kelurahan_ibu" value="{{ old('kelurahan_ibu', $pendaftar->kelurahan_ibu ?? '') }}"
+                                    name="kelurahan_ibu"
+                                    value="{{ old('kelurahan_ibu', $pendaftar->kelurahan_ibu ?? '') }}"
                                     placeholder="Nama Desa/Kelurahan" />
                             </label>
                             <label class="flex flex-col">
@@ -398,82 +418,40 @@
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kecamatan_ibu" value="{{ old('kecamatan_ibu', $pendaftar->kecamatan_ibu ?? '') }}"
+                                    name="kecamatan_ibu"
+                                    value="{{ old('kecamatan_ibu', $pendaftar->kecamatan_ibu ?? '') }}"
                                     placeholder="Nama Kecamatan" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Kabupaten/Kota
-                                    <span class="text-red-500">*</span></p>
+                                    <span class="text-red-500">*</span>
+                                </p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kota_ibu" value="{{ old('kota_ibu', $pendaftar->kota_ibu ?? '') }}" placeholder="Nama Kabupaten/Kota" />
+                                    name="kota_ibu" value="{{ old('kota_ibu', $pendaftar->kota_ibu ?? '') }}"
+                                    placeholder="Nama Kabupaten/Kota" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Provinsi <span
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="provinsi_ibu" value="{{ old('provinsi_ibu', $pendaftar->provinsi_ibu ?? '') }}" placeholder="Nama Provinsi" />
+                                    name="provinsi_ibu"
+                                    value="{{ old('provinsi_ibu', $pendaftar->provinsi_ibu ?? '') }}"
+                                    placeholder="Nama Provinsi" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Negara <span
                                         class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="negara_ibu" value="{{ old('negara_ibu', $pendaftar->negara_ibu ?? 'Indonesia') }}"
+                                    name="negara_ibu"
+                                    value="{{ old('negara_ibu', $pendaftar->negara_ibu ?? 'Indonesia') }}"
                                     placeholder="Contoh: Indonesia" />
                             </label>
                         </div>
                     </div>
                 </section>
-
-                <div class="border-t-2 border-dashed border-gray-200 dark:border-gray-700"></div>
-
-                <!-- KIP & KPS (Kartu Perlindungan Sosial) -->
-                <section class="space-y-8">
-                    <div class="flex items-center gap-2 pb-2 border-b border-[#dbdfe6] dark:border-gray-700">
-                        <span class="material-symbols-outlined text-primary">card_membership</span>
-                        <h3 class="text-lg font-bold text-[#111318] dark:text-white">Data KIP/KPS (Opsional)</h3>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <label class="flex flex-col">
-                            <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Peserta KIP (Kartu
-                                Indonesia Pintar)?</p>
-                            <select name="peserta_kip"
-                                class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
-                                <option value="Tidak" {{ old('peserta_kip', $pendaftar->peserta_kip ?? '') == 'Tidak' ? 'selected' : '' }}>Bukan Peserta
-                                    KIP</option>
-                                <option value="Ya" {{ old('peserta_kip', $pendaftar->peserta_kip ?? '') == 'Ya' ? 'selected' : '' }}>Ya, Peserta KIP
-                                </option>
-                            </select>
-                        </label>
-                        <label class="flex flex-col">
-                            <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Nomor KIP</p>
-                            <input
-                                class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="no_kip" value="{{ old('no_kip', $pendaftar->no_kip ?? '') }}" placeholder="Opsional (Jika ada)" />
-                        </label>
-                        <label class="flex flex-col">
-                            <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Penerima KPS/PKH?</p>
-                            <select name="penerima_kps"
-                                class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base">
-                                <option value="Tidak" {{ old('penerima_kps', $pendaftar->penerima_kps ?? '') == 'Tidak' ? 'selected' : '' }}>Bukan
-                                    Penerima</option>
-                                <option value="Ya" {{ old('penerima_kps', $pendaftar->penerima_kps ?? '') == 'Ya' ? 'selected' : '' }}>Ya, Penerima
-                                </option>
-                            </select>
-                        </label>
-                        <label class="flex flex-col">
-                            <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Nomor KPS/PKH</p>
-                            <input
-                                class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="no_kps" value="{{ old('no_kps', $pendaftar->no_kps ?? '') }}" placeholder="Opsional (Jika ada)" />
-                        </label>
-                    </div>
-                </section>
-
-                <div class="border-t-2 border-dashed border-gray-200 dark:border-gray-700"></div>
 
                 <!-- DATA WALI -->
                 <section class="space-y-8">
@@ -486,21 +464,22 @@
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Nama Lengkap Wali</p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nama_wali" value="{{ old('nama_wali', $pendaftar->nama_wali ?? '') }}" placeholder="Sesuai KTP" />
+                                name="nama_wali" value="{{ old('nama_wali', $pendaftar->nama_wali ?? '') }}"
+                                placeholder="Sesuai KTP" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">NIK Wali</p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nik_wali" value="{{ old('nik_wali', $pendaftar->nik_wali ?? '') }}" placeholder="16 digit angka"
-                                type="text" />
+                                name="nik_wali" value="{{ old('nik_wali', $pendaftar->nik_wali ?? '') }}"
+                                placeholder="16 digit angka" type="text" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">No. Telepon / HP</p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="no_hp_wali" value="{{ old('no_hp_wali', $pendaftar->no_hp_wali ?? '') }}" placeholder="08xxxxxxxxxx"
-                                type="tel" />
+                                name="no_hp_wali" value="{{ old('no_hp_wali', $pendaftar->no_hp_wali ?? '') }}"
+                                placeholder="08xxxxxxxxxx" type="tel" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Hubungan dengan Calon
