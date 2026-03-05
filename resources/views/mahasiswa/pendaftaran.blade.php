@@ -535,14 +535,18 @@
                                     class="text-red-500">*</span></label>
                             <input name="nik" value="{{ old('nik', $pendaftar->nik ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                type="text" placeholder="16 digit NIK" required />
+                                type="text" placeholder="16 digit NIK" maxlength="16"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                required />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">NISN</label>
                             <input name="nisn" value="{{ old('nisn', $pendaftar->nisn ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="text" placeholder="10 digit NISN (Opsional)" maxlength="10"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
                         </div>
 
                         <!-- Status Pernikahan & NPWP -->
@@ -1101,6 +1105,9 @@
                     }
 
                     fields.forEach(name => {
+                        // EXPLICIT GUARD: Never validate NISN as required
+                        if (name === 'nisn') return;
+
                         let el = document.querySelector(`[name="${name}"]`);
                         if (!el) return;
 
@@ -1142,7 +1149,8 @@
 
                     if (!isValid) {
                         const uniqueMissing = [...new Set(missing)];
-                        this.showToast(`Mohon lengkapi data pada bagian ${stepName}: ${uniqueMissing.join(', ')}`, "error");
+                        // Added [V4] marker to verify server is running latest code
+                        this.showToast(`[V4] Mohon lengkapi data pada bagian ${stepName}: ${uniqueMissing.join(', ')}`, "error");
                     } else {
                         // Close modal manually
                         const modalSelector = document.getElementById('modal-' + step);
