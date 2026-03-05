@@ -318,7 +318,12 @@
                 const maxSize = maxSizes[id] || 2048; // default 2MB
 
                 if (fileSize > maxSize) {
-                    alert('Ukuran file terlalu besar! Maksimal ' + (maxSize / 1024) + 'MB.');
+                    const alpine = document.querySelector('body').__x?.$data || Alpine.find(document.querySelector('body'));
+                    if (alpine) {
+                        alpine.showToast('Ukuran file terlalu besar! Maksimal ' + (maxSize / 1024) + 'MB.', 'error');
+                    } else {
+                        alert('Ukuran file terlalu besar! Maksimal ' + (maxSize / 1024) + 'MB.');
+                    }
                     input.value = ''; // Reset input
                     document.getElementById('text-' + id).textContent = 'Klik atau tarik file ke sini';
                     return;
@@ -343,7 +348,13 @@
 
             if (totalSize > maxTotalSize) {
                 e.preventDefault();
-                alert('Total ukuran semua file terlalu besar (' + (totalSize / (1024 * 1024)).toFixed(2) + ' MB). \nMohon kurangi ukuran file atau upload secara bertahap.\nMaksimal total upload: 30 MB.');
+                const alpine = document.querySelector('body').__x?.$data || Alpine.find(document.querySelector('body'));
+                const msg = 'Total ukuran semua file terlalu besar (' + (totalSize / (1024 * 1024)).toFixed(2) + ' MB). Mohon kurangi ukuran file atau upload secara bertahap. Maksimal: 30 MB.';
+                if (alpine) {
+                    alpine.showToast(msg, 'error');
+                } else {
+                    alert(msg);
+                }
             }
         });
 
@@ -373,6 +384,36 @@
             }
         }
     </script>
+    <!-- Toast Notifications Container -->
+    <div class="fixed bottom-6 right-6 z-[200] flex flex-col gap-3 pointer-events-none">
+        <template x-for="toast in toasts" :key="toast.id">
+            <div x-show="true" x-transition:enter="transition ease-out duration-300 transform"
+                x-transition:enter-start="translate-y-4 opacity-0 scale-95"
+                x-transition:enter-end="translate-y-0 opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-200 transform"
+                x-transition:leave-start="translate-y-0 opacity-100 scale-100"
+                x-transition:leave-end="translate-y-4 opacity-0 scale-95"
+                class="pointer-events-auto flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl border min-w-[320px] max-w-md"
+                :class="{
+                    'bg-white dark:bg-slate-800 border-red-100 dark:border-red-900/30 text-red-600': toast.type === 'error',
+                    'bg-white dark:bg-slate-800 border-blue-100 dark:border-blue-900/30 text-primary': toast.type === 'success',
+                    'bg-white dark:bg-slate-800 border-amber-100 dark:border-amber-900/30 text-amber-600': toast.type === 'warning',
+                    'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-800 text-slate-600': toast.type === 'info'
+                }">
+                <div class="flex-shrink-0">
+                    <span class="material-symbols-outlined text-[24px]"
+                        x-text="toast.type === 'error' ? 'error' : (toast.type === 'success' ? 'check_circle' : (toast.type === 'warning' ? 'warning' : 'info'))"></span>
+                </div>
+                <div class="flex-grow">
+                    <p class="text-[14px] font-bold leading-tight" x-text="toast.message"></p>
+                </div>
+                <button @click="toasts = toasts.filter(t => t.id !== toast.id)"
+                    class="flex-shrink-0 text-slate-400 hover:text-slate-600 transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
+            </div>
+        </template>
+    </div>
 </body>
 
 </html>

@@ -394,7 +394,7 @@
                         <button
                             class="flex items-center justify-center gap-2 h-14 px-10 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all transform w-full md:w-auto disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                             type="submit" name="action" value="submit" :disabled="isLoading"
-                            @click="if(!step1Complete || !step2Complete || !step3Complete || !step4Complete) { $event.preventDefault(); alert('Mohon lengkapi semua bagian (Program Studi, Identitas Diri, Sekolah, dan Keluarga) sebelum melanjutkan.'); }">
+                            @click="if(!step1Complete || !step2Complete || !step3Complete || !step4Complete) { $event.preventDefault(); showToast('Mohon lengkapi semua bagian (Program Studi, Identitas Diri, Sekolah, dan Keluarga) sebelum melanjutkan.', 'warning'); }">
 
                             <!-- Loading Spinner -->
                             <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white"
@@ -1030,6 +1030,7 @@
                 step4Complete: false,
                 prodiUtama: '{{ str_contains($pendaftar->pilihan_prodi ?? "", ",") ? explode(", ", $pendaftar->pilihan_prodi)[0] : "" }}',
                 prodiCadangan: '{{ str_contains($pendaftar->pilihan_prodi ?? "", ",") ? explode(", ", $pendaftar->pilihan_prodi)[1] ?? "" : "" }}',
+                toasts: [],
 
                 init() {
                     this.checkCompletion();
@@ -1110,12 +1111,12 @@
                             missing.push("Pilihan Program Studi (Utama & Cadangan)");
                         } else if (this.prodiUtama === this.prodiCadangan) {
                             isValid = false;
-                            alert("Pilihan Program Studi Utama dan Cadangan tidak boleh sama.");
+                            this.showToast("Pilihan Program Studi Utama dan Cadangan tidak boleh sama.", "warning");
                             return false;
                         }
                         stepName = "Program Studi";
                     } else if (step === 2) {
-                        fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
+                        fields = ['nik', 'nisn', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
                         stepName = "Identitas Diri";
                     } else if (step === 3) {
                         fields = ['nama_sekolah', 'jurusan_sekolah', 'nilai_rata_rata', 'tahun_lulus', 'alamat_sekolah'];
@@ -1132,11 +1133,14 @@
                         if (name.startsWith('status_')) {
                             el = document.querySelector(`[name="${name}"]:checked`);
                             val = el ? el.value : "";
-                            // For radio, we highlight the container if possible or just the first radio
                             if (!el) {
                                 isValid = false;
                                 const firstRadio = document.querySelector(`[name="${name}"]`);
-                                if (firstRadio) missing.push(firstRadio.closest('div').previousElementSibling.textContent.trim().replace('*', ''));
+                                if (firstRadio) {
+                                    const container = firstRadio.closest('div');
+                                    const label = container.previousElementSibling || container.closest('div').querySelector('p');
+                                    missing.push(label ? label.textContent.trim().replace('*', '') : name);
+                                }
                             }
                         } else {
                             val = el ? el.value.trim() : "";
@@ -1144,22 +1148,35 @@
                                 isValid = false;
                                 if (el) {
                                     el.classList.add('border-red-500', 'ring-red-500/20');
-                                    const label = el.closest('div').querySelector('label') || el.closest('label')?.querySelector('p');
-                                    if (label) missing.push(label.textContent.trim().replace('*', ''));
+                                    // Robust label finding
+                                    let labelText = name;
+                                    const labelEl = el.closest('div').querySelector('label') || el.closest('label')?.querySelector('p') || el.parentElement.querySelector('label');
+                                    if (labelEl) labelText = labelEl.textContent.trim().replace('*', '');
+                                    missing.push(labelText);
                                 }
                             }
                         }
                     });
 
                     if (!isValid) {
-                        alert(`Mohon lengkapi data pada bagian ${stepName}:\n- ` + missing.join('\n- '));
+                        this.showToast(`Mohon lengkapi data pada bagian ${stepName}: ${missing.join(', ')}`, "error");
                     } else {
                         // Close modal manually
-                        document.getElementById('modal-' + step).checked = false;
+                        const modalSelector = document.getElementById('modal-' + step);
+                        if (modalSelector) modalSelector.checked = false;
                         this.checkCompletion();
+                        this.showToast(`Bagian ${stepName} berhasil disimpan!`, "success");
                     }
 
                     return isValid;
+                },
+
+                showToast(message, type = 'info') {
+                    const id = Date.now();
+                    this.toasts.push({ id, message, type });
+                    setTimeout(() => {
+                        this.toasts = this.toasts.filter(t => t.id !== id);
+                    }, 5000);
                 },
 
                 showUnsavedModal: false,
@@ -1198,15 +1215,15 @@
                             } else {
                                 response.json().then(data => {
                                     console.error('Save failed:', data);
-                                    alert('Gagal menyimpan data: ' + (data.message || response.statusText));
+                                    this.showToast('Gagal menyimpan data: ' + (data.message || response.statusText), 'error');
                                 }).catch(() => {
-                                    alert('Gagal menyimpan data (Status: ' + response.status + ')');
+                                    this.showToast('Gagal menyimpan data (Status: ' + response.status + ')', 'error');
                                 });
                             }
                         })
                         .catch(error => {
                             console.error('Error:', error);
-                            alert('Terjadi kesalahan jaringan/sistem: ' + error.message);
+                            this.showToast('Terjadi kesalahan jaringan/sistem: ' + error.message, 'error');
                         });
                 }
             }));
@@ -1249,6 +1266,36 @@
                 Butuh bantuan? Hubungi IT Support kami
             </p>
         </div>
+    </div>
+    <!-- Toast Notifications Container -->
+    <div class="fixed bottom-6 right-6 z-[200] flex flex-col gap-3 pointer-events-none" x-data="{ }">
+        <template x-for="toast in toasts" :key="toast.id">
+            <div x-show="true" x-transition:enter="transition ease-out duration-300 transform"
+                x-transition:enter-start="translate-y-4 opacity-0 scale-95"
+                x-transition:enter-end="translate-y-0 opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-200 transform"
+                x-transition:leave-start="translate-y-0 opacity-100 scale-100"
+                x-transition:leave-end="translate-y-4 opacity-0 scale-95"
+                class="pointer-events-auto flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl border min-w-[320px] max-w-md"
+                :class="{
+                    'bg-white dark:bg-slate-800 border-red-100 dark:border-red-900/30 text-red-600': toast.type === 'error',
+                    'bg-white dark:bg-slate-800 border-blue-100 dark:border-blue-900/30 text-primary': toast.type === 'success',
+                    'bg-white dark:bg-slate-800 border-amber-100 dark:border-amber-900/30 text-amber-600': toast.type === 'warning',
+                    'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-800 text-slate-600': toast.type === 'info'
+                }">
+                <div class="flex-shrink-0">
+                    <span class="material-symbols-outlined text-[24px]"
+                        x-text="toast.type === 'error' ? 'error' : (toast.type === 'success' ? 'check_circle' : (toast.type === 'warning' ? 'warning' : 'info'))"></span>
+                </div>
+                <div class="flex-grow">
+                    <p class="text-[14px] font-bold leading-tight" x-text="toast.message"></p>
+                </div>
+                <button @click="toasts = toasts.filter(t => t.id !== toast.id)"
+                    class="flex-shrink-0 text-slate-400 hover:text-slate-600 transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
+            </div>
+        </template>
     </div>
 </body>
 
