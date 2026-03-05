@@ -1095,7 +1095,6 @@
                     } else if (step === 2) {
                         fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
                         stepName = "Identitas Diri";
-                        console.log("Validating Step 2. Fields to check:", fields);
                     } else if (step === 3) {
                         fields = ['nama_sekolah', 'jurusan_sekolah', 'nilai_rata_rata', 'tahun_lulus', 'alamat_sekolah'];
                         stepName = "Identitas Sekolah";
@@ -1111,25 +1110,28 @@
                         let el = document.querySelector(`[name="${name}"]`);
                         if (!el) return;
 
-                        let val = "";
-                        if (name.startsWith('status_')) {
+                        // Check if it's a radio group (multiple elements with same name)
+                        const isRadioGroup = document.querySelectorAll(`[name="${name}"][type="radio"]`).length > 0;
+
+                        if (isRadioGroup) {
                             const checked = document.querySelector(`[name="${name}"]:checked`);
                             if (!checked) {
                                 isValid = false;
-                                const firstRadio = document.querySelector(`[name="${name}"]`);
-                                const container = firstRadio.closest('div');
-                                const label = container.previousElementSibling || container.closest('div').querySelector('p');
-                                missing.push(label ? label.textContent.trim().replace('*', '') : name);
+                                const container = el.closest('div');
+                                // Look for label in previous sibling or parent's heading
+                                const label = container.previousElementSibling || container.closest('div').querySelector('p') || container.querySelector('p');
+                                let labelText = label ? label.textContent.trim().replace('*', '') : name;
+                                missing.push(labelText);
                             }
                         } else {
-                            val = el.value.trim();
+                            let val = el.value.trim();
                             if (!val) {
                                 isValid = false;
                                 el.classList.add('border-red-500', 'ring-red-500/20');
                                 let labelText = name;
                                 const labelEl = el.closest('div')?.querySelector('label') || el.closest('label')?.querySelector('p') || el.parentElement?.querySelector('label');
                                 if (labelEl) labelText = labelEl.textContent.trim().replace('*', '');
-                                missing.push(`${labelText} (${name})`);
+                                missing.push(labelText);
                             }
                         }
                     });
@@ -1149,8 +1151,7 @@
 
                     if (!isValid) {
                         const uniqueMissing = [...new Set(missing)];
-                        // Added [V5] marker for diagnosis
-                        this.showToast(`[V5] Mohon lengkapi: ${uniqueMissing.join(', ')}`, "error");
+                        this.showToast(`Mohon lengkapi data pada bagian ${stepName}: ${uniqueMissing.join(', ')}`, "error");
                     } else {
                         // Close modal manually
                         const modalSelector = document.getElementById('modal-' + step);
@@ -1216,7 +1217,7 @@
                             console.error('Error:', error);
                             this.showToast('Terjadi kesalahan jaringan/sistem: ' + error.message, 'error');
                         });
-            }
+                }
             }));
         });
     </script>
