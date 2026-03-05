@@ -1102,43 +1102,41 @@
 
                     fields.forEach(name => {
                         let el = document.querySelector(`[name="${name}"]`);
-                        let val = "";
+                        if (!el) return;
 
+                        let val = "";
                         if (name.startsWith('status_')) {
-                            el = document.querySelector(`[name="${name}"]:checked`);
-                            val = el ? el.value : "";
-                            if (!el) {
+                            const checked = document.querySelector(`[name="${name}"]:checked`);
+                            if (!checked) {
                                 isValid = false;
                                 const firstRadio = document.querySelector(`[name="${name}"]`);
-                                if (firstRadio) {
-                                    const container = firstRadio.closest('div');
-                                    const label = container.previousElementSibling || container.closest('div').querySelector('p');
-                                    missing.push(label ? label.textContent.trim().replace('*', '') : name);
-                                }
+                                const container = firstRadio.closest('div');
+                                const label = container.previousElementSibling || container.closest('div').querySelector('p');
+                                missing.push(label ? label.textContent.trim().replace('*', '') : name);
                             }
                         } else {
-                            val = el ? el.value.trim() : "";
+                            val = el.value.trim();
                             if (!val) {
                                 isValid = false;
-                                if (el) {
-                                    el.classList.add('border-red-500', 'ring-red-500/20');
-                                    // Robust label finding
-                                    let labelText = name;
-                                    const labelEl = el.closest('div').querySelector('label') || el.closest('label')?.querySelector('p') || el.parentElement.querySelector('label');
-                                    if (labelEl) labelText = labelEl.textContent.trim().replace('*', '');
-                                    missing.push(labelText);
-                                }
+                                el.classList.add('border-red-500', 'ring-red-500/20');
+                                let labelText = name;
+                                const labelEl = el.closest('div')?.querySelector('label') || el.closest('label')?.querySelector('p') || el.parentElement?.querySelector('label');
+                                if (labelEl) labelText = labelEl.textContent.trim().replace('*', '');
+                                missing.push(labelText);
                             }
                         }
                     });
 
-                    // Special Check for NISN (Optional but must be 10 digits if filled)
+                    // Explicitly handle NISN (Optional but must be 10 digits)
                     if (step === 2) {
                         const nisnEl = document.querySelector('[name="nisn"]');
-                        if (nisnEl && nisnEl.value.trim() !== "" && nisnEl.value.trim().length !== 10) {
-                            isValid = false;
-                            nisnEl.classList.add('border-red-500', 'ring-red-500/20');
-                            missing.push("NISN (harus 10 digit)");
+                        if (nisnEl) {
+                            const nisnVal = nisnEl.value.trim();
+                            if (nisnVal !== "" && nisnVal.length !== 10) {
+                                isValid = false;
+                                nisnEl.classList.add('border-red-500', 'ring-red-500/20');
+                                missing.push("NISN (harus 10 digit)");
+                            }
                         }
                     }
 
