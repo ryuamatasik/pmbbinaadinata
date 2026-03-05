@@ -91,33 +91,6 @@
     </style>
 </head>
 
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('registrationForm', () => ({
-            step1Complete: false,
-            step2Complete: false,
-            step3Complete: false,
-            step4Complete: false,
-            isLoading: false,
-
-            init() {
-                this.checkCompletion();
-            },
-
-            checkCompletion() {
-                // Simple logic to check if inputs are filled
-                // In a real app, you might want more robust validation or bind to specific fields
-                // This is a placeholder to prevent errors and provide basic visual feedback
-                this.step1Complete = (document.querySelector('input[name="gelombang"]:checked') && document.querySelectorAll('input[type="checkbox"]:checked').length >= 2);
-                // Add more checks as needed or leave as manual/server-side validation reliance for now
-            },
-
-            checkUnsaved(e, url) {
-                // Optional: Confirm navigation if form is dirty
-            }
-        }));
-    });
-</script>
 </head>
 
 <body x-data="registrationForm" @input.debounce.300ms="checkCompletion" @change="checkCompletion"
@@ -568,7 +541,8 @@
                             <label class="text-sm font-bold text-slate-900 dark:text-white">NISN</label>
                             <input name="nisn" value="{{ old('nisn', $pendaftar->nisn ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                type="text" placeholder="Optional" />
+                                type="text" placeholder="10 digit NISN (Opsional)" maxlength="10"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                         </div>
 
                         <!-- Status Pernikahan & NPWP -->
@@ -1040,7 +1014,7 @@
                         const inputs = document.querySelectorAll('#pendaftaran-form input, #pendaftaran-form select, #pendaftaran-form textarea');
                         inputs.forEach(input => {
                             input.addEventListener('change', () => {
-                                input.classList.remove('border-red-500', 'ring-red-500/20');
+                    input.classList.remove('border-red-500', 'ring-red-500/20');
                             });
                             input.addEventListener('input', () => {
                                 input.classList.remove('border-red-500', 'ring-red-500/20');
@@ -1116,7 +1090,7 @@
                         }
                         stepName = "Program Studi";
                     } else if (step === 2) {
-                        fields = ['nik', 'nisn', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
+                        fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
                         stepName = "Identitas Diri";
                     } else if (step === 3) {
                         fields = ['nama_sekolah', 'jurusan_sekolah', 'nilai_rata_rata', 'tahun_lulus', 'alamat_sekolah'];
@@ -1157,6 +1131,14 @@
                             }
                         }
                     });
+
+                    // Special Check for NISN (Optional but must be 10 digits if filled)
+                    const nisnEl = document.querySelector('[name="nisn"]');
+                    if (nisnEl && nisnEl.value.trim() !== "" && nisnEl.value.trim().length !== 10) {
+                        isValid = false;
+                        nisnEl.classList.add('border-red-500', 'ring-red-500/20');
+                        missing.push("NISN (harus 10 digit)");
+                    }
 
                     if (!isValid) {
                         const uniqueMissing = [...new Set(missing)];
