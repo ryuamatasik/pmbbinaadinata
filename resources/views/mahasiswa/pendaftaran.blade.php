@@ -490,10 +490,10 @@
                                 <div class="flex flex-col gap-2">
                                     <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Pilihan
                                         Utama</label>
-                                    <select
+                                    <select x-model="prodiUtama" @change="updateProdiValue()"
                                         class="form-select w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-[#1a202c] focus:border-primary focus:ring-primary text-sm h-11 transition-all"
                                         id="select-utama">
-                                        <option disabled="" selected="" value="">Pilih Program Studi Utama</option>
+                                        <option value="">Pilih Program Studi Utama</option>
                                         <option value="Sistem Informasi S1">Sistem Informasi S1</option>
                                         <option value="Sistem Komputer S1">Sistem Komputer S1</option>
                                         <option value="Bisnis Digital S1">Bisnis Digital S1</option>
@@ -502,10 +502,10 @@
                                 <div class="flex flex-col gap-2">
                                     <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Pilihan
                                         Cadangan</label>
-                                    <select
+                                    <select x-model="prodiCadangan" @change="updateProdiValue()"
                                         class="form-select w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-[#1a202c] focus:border-primary focus:ring-primary text-sm h-11 transition-all"
                                         id="select-cadangan">
-                                        <option disabled="" selected="" value="">Pilih Program Studi Cadangan</option>
+                                        <option value="">Pilih Program Studi Cadangan</option>
                                         <option value="Sistem Informasi S1">Sistem Informasi S1</option>
                                         <option value="Sistem Komputer S1">Sistem Komputer S1</option>
                                         <option value="Bisnis Digital S1">Bisnis Digital S1</option>
@@ -518,8 +518,7 @@
                             <span class="material-symbols-outlined text-primary text-[20px] mt-0.5">info</span>
                             <p class="text-[13px] text-gray-600 dark:text-gray-400 leading-snug">
                                 Pastikan pilihan program studi sudah sesuai dengan minat Anda. Pilihan tidak dapat
-                                diubah
-                                setelah pembayaran formulir dikonfirmasi.
+                                diubah setelah pembayaran formulir dikonfirmasi.
                             </p>
                         </div>
                     </div>
@@ -529,73 +528,15 @@
                             class="flex w-full sm:w-auto min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm font-bold leading-normal tracking-[0.015em] transition-colors">
                             <span class="truncate">Batal</span>
                         </label>
-                        <label for="modal-1" id="btn-save-prodi-new"
-                            class="bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed pointer-events-none flex w-full sm:w-auto min-w-[180px] items-center justify-center overflow-hidden rounded-lg h-10 px-8 text-sm font-bold leading-normal tracking-[0.015em] transition-all">
-                            <span class="truncate">Simpan &amp; Lanjutkan</span>
-                        </label>
+                        <div @click="validateStep(1)"
+                            class="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-blue-500/20 hover:bg-primary-dark cursor-pointer transition-colors">
+                            <span>Simpan & Lanjutkan</span>
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const selectUtama = document.getElementById('select-utama');
-                    const selectCadangan = document.getElementById('select-cadangan');
-                    const realInputNew = document.getElementById('real-pilihan-prodi-new');
-                    const counterNew = document.getElementById('prodi-counter-new');
-                    const errorMsgNew = document.getElementById('prodi-error-new');
-                    const saveBtnNew = document.getElementById('btn-save-prodi-new');
-
-                    function updateStateNew() {
-                        const val1 = selectUtama.value;
-                        const val2 = selectCadangan.value;
-                        let count = 0;
-                        if (val1) count++;
-                        if (val2) count++;
-
-                        counterNew.textContent = `${count}/2 terpilih`;
-
-                        // Combine values for backend
-                        // Format: "Utama: [Val], Cadangan: [Val]" or simple comma separated
-                        let combined = [];
-                        if (val1) combined.push(val1);
-                        if (val2) combined.push(val2);
-                        realInputNew.value = combined.join(', ');
-
-                        // Validation: Both must be selected and different
-                        const isValid = count === 2 && (val1 !== val2);
-
-                        // Always keep button active but store state
-                        saveBtnNew.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-400', 'dark:text-gray-500', 'cursor-not-allowed', 'pointer-events-none');
-                        saveBtnNew.classList.add('bg-primary', 'hover:bg-blue-700', 'text-white', 'shadow-md', 'cursor-pointer');
-
-                        saveBtnNew.onclick = (e) => {
-                            if (!isValid) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                if (count < 2) {
-                                    alert('Mohon pilih minimal 2 program studi (Utama dan Cadangan).');
-                                } else if (val1 === val2) {
-                                    alert('Pilihan Program Studi Utama dan Cadangan tidak boleh sama.');
-                                }
-                            } else {
-                                // Manual trigger close if valid (since we might have stopped propagation)
-                                document.getElementById('modal-1').checked = false;
-                                // Trigger Alpine check
-                                if (window.Alpine) {
-                                    const el = document.querySelector('[x-data="registrationForm"]');
-                                    if (el) Alpine.$data(el).checkCompletion();
-                                }
-                            }
-                        };
-                    }
-
-                    if (selectUtama && selectCadangan) {
-                        selectUtama.addEventListener('change', updateStateNew);
-                        selectCadangan.addEventListener('change', updateStateNew);
-                    }
-                });
-            </script>
 
             <!-- Modal 2: Identitas Diri (WRAPPER from User HTML, FIELDS from Old Code) -->
             <div
@@ -1087,10 +1028,12 @@
                 step2Complete: false,
                 step3Complete: false,
                 step4Complete: false,
+                prodiUtama: '{{ str_contains($pendaftar->pilihan_prodi ?? "", ",") ? explode(", ", $pendaftar->pilihan_prodi)[0] : "" }}',
+                prodiCadangan: '{{ str_contains($pendaftar->pilihan_prodi ?? "", ",") ? explode(", ", $pendaftar->pilihan_prodi)[1] ?? "" : "" }}',
 
                 init() {
                     this.checkCompletion();
-                    
+
                     // Add listeners to all inputs to clear highlights when changed
                     this.$nextTick(() => {
                         const inputs = document.querySelectorAll('#pendaftaran-form input, #pendaftaran-form select, #pendaftaran-form textarea');
@@ -1108,8 +1051,7 @@
                 checkCompletion() {
                     // Step 1: Program Studi
                     const gelombang = document.querySelector('[name="gelombang"]:checked');
-                    const prodi = document.querySelector('[name="pilihan_prodi"]');
-                    this.step1Complete = !!(gelombang && prodi && prodi.value.includes(','));
+                    this.step1Complete = !!(gelombang && this.prodiUtama && this.prodiCadangan && this.prodiUtama !== this.prodiCadangan);
 
                     // Step 2: Identitas Diri
                     const step2Fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
@@ -1142,13 +1084,37 @@
                     this.step4Complete = checkFields(ayahFields) && checkFields(ibuFields);
                 },
 
+                updateProdiValue() {
+                    let combined = [];
+                    if (this.prodiUtama) combined.push(this.prodiUtama);
+                    if (this.prodiCadangan) combined.push(this.prodiCadangan);
+                    const realInput = document.getElementById('real-pilihan-prodi-new');
+                    if (realInput) realInput.value = combined.join(', ');
+                    this.checkCompletion();
+                },
+
                 validateStep(step) {
                     let fields = [];
                     let stepName = "";
                     let isValid = true;
                     let missing = [];
 
-                    if (step === 2) {
+                    if (step === 1) {
+                        const gelombang = document.querySelector('[name="gelombang"]:checked');
+                        if (!gelombang) {
+                            isValid = false;
+                            missing.push("Gelombang");
+                        }
+                        if (!this.prodiUtama || !this.prodiCadangan) {
+                            isValid = false;
+                            missing.push("Pilihan Program Studi (Utama & Cadangan)");
+                        } else if (this.prodiUtama === this.prodiCadangan) {
+                            isValid = false;
+                            alert("Pilihan Program Studi Utama dan Cadangan tidak boleh sama.");
+                            return false;
+                        }
+                        stepName = "Program Studi";
+                    } else if (step === 2) {
                         fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
                         stepName = "Identitas Diri";
                     } else if (step === 3) {
@@ -1162,7 +1128,7 @@
                     fields.forEach(name => {
                         let el = document.querySelector(`[name="${name}"]`);
                         let val = "";
-                        
+
                         if (name.startsWith('status_')) {
                             el = document.querySelector(`[name="${name}"]:checked`);
                             val = el ? el.value : "";
@@ -1192,7 +1158,7 @@
                         document.getElementById('modal-' + step).checked = false;
                         this.checkCompletion();
                     }
-                    
+
                     return isValid;
                 },
 
