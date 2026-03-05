@@ -15,6 +15,7 @@
         rel="stylesheet" />
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -286,11 +287,87 @@
                 opacity: 1;
             }
         }
+
+        /* Toast Styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            min-width: 300px;
+            padding: 16px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease-out forwards;
+            border-left: 4px solid #135bec;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast-error {
+            border-left-color: #ef4444;
+        }
+
+        .toast-success {
+            border-left-color: #10b981;
+        }
+
+        .toast-warning {
+            border-left-color: #f59e0b;
+        }
     </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased"
-    x-data="{ isLoading: false }">
+    x-data="authForm()">
+
+    <!-- Toast Container -->
+    <div class="toast-container">
+        <template x-for="toast in toasts" :key="toast.id">
+            <div :class="`toast toast-${toast.type}`" x-show="toast.show"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform translate-x-full"
+                x-transition:enter-end="opacity-100 transform translate-x-0"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 transform translate-x-0"
+                x-transition:leave-end="opacity-0 transform translate-x-full">
+                <span class="material-symbols-outlined" :class="{
+                          'text-primary': toast.type === 'info',
+                          'text-red-500': toast.type === 'error',
+                          'text-green-500': toast.type === 'success',
+                          'text-amber-500': toast.type === 'warning'
+                      }"
+                    x-text="toast.type === 'error' ? 'error' : (toast.type === 'success' ? 'check_circle' : 'info')">
+                </span>
+                <div class="flex-1">
+                    <p class="text-sm font-semibold text-slate-900" x-text="toast.message"></p>
+                </div>
+                <button @click="removeToast(toast.id)" class="text-slate-400 hover:text-slate-600">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
+            </div>
+        </template>
+    </div>
 
     <div class="container-switch bg-white dark:bg-background-dark" id="mainContainer">
 
@@ -305,8 +382,7 @@
                 <h1 class="text-3xl font-black mb-2 text-slate-900 dark:text-white">Buat Akun Baru</h1>
                 <p class="text-slate-500 mb-8">Mulai perjalanan akademik Anda bersama kami.</p>
 
-                <form action="{{ route('register.submit') }}" method="POST" class="space-y-4"
-                    @submit="isLoading = true">
+                <form action="{{ route('register.submit') }}" method="POST" class="space-y-4" @submit="handleSubmit">
                     @csrf
                     <!-- Direct to form for now as requested -->
                     <div class="relative">
@@ -335,7 +411,8 @@
                         <input type="password" id="reg_password" name="password" placeholder="Password"
                             class="w-full pl-10 pr-12 py-3 rounded-lg border-gray-200 focus:border-primary focus:ring-primary dark:bg-slate-800 dark:border-gray-700 @error('password') border-red-500 @enderror"
                             required />
-                        <button type="button" onclick="togglePassword('reg_password', this)" class="absolute right-3 top-3 text-slate-400 hover:text-primary transition-colors">
+                        <button type="button" onclick="togglePassword('reg_password', this)"
+                            class="absolute right-3 top-3 text-slate-400 hover:text-primary transition-colors">
                             <span class="material-symbols-outlined text-[20px]">visibility</span>
                         </button>
                         @error('password')
@@ -387,7 +464,7 @@
                 <h1 class="text-3xl font-black mb-2 text-slate-900 dark:text-white">Selamat Datang Kembali</h1>
                 <p class="text-slate-500 mb-8">Masuk untuk mengakses dashboard Anda.</p>
 
-                <form action="{{ route('login.submit') }}" method="POST" class="space-y-4" @submit="isLoading = true">
+                <form action="{{ route('login.submit') }}" method="POST" class="space-y-4" @submit="handleSubmit">
                     @csrf
                     <div class="relative">
                         <span
@@ -405,7 +482,8 @@
                         <input type="password" id="login_password" name="password" placeholder="Password"
                             class="w-full pl-10 pr-12 py-3 rounded-lg border-gray-200 focus:border-primary focus:ring-primary dark:bg-slate-800 dark:border-gray-700 @error('password') border-red-500 @enderror"
                             required />
-                        <button type="button" onclick="togglePassword('login_password', this)" class="absolute right-3 top-3 text-slate-400 hover:text-primary transition-colors">
+                        <button type="button" onclick="togglePassword('login_password', this)"
+                            class="absolute right-3 top-3 text-slate-400 hover:text-primary transition-colors">
                             <span class="material-symbols-outlined text-[20px]">visibility</span>
                         </button>
                         @error('password')
@@ -489,6 +567,44 @@
     </div>
 
     <script>
+        function authForm() {
+            return {
+                isLoading: false,
+                toasts: [],
+
+                init() {
+                    @if(session('success'))
+                        this.showToast("{{ session('success') }}", 'success');
+                    @endif
+                    @if(session('error'))
+                        this.showToast("{{ session('error') }}", 'error');
+                    @endif
+                    @if($errors->any())
+                        this.showToast("{{ $errors->first() }}", 'error');
+                    @endif
+                },
+
+                showToast(message, type = 'info') {
+                    const id = Date.now();
+                    this.toasts.push({ id, message, type, show: true });
+                    setTimeout(() => this.removeToast(id), 5000);
+                },
+
+                removeToast(id) {
+                    const toast = this.toasts.find(t => t.id === id);
+                    if (toast) toast.show = false;
+                    setTimeout(() => {
+                        this.toasts = this.toasts.filter(t => t.id !== id);
+                    }, 300);
+                },
+
+                handleSubmit() {
+                    this.isLoading = true;
+                    return true;
+                }
+            }
+        }
+
         const signUpButton = document.getElementById('signUp');
         const signInButton = document.getElementById('signIn');
         const mainContainer = document.getElementById('mainContainer');
