@@ -1159,7 +1159,8 @@
                     });
 
                     if (!isValid) {
-                        this.showToast(`Mohon lengkapi data pada bagian ${stepName}: ${missing.join(', ')}`, "error");
+                        const uniqueMissing = [...new Set(missing)];
+                        this.showToast(`Mohon lengkapi data pada bagian ${stepName}: ${uniqueMissing.join(', ')}`, "error");
                     } else {
                         // Close modal manually
                         const modalSelector = document.getElementById('modal-' + step);
