@@ -1014,7 +1014,7 @@
                         const inputs = document.querySelectorAll('#pendaftaran-form input, #pendaftaran-form select, #pendaftaran-form textarea');
                         inputs.forEach(input => {
                             input.addEventListener('change', () => {
-                    input.classList.remove('border-red-500', 'ring-red-500/20');
+                                input.classList.remove('border-red-500', 'ring-red-500/20');
                             });
                             input.addEventListener('input', () => {
                                 input.classList.remove('border-red-500', 'ring-red-500/20');
@@ -1133,11 +1133,13 @@
                     });
 
                     // Special Check for NISN (Optional but must be 10 digits if filled)
-                    const nisnEl = document.querySelector('[name="nisn"]');
-                    if (nisnEl && nisnEl.value.trim() !== "" && nisnEl.value.trim().length !== 10) {
-                        isValid = false;
-                        nisnEl.classList.add('border-red-500', 'ring-red-500/20');
-                        missing.push("NISN (harus 10 digit)");
+                    if (step === 2) {
+                        const nisnEl = document.querySelector('[name="nisn"]');
+                        if (nisnEl && nisnEl.value.trim() !== "" && nisnEl.value.trim().length !== 10) {
+                            isValid = false;
+                            nisnEl.classList.add('border-red-500', 'ring-red-500/20');
+                            missing.push("NISN (harus 10 digit)");
+                        }
                     }
 
                     if (!isValid) {
