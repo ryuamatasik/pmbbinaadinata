@@ -537,8 +537,7 @@
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="text" placeholder="16 digit NIK" maxlength="16"
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                required />
+                                onkeypress="return event.charCode >= 48 && event.charCode <= 57" required />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">NISN</label>
@@ -1096,6 +1095,7 @@
                     } else if (step === 2) {
                         fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
                         stepName = "Identitas Diri";
+                        console.log("Validating Step 2. Fields to check:", fields);
                     } else if (step === 3) {
                         fields = ['nama_sekolah', 'jurusan_sekolah', 'nilai_rata_rata', 'tahun_lulus', 'alamat_sekolah'];
                         stepName = "Identitas Sekolah";
@@ -1129,7 +1129,7 @@
                                 let labelText = name;
                                 const labelEl = el.closest('div')?.querySelector('label') || el.closest('label')?.querySelector('p') || el.parentElement?.querySelector('label');
                                 if (labelEl) labelText = labelEl.textContent.trim().replace('*', '');
-                                missing.push(labelText);
+                                missing.push(`${labelText} (${name})`);
                             }
                         }
                     });
@@ -1149,8 +1149,8 @@
 
                     if (!isValid) {
                         const uniqueMissing = [...new Set(missing)];
-                        // Added [V4] marker to verify server is running latest code
-                        this.showToast(`[V4] Mohon lengkapi data pada bagian ${stepName}: ${uniqueMissing.join(', ')}`, "error");
+                        // Added [V5] marker for diagnosis
+                        this.showToast(`[V5] Mohon lengkapi: ${uniqueMissing.join(', ')}`, "error");
                     } else {
                         // Close modal manually
                         const modalSelector = document.getElementById('modal-' + step);
@@ -1216,7 +1216,7 @@
                             console.error('Error:', error);
                             this.showToast('Terjadi kesalahan jaringan/sistem: ' + error.message, 'error');
                         });
-                }
+            }
             }));
         });
     </script>
