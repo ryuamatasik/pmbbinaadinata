@@ -393,7 +393,8 @@
                         </button>
                         <button
                             class="flex items-center justify-center gap-2 h-14 px-10 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all transform w-full md:w-auto disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-                            type="submit" name="action" value="submit" :disabled="isLoading">
+                            type="submit" name="action" value="submit" :disabled="isLoading"
+                            @click="if(!step1Complete || !step2Complete || !step3Complete || !step4Complete) { $event.preventDefault(); alert('Mohon lengkapi semua bagian (Program Studi, Identitas Diri, Sekolah, dan Keluarga) sebelum melanjutkan.'); }">
 
                             <!-- Loading Spinner -->
                             <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white"
@@ -561,28 +562,32 @@
                         if (val2) combined.push(val2);
                         realInputNew.value = combined.join(', ');
 
-                        // Validation: Both must be selected and different (optional logic, but basic is just count)
+                        // Validation: Both must be selected and different
                         const isValid = count === 2 && (val1 !== val2);
 
-                        if (isValid) {
-                            errorMsgNew.style.display = 'none';
-                            counterNew.classList.remove('text-red-500'); // Remove error color if applied
+                        // Always keep button active but store state
+                        saveBtnNew.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-400', 'dark:text-gray-500', 'cursor-not-allowed', 'pointer-events-none');
+                        saveBtnNew.classList.add('bg-primary', 'hover:bg-blue-700', 'text-white', 'shadow-md', 'cursor-pointer');
 
-                            // Enable Button
-                            saveBtnNew.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-400', 'dark:text-gray-500', 'cursor-not-allowed', 'pointer-events-none');
-                            saveBtnNew.classList.add('bg-primary', 'hover:bg-blue-700', 'text-white', 'shadow-md', 'cursor-pointer');
-                        } else {
-                            errorMsgNew.style.display = 'block';
-                            if (val1 && val2 && val1 === val2) {
-                                errorMsgNew.textContent = '*Pilihan Utama dan Cadangan tidak boleh sama';
+                        saveBtnNew.onclick = (e) => {
+                            if (!isValid) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                if (count < 2) {
+                                    alert('Mohon pilih minimal 2 program studi (Utama dan Cadangan).');
+                                } else if (val1 === val2) {
+                                    alert('Pilihan Program Studi Utama dan Cadangan tidak boleh sama.');
+                                }
                             } else {
-                                errorMsgNew.textContent = '*Wajib memilih minimal 2 program studi';
+                                // Manual trigger close if valid (since we might have stopped propagation)
+                                document.getElementById('modal-1').checked = false;
+                                // Trigger Alpine check
+                                if (window.Alpine) {
+                                    const el = document.querySelector('[x-data="registrationForm"]');
+                                    if (el) Alpine.$data(el).checkCompletion();
+                                }
                             }
-
-                            // Disable Button
-                            saveBtnNew.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-400', 'dark:text-gray-500', 'cursor-not-allowed', 'pointer-events-none');
-                            saveBtnNew.classList.remove('bg-primary', 'hover:bg-blue-700', 'text-white', 'shadow-md', 'cursor-pointer');
-                        }
+                        };
                     }
 
                     if (selectUtama && selectCadangan) {
@@ -798,15 +803,17 @@
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 type="tel" />
                         </div>
-                    <!-- Data KIP/KPS (Moved from Keluarga) -->
+                        <!-- Data KIP/KPS (Moved from Keluarga) -->
                         <div class="col-span-12 pt-6 border-t border-gray-100 dark:border-gray-700">
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-primary text-[20px]">card_membership</span>
-                                <h4 class="font-bold text-primary text-sm uppercase tracking-wide">Data KIP/KPS (Opsional)</h4>
+                                <h4 class="font-bold text-primary text-sm uppercase tracking-wide">Data KIP/KPS
+                                    (Opsional)</h4>
                             </div>
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
-                            <label class="text-sm font-bold text-slate-900 dark:text-white">Peserta KIP (Kartu Indonesia Pintar)?</label>
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Peserta KIP (Kartu Indonesia
+                                Pintar)?</label>
                             <select name="peserta_kip"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
                                 <option value="Tidak" {{ old('peserta_kip', $pendaftar->peserta_kip ?? '') == 'Tidak' ? 'selected' : '' }}>Bukan Peserta KIP</option>
@@ -838,18 +845,21 @@
                         <div class="col-span-12 pt-6 border-t border-gray-100 dark:border-gray-700">
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-primary text-[20px]">work</span>
-                                <h4 class="font-bold text-primary text-sm uppercase tracking-wide">Detail Pekerjaan (Jika sudah bekerja)</h4>
+                                <h4 class="font-bold text-primary text-sm uppercase tracking-wide">Detail Pekerjaan
+                                    (Jika sudah bekerja)</h4>
                             </div>
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Nama Perusahaan</label>
-                            <input name="nama_perusahaan" value="{{ old('nama_perusahaan', $pendaftar->nama_perusahaan ?? '') }}"
+                            <input name="nama_perusahaan"
+                                value="{{ old('nama_perusahaan', $pendaftar->nama_perusahaan ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 placeholder="Nama perusahaan tempat bekerja" />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">No. Telp Perusahaan</label>
-                            <input name="telp_perusahaan" value="{{ old('telp_perusahaan', $pendaftar->telp_perusahaan ?? '') }}"
+                            <input name="telp_perusahaan"
+                                value="{{ old('telp_perusahaan', $pendaftar->telp_perusahaan ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 placeholder="Nomor telepon kantor" />
                         </div>
@@ -861,7 +871,8 @@
                         </div>
                         <div class="col-span-12 md:col-span-12 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Alamat Perusahaan</label>
-                            <input name="alamat_perusahaan" value="{{ old('alamat_perusahaan', $pendaftar->alamat_perusahaan ?? '') }}"
+                            <input name="alamat_perusahaan"
+                                value="{{ old('alamat_perusahaan', $pendaftar->alamat_perusahaan ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
                                 placeholder="Alamat lengkap perusahaan" />
                         </div>
@@ -870,11 +881,11 @@
                         class="p-6 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 bg-slate-50 dark:bg-black/20 rounded-b-2xl">
                         <label for="modal-2"
                             class="px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-600 font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer transition-colors">Batal</label>
-                        <label for="modal-2"
+                        <div @click="validateStep(2)"
                             class="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-blue-500/20 hover:bg-primary-dark cursor-pointer transition-colors">
                             <span>Simpan &amp; Lanjutkan</span>
                             <span class="material-symbols-outlined text-sm">check</span>
-                        </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -928,7 +939,8 @@
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Nilai UN / Rata-rata
                                 Ijazah</label>
-                            <input name="nilai_rata_rata" value="{{ old('nilai_rata_rata', $pendaftar->nilai_rata_rata ?? '') }}"
+                            <input name="nilai_rata_rata"
+                                value="{{ old('nilai_rata_rata', $pendaftar->nilai_rata_rata ?? '') }}"
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all"
                                 type="text" placeholder="0.00" />
                         </div>
@@ -964,11 +976,11 @@
                         class="p-6 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 bg-slate-50 dark:bg-black/20 rounded-b-2xl">
                         <label for="modal-3"
                             class="px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-600 font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer transition-colors">Batal</label>
-                        <label for="modal-3"
+                        <div @click="validateStep(3)"
                             class="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-blue-500/20 hover:bg-primary-dark cursor-pointer transition-colors">
                             <span>Simpan &amp; Lanjutkan</span>
                             <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                        </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1055,11 +1067,11 @@
                         class="p-6 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 bg-slate-50 dark:bg-black/20 rounded-b-2xl">
                         <label for="modal-5"
                             class="px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-600 font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer transition-colors">Batal</label>
-                        <label for="modal-5"
+                        <div @click="document.getElementById('modal-5').checked = false; checkCompletion();"
                             class="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-blue-500/20 hover:bg-primary-dark cursor-pointer transition-colors">
                             <span>Simpan &amp; Lanjutkan</span>
                             <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                        </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1078,13 +1090,26 @@
 
                 init() {
                     this.checkCompletion();
+                    
+                    // Add listeners to all inputs to clear highlights when changed
+                    this.$nextTick(() => {
+                        const inputs = document.querySelectorAll('#pendaftaran-form input, #pendaftaran-form select, #pendaftaran-form textarea');
+                        inputs.forEach(input => {
+                            input.addEventListener('change', () => {
+                                input.classList.remove('border-red-500', 'ring-red-500/20');
+                            });
+                            input.addEventListener('input', () => {
+                                input.classList.remove('border-red-500', 'ring-red-500/20');
+                            });
+                        });
+                    });
                 },
 
                 checkCompletion() {
                     // Step 1: Program Studi
                     const gelombang = document.querySelector('[name="gelombang"]:checked');
-                    const prodi = document.querySelector('[name="pilihan_prodi"]:checked');
-                    this.step1Complete = !!(gelombang && prodi);
+                    const prodi = document.querySelector('[name="pilihan_prodi"]');
+                    this.step1Complete = !!(gelombang && prodi && prodi.value.includes(','));
 
                     // Step 2: Identitas Diri
                     const step2Fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
@@ -1115,6 +1140,60 @@
                     };
 
                     this.step4Complete = checkFields(ayahFields) && checkFields(ibuFields);
+                },
+
+                validateStep(step) {
+                    let fields = [];
+                    let stepName = "";
+                    let isValid = true;
+                    let missing = [];
+
+                    if (step === 2) {
+                        fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
+                        stepName = "Identitas Diri";
+                    } else if (step === 3) {
+                        fields = ['nama_sekolah', 'jurusan_sekolah', 'nilai_rata_rata', 'tahun_lulus', 'alamat_sekolah'];
+                        stepName = "Identitas Sekolah";
+                    } else if (step === 4) {
+                        fields = ['status_ayah', 'nomor_kk', 'nama_ayah', 'nik_ayah', 'hp_ayah', 'alamat_ayah', 'status_ibu', 'nama_ibu', 'nik_ibu', 'hp_ibu', 'alamat_ibu'];
+                        stepName = "Identitas Keluarga";
+                    }
+
+                    fields.forEach(name => {
+                        let el = document.querySelector(`[name="${name}"]`);
+                        let val = "";
+                        
+                        if (name.startsWith('status_')) {
+                            el = document.querySelector(`[name="${name}"]:checked`);
+                            val = el ? el.value : "";
+                            // For radio, we highlight the container if possible or just the first radio
+                            if (!el) {
+                                isValid = false;
+                                const firstRadio = document.querySelector(`[name="${name}"]`);
+                                if (firstRadio) missing.push(firstRadio.closest('div').previousElementSibling.textContent.trim().replace('*', ''));
+                            }
+                        } else {
+                            val = el ? el.value.trim() : "";
+                            if (!val) {
+                                isValid = false;
+                                if (el) {
+                                    el.classList.add('border-red-500', 'ring-red-500/20');
+                                    const label = el.closest('div').querySelector('label') || el.closest('label')?.querySelector('p');
+                                    if (label) missing.push(label.textContent.trim().replace('*', ''));
+                                }
+                            }
+                        }
+                    });
+
+                    if (!isValid) {
+                        alert(`Mohon lengkapi data pada bagian ${stepName}:\n- ` + missing.join('\n- '));
+                    } else {
+                        // Close modal manually
+                        document.getElementById('modal-' + step).checked = false;
+                        this.checkCompletion();
+                    }
+                    
+                    return isValid;
                 },
 
                 showUnsavedModal: false,

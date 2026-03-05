@@ -568,11 +568,11 @@
                 class="flex items-center justify-center h-11 px-6 rounded-lg text-sm font-bold text-[#616f89] hover:text-[#111318] dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer">
                 Batal
             </label>
-            <label for="modal-4"
+            <div @click="validateStep(4)"
                 class="flex items-center justify-center h-11 px-8 rounded-lg text-sm font-bold text-white bg-primary hover:bg-blue-700 shadow-lg shadow-primary/20 transition-all gap-2 cursor-pointer">
                 <span class="material-symbols-outlined text-[18px]">save</span>
                 Simpan & Lanjutkan
-            </label>
+            </div>
         </div>
     </div>
 </div>
