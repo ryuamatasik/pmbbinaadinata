@@ -223,12 +223,14 @@
                             <span class="truncate">Kembali</span>
                         </a>
                         <div class="flex gap-3">
-                            <button type="button" onclick="confirmExit(event)"
-                                class="hidden sm:flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 text-[#616f89] dark:text-gray-400 font-medium hover:text-[#111318] dark:hover:text-white transition-colors">
+                            <input type="hidden" name="action" id="form-action" value="submit">
+                            <button type="submit" onclick="document.getElementById('form-action').value='draft'"
+                                class="hidden sm:flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#616f89] dark:text-gray-400 font-medium hover:text-[#111318] dark:hover:text-white transition-colors">
                                 <span class="material-symbols-outlined mr-2 text-[20px]">save</span>
                                 <span class="truncate">Simpan Draf</span>
                             </button>
                             <button type="submit" :disabled="isLoading"
+                                onclick="document.getElementById('form-action').value='submit'"
                                 class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-blue-700 shadow-md transition-colors shadow-primary/30 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none">
                                 <span x-show="!isLoading" class="flex items-center">
                                     <span class="truncate">Selesai</span>
@@ -334,6 +336,45 @@
         }
 
         document.getElementById('uploadForm').addEventListener('submit', function (e) {
+            const action = document.getElementById('form-action').value;
+
+            if (action === 'submit') {
+                const mandatoryDocs = [
+                    { id: 'ktp', title: 'Kartu Identitas (KTP)' },
+                    { id: 'ktp_ortu', title: 'KTP Orang Tua/Wali' },
+                    { id: 'akte', title: 'Akte Kelahiran' },
+                    { id: 'ijazah', title: 'Ijazah/SKL' },
+                    { id: 'kk', title: 'Kartu Keluarga' },
+                    { id: 'foto', title: 'Pass Foto' },
+                    { id: 'transkrip', title: 'Transkrip Nilai' },
+                    { id: 'bukti_pembayaran', title: 'Bukti Pembayaran' }
+                ];
+
+                let missing = [];
+                mandatoryDocs.forEach(doc => {
+                    const input = document.getElementById('file-' + doc.id);
+                    const hasExisting = document.getElementById('text-' + doc.id).textContent.trim() !== 'Klik/Tarik file' &&
+                        document.getElementById('text-' + doc.id).textContent.trim() !== 'Klik atau tarik file ke sini';
+
+                    if (!input.files[0] && !hasExisting) {
+                        missing.push(doc.title);
+                    }
+                });
+
+                if (missing.length > 0) {
+                    e.preventDefault();
+                    this.isLoading = false;
+                    const alpine = document.querySelector('body').__x?.$data || Alpine.find(document.querySelector('body'));
+                    const msg = 'Mohon lengkapi dokumen wajib berikut: ' + missing.join(', ');
+                    if (alpine) {
+                        alpine.showToast(msg, 'error');
+                    } else {
+                        alert(msg);
+                    }
+                    return;
+                }
+            }
+
             let totalSize = 0;
             const fileInputs = this.querySelectorAll('input[type="file"]');
 

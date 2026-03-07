@@ -185,7 +185,11 @@ class PendaftaranController extends Controller
         session(['pendaftar_id' => $pendaftar->id]);
 
         if ($request->wantsJson() || $request->ajax()) {
-            return response()->json(['status' => 'success', 'redirect' => route('mahasiswa.upload')]);
+            return response()->json(['status' => 'success', 'redirect' => $request->input('action') === 'draft' ? route('mahasiswa.dashboard') : route('mahasiswa.upload')]);
+        }
+
+        if ($request->input('action') === 'draft') {
+            return redirect()->route('mahasiswa.dashboard')->with('success', 'Data draf pendaftaran berhasil disimpan.');
         }
 
         return redirect()->route('mahasiswa.upload')->with('success', 'Data pendaftaran berhasil disimpan. Silakan unggah dokumen.');
@@ -258,19 +262,39 @@ class PendaftaranController extends Controller
                 $path = $file->store('uploads', 'public');
                 $originalName = $file->getClientOriginalName();
 
+                // Delete old one if exists
+                \App\Models\DokumenPendaftar::where('pendaftar_id', $pendaftar_id)
+                    ->where('jenis_dokumen', $doc)
+                    ->delete();
+
                 \App\Models\DokumenPendaftar::create([
                     'pendaftar_id' => $pendaftar_id,
                     'jenis_dokumen' => $doc,
                     'file_path' => $path,
                     'original_name' => $originalName,
+                    'status' => 'valid' // Default to valid when uploaded by user
                 ]);
             }
+        }
+
+        if ($request->input('action') === 'draft') {
+            return redirect()->back()->with('success', 'Draf dokumen berhasil disimpan.');
+        }
+
+        // Only update status to Verifikasi if all mandatory documents (1-8) are uploaded
+        $mandatoryDocs = ['ktp', 'ktp_ortu', 'akte', 'ijazah', 'kk', 'foto', 'transkrip', 'bukti_pembayaran'];
+        $uploadedDocsCount = \App\Models\DokumenPendaftar::where('pendaftar_id', $pendaftar_id)
+            ->whereIn('jenis_dokumen', $mandatoryDocs)
+            ->count();
+
+        if ($uploadedDocsCount < count($mandatoryDocs)) {
+            return redirect()->back()->with('error', 'Mohon lengkapi semua dokumen wajib (Nomor 1-8) sebelum menekan Selesai.');
         }
 
         // Update status to Verifikasi so it appears in Admin Dashboard
         \App\Models\Pendaftar::where('id', $pendaftar_id)->update(['status' => 'Verifikasi']);
 
-        return redirect()->route('mahasiswa.dashboard')->with('success', 'Pendaftaran berhasil diselesaikan!');
+        return redirect()->route('mahasiswa.dashboard')->with('success', 'Pendaftaran berhasil diselesaikan! Data Anda kini sedang dalam proses verifikasi.');
     }
 
     public function dashboard()
