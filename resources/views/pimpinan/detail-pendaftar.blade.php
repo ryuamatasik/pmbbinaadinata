@@ -169,6 +169,14 @@
                                     <p class="font-medium">
                                         {{ $pendaftar->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</p>
                                 </div>
+                                <div>
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">No. HP / WA</p>
+                                    <p class="font-medium font-mono text-primary">{{ $pendaftar->no_hp ?? '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">Email</p>
+                                    <p class="font-medium">{{ $pendaftar->email ?? '-' }}</p>
+                                </div>
                                 <div class="md:col-span-2 lg:col-span-3">
                                     <p class="text-[#616f89] dark:text-gray-400 mb-1">Alamat Lengkap</p>
                                     <p class="font-medium leading-relaxed">
@@ -211,6 +219,65 @@
                                         Rata-rata Rapor</p>
                                     <p class="text-2xl font-black text-primary">{{ $pendaftar->nilai_rata_rata ?? '-' }}
                                     </p>
+                                </div>
+                                <div class="md:col-span-2 lg:col-span-3">
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">Alamat Sekolah</p>
+                                    <p class="font-medium leading-relaxed">{{ $pendaftar->alamat_sekolah ?? '-' }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Informasi Keluarga -->
+                        <div
+                            class="bg-white dark:bg-[#1a2130] rounded-xl shadow-sm border border-[#dbdfe6] dark:border-[#2a303c] p-6">
+                            <div class="flex items-center gap-2 mb-6 text-primary">
+                                <span class="material-symbols-outlined">family_restroom</span>
+                                <h3 class="text-lg font-bold">Informasi Keluarga</h3>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                                <!-- Data Ayah -->
+                                <div class="space-y-4">
+                                    <p class="text-xs font-bold text-primary uppercase border-b border-primary/10 pb-1">Data Ayah / Wali</p>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-[#616f89] dark:text-gray-400 text-xs mb-1">Nama Ayah</p>
+                                            <p class="font-medium">{{ $pendaftar->nama_ayah ?? '-' }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[#616f89] dark:text-gray-400 text-xs mb-1">HP Ayah</p>
+                                            <p class="font-medium font-mono">{{ $pendaftar->hp_ayah ?? '-' }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[#616f89] dark:text-gray-400 text-xs mb-1">Pekerjaan</p>
+                                            <p class="font-medium">{{ $pendaftar->pekerjaan_ayah ?? '-' }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[#616f89] dark:text-gray-400 text-xs mb-1">Pendidikan</p>
+                                            <p class="font-medium">{{ $pendaftar->pendidikan_ayah ?? '-' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Data Ibu -->
+                                <div class="space-y-4">
+                                    <p class="text-xs font-bold text-primary uppercase border-b border-primary/10 pb-1">Data Ibu</p>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-[#616f89] dark:text-gray-400 text-xs mb-1">Nama Ibu</p>
+                                            <p class="font-medium">{{ $pendaftar->nama_ibu ?? '-' }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[#616f89] dark:text-gray-400 text-xs mb-1">HP Ibu</p>
+                                            <p class="font-medium font-mono">{{ $pendaftar->hp_ibu ?? '-' }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[#616f89] dark:text-gray-400 text-xs mb-1">Pekerjaan</p>
+                                            <p class="font-medium">{{ $pendaftar->pekerjaan_ibu ?? '-' }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[#616f89] dark:text-gray-400 text-xs mb-1">Pendidikan</p>
+                                            <p class="font-medium">{{ $pendaftar->pendidikan_ibu ?? '-' }}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

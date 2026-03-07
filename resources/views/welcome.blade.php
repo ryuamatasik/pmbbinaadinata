@@ -417,7 +417,7 @@
                                 </h3>
                                 <span
                                     class="text-xs font-medium px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded">TA
-                                    2024/2025</span>
+                                    {{ $activeGelombang->tahun ?? '2024/2025' }}</span>
                             </div>
                             <!-- Desktop Table View -->
                             <div class="hidden md:block overflow-x-auto">
@@ -548,7 +548,8 @@
                                         </div>
                                         <div>
                                             <p class="text-xs text-gray-500 uppercase font-bold">SPP / Semester</p>
-                                            <p class="text-sm text-primary font-bold">Rp 2.600.000</p>
+                                            <p class="text-sm text-primary font-bold">Rp
+                                                {{ number_format($sppFee, 0, ',', '.') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -558,7 +559,8 @@
                                 <span class="material-symbols-outlined text-sm mt-0.5">info</span>
                                 <p>Biaya Uang Pangkal hanya dibayarkan satu kali di awal perkuliahan. UKT (Uang Kuliah
                                     Tunggal) dibayarkan setiap semester dan sudah termasuk biaya praktikum. <br>
-                                    <strong>Promo: </strong> Potongan (cashback) SPP sebesar Rp 1.000.000 bagi yang
+                                    <strong>Promo: </strong> Potongan (cashback) SPP sebesar Rp
+                                    {{ number_format($cashback, 0, ',', '.') }} bagi yang
                                     langsung (1 kali bayar) pembayaran pertama.
                                 </p>
                             </div>
@@ -574,54 +576,26 @@
                                     Prosedur Formulir &amp; Daftar
                                 </h3>
                                 <div class="space-y-6 relative z-10">
-                                    <div class="flex gap-4">
-                                        <div class="flex-none flex flex-col items-center gap-1">
-                                            <div
-                                                class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">
-                                                1</div>
-                                            <div class="w-0.5 h-full bg-gray-100 dark:bg-gray-700 rounded-full"></div>
+                                    @foreach($steps as $index => $step)
+                                        <div class="flex gap-4">
+                                            <div class="flex-none flex flex-col items-center gap-1">
+                                                <div
+                                                    class="w-8 h-8 rounded-full {{ $index == 0 ? 'bg-primary text-white' : ($index == 1 ? 'border-2 border-primary text-primary bg-white' : 'border-2 border-gray-300 text-gray-400 bg-white') }} flex items-center justify-center font-bold text-sm shadow-sm">
+                                                    {{ $index + 1 }}
+                                                </div>
+                                                @if(!$loop->last)
+                                                    <div class="w-0.5 h-full bg-gray-100 dark:bg-gray-700 rounded-full"></div>
+                                                @endif
+                                            </div>
+                                            <div class="pb-2">
+                                                <h4 class="font-bold text-[#111318] dark:text-white text-sm">
+                                                    {{ $step['title'] }}</h4>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                                                    {!! $step['desc'] !!}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div class="pb-2">
-                                            <h4 class="font-bold text-[#111318] dark:text-white text-sm">Biaya
-                                                Pendaftaran</h4>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
-                                                Calon mahasiswa membayar biaya pendaftaran seharga <span
-                                                    class="text-[#111318] dark:text-white font-medium">Rp
-                                                    150.000</span>.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="flex gap-4">
-                                        <div class="flex-none flex flex-col items-center gap-1">
-                                            <div
-                                                class="w-8 h-8 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-sm">
-                                                2</div>
-                                            <div class="w-0.5 h-full bg-gray-100 dark:bg-gray-700 rounded-full"></div>
-                                        </div>
-                                        <div class="pb-2">
-                                            <h4 class="font-bold text-[#111318] dark:text-white text-sm">Login &amp; Isi
-                                                Data</h4>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
-                                                Buat akun baru di portal ini. Lengkapi biodata diri dan pilih
-                                                Program Studi yang diminati.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="flex gap-4">
-                                        <div class="flex-none flex flex-col items-center gap-1">
-                                            <div
-                                                class="w-8 h-8 rounded-full bg-white border-2 border-gray-300 text-gray-400 flex items-center justify-center font-bold text-sm">
-                                                3</div>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-bold text-[#111318] dark:text-white text-sm">Cetak Kartu
-                                                Ujian</h4>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
-                                                Setelah data terverifikasi, cetak kartu peserta ujian sebagai bukti
-                                                pendaftaran yang sah.
-                                            </p>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
 

@@ -11,7 +11,20 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 Route::get('/', function () {
-    return view('welcome');
+    $activeGelombang = \App\Models\Gelombang::where('status', 'Aktif')->first();
+    $regFee = \App\Models\SystemSetting::where('key', 'reg_fee')->first()->value ?? 150000;
+    $sppFee = \App\Models\SystemSetting::where('key', 'spp_fee')->first()->value ?? 260000;
+    $cashback = \App\Models\SystemSetting::where('key', 'cashback')->first()->value ?? 1000000;
+
+    // Registration Steps (Default if not in DB)
+    $stepsJson = \App\Models\SystemSetting::where('key', 'registration_steps')->first()->value ?? null;
+    $steps = $stepsJson ? json_decode($stepsJson, true) : [
+        ['title' => 'Biaya Pendaftaran', 'desc' => 'Calon mahasiswa membayar biaya pendaftaran seharga Rp ' . number_format($regFee, 0, ',', '.')],
+        ['title' => 'Login & Isi Data', 'desc' => 'Buat akun baru di portal ini. Lengkapi biodata diri dan pilih Program Studi yang diminati.'],
+        ['title' => 'Cetak Kartu Ujian', 'desc' => 'Setelah data terverifikasi, cetak kartu peserta ujian sebagai bukti pendaftaran yang sah.']
+    ];
+
+    return view('welcome', compact('activeGelombang', 'regFee', 'sppFee', 'cashback', 'steps'));
 });
 
 // Profile Routes
@@ -82,6 +95,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/dashboard-mahasiswa', [PendaftaranController::class, 'dashboard'])->name('mahasiswa.dashboard');
     Route::get('/cek-status', [PendaftaranController::class, 'status'])->name('mahasiswa.status');
     Route::get('/cetak-kartu', [PendaftaranController::class, 'cetakKartu'])->name('mahasiswa.cetak_kartu');
+    Route::get('/pengumuman/{id}', [PendaftaranController::class, 'showPengumuman'])->name('mahasiswa.pengumuman.show');
 });
 
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login.submit');

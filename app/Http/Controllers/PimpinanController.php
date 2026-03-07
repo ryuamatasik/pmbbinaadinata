@@ -154,19 +154,25 @@ class PimpinanController extends Controller
                     fputcsv($file, array($row['ID'], $row['Nama'], $row['Prodi'], $row['Status Bayar'], $row['Tanggal']));
                 }
             } else {
-                $columns = ['ID', 'Nama Lengkap', 'Email', 'No HP', 'Prodi', 'Status', 'Nilai Rata-rata', 'Tanggal Daftar'];
+                $columns = ['ID', 'NIK', 'NISN', 'Nama Lengkap', 'Email', 'No HP', 'Asal Sekolah', 'Jurusan Sekolah', 'Tahun Lulus', 'Nilai Rata-rata', 'Prodi', 'Status', 'Tanggal Daftar'];
                 fputcsv($file, $columns);
                 $pendaftar = Pendaftar::all();
                 foreach ($pendaftar as $p) {
-                    $row['ID'] = $p->id;
-                    $row['Nama'] = $p->nama_lengkap;
-                    $row['Email'] = $p->email;
-                    $row['No HP'] = $p->no_hp;
-                    $row['Prodi'] = $p->pilihan_prodi;
-                    $row['Status'] = $p->status;
-                    $row['Nilai'] = $p->nilai_rata_rata;
-                    $row['Tanggal'] = $p->created_at;
-                    fputcsv($file, array($row['ID'], $row['Nama'], $row['Email'], $row['No HP'], $row['Prodi'], $row['Status'], $row['Nilai'], $row['Tanggal']));
+                    fputcsv($file, [
+                        $p->id,
+                        $p->nik,
+                        $p->nisn,
+                        $p->nama_lengkap,
+                        $p->email,
+                        $p->no_hp,
+                        $p->nama_sekolah,
+                        $p->jurusan_sekolah,
+                        $p->tahun_lulus,
+                        $p->nilai_rata_rata,
+                        $p->pilihan_prodi,
+                        $p->status,
+                        $p->created_at
+                    ]);
                 }
             }
             fclose($file);

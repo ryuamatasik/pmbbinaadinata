@@ -302,6 +302,8 @@ class PendaftaranController extends Controller
         $pendaftar_id = session('pendaftar_id');
         $pendaftar = null;
         $dokumen = [];
+        $progress = 0;
+        $activeGelombang = \App\Models\Gelombang::where('status', 'Aktif')->first();
 
         if ($pendaftar_id) {
             $pendaftar = \App\Models\Pendaftar::find($pendaftar_id);
@@ -326,6 +328,65 @@ class PendaftaranController extends Controller
                 });
 
             $hasRejection = $dokumen->contains('status', 'invalid') || $pendaftar->status == 'Ditolak';
+
+            // Calculate Progress (Comprehensive List from Form Steps)
+            $fields = [
+                // Step 1 & 2
+                'pilihan_prodi',
+                'nik',
+                'nama_lengkap',
+                'jenis_kelamin',
+                'tempat_lahir',
+                'tanggal_lahir',
+                'agama',
+                'alamat_lengkap',
+                'kelurahan',
+                'kecamatan',
+                'kabupaten',
+                'provinsi',
+                'email',
+                'no_hp',
+                'status_pernikahan',
+                'tinggal_bersama',
+                'kode_pos',
+                // Step 3
+                'nama_sekolah',
+                'jurusan_sekolah',
+                'nilai_rata_rata',
+                'tahun_lulus',
+                'alamat_sekolah',
+                // Step 4
+                'nama_ayah',
+                'nik_ayah',
+                'hp_ayah',
+                'pekerjaan_ayah',
+                'nama_ibu',
+                'nik_ibu',
+                'hp_ibu',
+                'pekerjaan_ibu'
+            ];
+            $filled = 0;
+            foreach ($fields as $field) {
+                if (!empty($pendaftar->$field)) {
+                    $filled++;
+                }
+            }
+            // Document progress (8 mandatory)
+            $mandatoryDocs = [
+                'Pas Foto',
+                'Ijazah/SKL',
+                'SKHU',
+                'Rapor Pengetahuan',
+                'KTP/KK',
+                'Akte Kelahiran',
+                'Kartu KPS/KIP',
+                'Bukti Pembayaran'
+            ];
+            $docsFilled = $dokumen->whereIn('jenis_dokumen', $mandatoryDocs)->count();
+
+            $totalFields = count($fields) + count($mandatoryDocs);
+            $totalFilled = $filled + $docsFilled;
+            $progress = round(($totalFilled / $totalFields) * 100);
         }
 
         // Fetch Active Announcements
@@ -336,7 +397,7 @@ class PendaftaranController extends Controller
             ->orderBy('tanggal', 'asc')
             ->first();
 
-        return view('mahasiswa.dashboard', compact('pendaftar', 'dokumen', 'pengumuman', 'jadwalUjian', 'hasRejection'));
+        return view('mahasiswa.dashboard', compact('pendaftar', 'dokumen', 'pengumuman', 'jadwalUjian', 'hasRejection', 'progress', 'activeGelombang'));
     }
 
     public function status()
@@ -403,10 +464,28 @@ class PendaftaranController extends Controller
             return redirect()->route('mahasiswa.pendaftaran');
         }
 
-        if ($pendaftar->status != 'Diterima') {
-            return redirect()->route('mahasiswa.dashboard')->with('error', 'Status Anda belum diterima.');
+        if (!in_array($pendaftar->status, ['Verifikasi', 'Diterima'])) {
+            return redirect()->route('mahasiswa.dashboard')->with('error', 'Status Anda belum diverifikasi atau diterima.');
         }
 
         return view('mahasiswa.kartu_peserta', compact('pendaftar'));
+    }
+
+    public function showPengumuman($id)
+    {
+        $pendaftar_id = session('pendaftar_id');
+        $pendaftar = null;
+
+        if ($pendaftar_id) {
+            $pendaftar = \App\Models\Pendaftar::find($pendaftar_id);
+        }
+
+        if (!$pendaftar && \Illuminate\Support\Facades\Auth::check()) {
+            $pendaftar = \App\Models\Pendaftar::where('user_id', \Illuminate\Support\Facades\Auth::id())->first();
+        }
+
+        $pengumuman = \App\Models\Pengumuman::findOrFail($id);
+
+        return view('mahasiswa.show-pengumuman', compact('pendaftar', 'pengumuman'));
     }
 }

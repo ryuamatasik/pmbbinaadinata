@@ -41,8 +41,10 @@
                     Datang,
                     {{ isset($pendaftar->nama_lengkap) ? explode(' ', $pendaftar->nama_lengkap)[0] : 'Calon Mahasiswa' }}
                 </h1>
-                <p class="text-[#616f89] dark:text-gray-400 text-sm md:text-base">Jalur Reguler Gelombang 1 • Tahun
-                    Akademik 2024/2025</p>
+                <p class="text-[#616f89] dark:text-gray-400 text-sm md:text-base">Jalur Reguler
+                    {{ $activeGelombang->nama ?? 'Gelombang 1' }} • Tahun
+                    Akademik {{ $activeGelombang->tahun ?? '2024/2025' }}
+                </p>
             </div>
             <div class="flex gap-3">
             </div>
@@ -152,16 +154,17 @@
                             <p class="text-sm text-gray-500">Langkah-langkah menuju kampus impian</p>
                         </div>
                         <span
-                            class="bg-blue-50 dark:bg-blue-900/30 text-primary dark:text-blue-300 text-xs font-bold px-3 py-1 rounded-full border border-blue-100 dark:border-blue-800">Tahap
-                            2 dari 5</span>
+                            class="bg-blue-50 dark:bg-blue-900/30 text-primary dark:text-blue-300 text-xs font-bold px-3 py-1 rounded-full border border-blue-100 dark:border-blue-800">
+                            {{ $progress == 100 ? 'Selesai' : 'Sedang Berlangsung' }}
+                        </span>
                     </div>
                     <div class="flex flex-col gap-4 relative z-10">
                         <div class="flex justify-between text-sm font-medium">
                             <span class="text-[#111318] dark:text-white">Kelengkapan Data</span>
-                            <span class="text-primary font-bold">60%</span>
+                            <span class="text-primary font-bold">{{ $progress }}%</span>
                         </div>
                         <div class="h-3 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                            <div class="h-full bg-primary rounded-full relative" style="width: 60%">
+                            <div class="h-full bg-primary rounded-full relative" style="width: {{ $progress }}%">
                                 <div class="absolute inset-0 bg-white/20 w-full h-full"></div>
                             </div>
                         </div>
@@ -295,7 +298,8 @@
                         @forelse($pengumuman as $info)
                             <div class="flex gap-3 items-start relative pl-4 border-l-2 border-primary">
                                 <div>
-                                    <p class="text-sm font-bold text-[#111318] dark:text-white">{{ $info->judul }}</p>
+                                    <a href="{{ route('mahasiswa.pengumuman.show', $info->id) }}"
+                                        class="text-sm font-bold text-[#111318] dark:text-white hover:text-primary transition-colors line-clamp-1 block">{{ $info->judul }}</a>
                                     <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">
                                         {{ Str::limit($info->isi, 100) }}
                                     </p>

@@ -16,13 +16,17 @@ class AdminController extends Controller
         $lolosSeleksi = Pendaftar::where('status', 'Diterima')->count();
         $ditolak = Pendaftar::where('status', 'Ditolak')->count();
         // Pendapatan Real (Hanya yang status_pembayaran = 'lunas')
-        $pendapatan = Pendaftar::where('status_pembayaran', 'lunas')->count() * 150000;
+        $regFee = \App\Models\SystemSetting::where('key', 'reg_fee')->first()->value ?? 150000;
+        $pendapatan = Pendaftar::where('status_pembayaran', 'lunas')->count() * $regFee;
 
         // Jadwal Ujian (DEBUG: Ambil yang paling baru dibuat, abaikan tanggal)
         $jadwalUjian = \App\Models\JadwalSeleksi::latest()->first();
 
         // Sebaran Pendaftar
-        $prodiList = ['Sistem Informasi', 'Sistem Komputer', 'Bisnis Digital'];
+        $prodiList = Pendaftar::whereNotNull('pilihan_prodi')->distinct()->pluck('pilihan_prodi')->toArray();
+        if (empty($prodiList)) {
+            $prodiList = ['Sistem Informasi', 'Sistem Komputer', 'Bisnis Digital'];
+        }
         $sebaranProdi = [];
 
         foreach ($prodiList as $prodi) {
