@@ -135,119 +135,181 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <!-- Main Content (2/3) -->
                     <div class="lg:col-span-2 space-y-6">
-                        <!-- Information Card -->
+                        <!-- Informasi Pribadi -->
                         <div
                             class="bg-white dark:bg-[#1a2130] rounded-xl shadow-sm border border-[#dbdfe6] dark:border-[#2a303c] p-6">
-                            <div class="flex items-center gap-2 mb-4">
-                                <span class="material-symbols-outlined text-primary">person</span>
-                                <h3 class="text-lg font-bold">Informasi Akademik</h3>
+                            <div class="flex items-center gap-2 mb-6 text-primary">
+                                <span class="material-symbols-outlined">person</span>
+                                <h3 class="text-lg font-bold">Informasi Pribadi</h3>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
-                                <div class="flex flex-col gap-1 border-b border-[#f0f2f4] dark:border-[#2a303c] py-4">
-                                    <p
-                                        class="text-[#616f89] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">
-                                        Nama Lengkap</p>
-                                    <p class="text-[#111318] dark:text-white text-base font-medium">
-                                        {{ $pendaftar->nama_lengkap ?? 'Budi Santoso' }}
-                                    </p>
-                                </div>
-                                <div class="flex flex-col gap-1 border-b border-[#f0f2f4] dark:border-[#2a303c] py-4">
-                                    <p
-                                        class="text-[#616f89] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">
-                                        Jurusan Pilihan</p>
-                                    <p class="text-primary text-base font-bold">
-                                        {{ $pendaftar->pilihan_prodi ?? 'S1 Teknik Informatika' }}
-                                    </p>
-                                </div>
-                                <div class="flex flex-col gap-1 border-b border-[#f0f2f4] dark:border-[#2a303c] py-4">
-                                    <p
-                                        class="text-[#616f89] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">
-                                        Asal Sekolah</p>
-                                    <p class="text-[#111318] dark:text-white text-base font-medium">
-                                        {{ $pendaftar->nama_sekolah ?? 'SMA Negeri 1 Jakarta' }}
-                                    </p>
-                                </div>
-                                <div class="flex flex-col gap-1 border-b border-[#f0f2f4] dark:border-[#2a303c] py-4">
-                                    <p
-                                        class="text-[#616f89] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">
-                                        Tahun Lulus</p>
-                                    <p class="text-[#111318] dark:text-white text-base font-medium">
-                                        {{ $pendaftar->tahun_lulus ?? '2023' }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                class="mt-8 p-6 bg-primary/5 dark:bg-primary/10 rounded-xl border border-primary/20 flex items-center justify-between">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8 text-sm">
                                 <div>
-                                    <p class="text-primary text-xs font-bold uppercase tracking-widest mb-1">Rata-rata
-                                        Nilai Rapor</p>
-                                    <p class="text-4xl font-black text-primary">
-                                        {{ $pendaftar->nilai_rata_rata ?? '88.50' }}
-                                    </p>
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">NIK</p>
+                                    <p class="font-medium font-mono tracking-wider">{{ $pendaftar->nik ?? '-' }}</p>
                                 </div>
-                                <div
-                                    class="size-16 bg-primary text-white rounded-full flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-3xl">school</span>
+                                <div>
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">Status Pernikahan</p>
+                                    <p class="font-medium">{{ $pendaftar->status_pernikahan ?? '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">Tempat, Tanggal Lahir</p>
+                                    <p class="font-medium">{{ $pendaftar->tempat_lahir ?? '-' }},
+                                        {{ $pendaftar->tanggal_lahir ?? '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">NPWP</p>
+                                    <p class="font-medium">{{ $pendaftar->npwp ?? '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">Agama</p>
+                                    <p class="font-medium">{{ $pendaftar->agama ?? '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">Jenis Kelamin</p>
+                                    <p class="font-medium">
+                                        {{ $pendaftar->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</p>
+                                </div>
+                                <div class="md:col-span-2 lg:col-span-3">
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">Alamat Lengkap</p>
+                                    <p class="font-medium leading-relaxed">
+                                        {{ $pendaftar->alamat_lengkap }}, {{ $pendaftar->kelurahan }},
+                                        {{ $pendaftar->kecamatan }}, {{ $pendaftar->kabupaten }},
+                                        {{ $pendaftar->provinsi }}
+                                        <span class="text-xs text-[#616f89] ml-1">(Kode Pos:
+                                            {{ $pendaftar->kode_pos ?? '-' }})</span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                        <!-- Documents Preview Summary -->
+
+                        <!-- Informasi Akademik & Sekolah -->
                         <div
                             class="bg-white dark:bg-[#1a2130] rounded-xl shadow-sm border border-[#dbdfe6] dark:border-[#2a303c] p-6">
-                            <div class="flex items-center gap-2 mb-4">
-                                <span class="material-symbols-outlined text-primary">description</span>
-                                <h3 class="text-lg font-bold">Ringkasan Berkas</h3>
+                            <div class="flex items-center gap-2 mb-6 text-primary">
+                                <span class="material-symbols-outlined">school</span>
+                                <h3 class="text-lg font-bold">Informasi Akademik & Sekolah</h3>
                             </div>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                @php
-                                    $uploadedDocs = $pendaftar->dokumen->pluck('jenis_dokumen')->toArray();
-                                @endphp
-
-                                <!-- Ijazah -->
-                                <div
-                                    class="p-3 {{ in_array('ijazah', $uploadedDocs) ? 'bg-green-50 dark:bg-green-900/20 border-green-100 dark:border-green-800' : 'bg-gray-50 dark:bg-gray-800 border-gray-100 dark:border-gray-700' }} border rounded-lg flex flex-col items-center text-center">
-                                    <span
-                                        class="material-symbols-outlined {{ in_array('ijazah', $uploadedDocs) ? 'text-green-600' : 'text-gray-400' }} mb-1">
-                                        {{ in_array('ijazah', $uploadedDocs) ? 'check_circle' : 'cancel' }}
-                                    </span>
-                                    <span
-                                        class="text-[10px] font-bold {{ in_array('ijazah', $uploadedDocs) ? 'text-green-700 dark:text-green-400' : 'text-gray-500' }} uppercase">Ijazah</span>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8 text-sm">
+                                <div>
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">Nama Sekolah</p>
+                                    <p class="font-medium">{{ $pendaftar->nama_sekolah ?? '-' }}</p>
                                 </div>
-
-                                <!-- Rapor/Transkrip -->
-                                <div
-                                    class="p-3 {{ in_array('transkrip', $uploadedDocs) ? 'bg-green-50 dark:bg-green-900/20 border-green-100 dark:border-green-800' : 'bg-gray-50 dark:bg-gray-800 border-gray-100 dark:border-gray-700' }} border rounded-lg flex flex-col items-center text-center">
-                                    <span
-                                        class="material-symbols-outlined {{ in_array('transkrip', $uploadedDocs) ? 'text-green-600' : 'text-gray-400' }} mb-1">
-                                        {{ in_array('transkrip', $uploadedDocs) ? 'check_circle' : 'cancel' }}
-                                    </span>
-                                    <span
-                                        class="text-[10px] font-bold {{ in_array('transkrip', $uploadedDocs) ? 'text-green-700 dark:text-green-400' : 'text-gray-500' }} uppercase">Rapor</span>
+                                <div>
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">Jurusan</p>
+                                    <p class="font-medium">{{ $pendaftar->jurusan_sekolah ?? '-' }}</p>
                                 </div>
-
-                                <!-- KTP/KK -->
-                                <div
-                                    class="p-3 {{ in_array('ktp', $uploadedDocs) || in_array('kk', $uploadedDocs) ? 'bg-green-50 dark:bg-green-900/20 border-green-100 dark:border-green-800' : 'bg-gray-50 dark:bg-gray-800 border-gray-100 dark:border-gray-700' }} border rounded-lg flex flex-col items-center text-center">
-                                    <span
-                                        class="material-symbols-outlined {{ in_array('ktp', $uploadedDocs) || in_array('kk', $uploadedDocs) ? 'text-green-600' : 'text-gray-400' }} mb-1">
-                                        {{ in_array('ktp', $uploadedDocs) || in_array('kk', $uploadedDocs) ? 'check_circle' : 'cancel' }}
-                                    </span>
-                                    <span
-                                        class="text-[10px] font-bold {{ in_array('ktp', $uploadedDocs) || in_array('kk', $uploadedDocs) ? 'text-green-700 dark:text-green-400' : 'text-gray-500' }} uppercase">KTP/KK</span>
+                                <div>
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">Tahun Lulus</p>
+                                    <p class="font-medium">{{ $pendaftar->tahun_lulus ?? '-' }}</p>
                                 </div>
-
-                                <!-- Bukti Pembayaran -->
-                                <div
-                                    class="p-3 {{ in_array('bukti_pembayaran', $uploadedDocs) ? 'bg-green-50 dark:bg-green-900/20 border-green-100 dark:border-green-800' : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-100 dark:border-yellow-800' }} border rounded-lg flex flex-col items-center text-center">
-                                    <span
-                                        class="material-symbols-outlined {{ in_array('bukti_pembayaran', $uploadedDocs) ? 'text-green-600' : 'text-yellow-600' }} mb-1">
-                                        {{ in_array('bukti_pembayaran', $uploadedDocs) ? 'check_circle' : 'history' }}
-                                    </span>
-                                    <span
-                                        class="text-[10px] font-bold {{ in_array('bukti_pembayaran', $uploadedDocs) ? 'text-green-700 dark:text-green-400' : 'text-yellow-700 dark:text-yellow-400' }} uppercase">
-                                        {{ in_array('bukti_pembayaran', $uploadedDocs) ? 'Lunas' : 'Menunggu' }}
-                                    </span>
+                                <div>
+                                    <p class="text-[#616f89] dark:text-gray-400 mb-1">NISN</p>
+                                    <p class="font-medium font-mono">{{ $pendaftar->nisn ?? '-' }}</p>
                                 </div>
+                                <div class="bg-primary/5 dark:bg-primary/10 p-3 rounded-lg border border-primary/10">
+                                    <p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Nilai
+                                        Rata-rata Rapor</p>
+                                    <p class="text-2xl font-black text-primary">{{ $pendaftar->nilai_rata_rata ?? '-' }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Data Pekerjaan & KIP/KPS -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div
+                                class="bg-white dark:bg-[#1a2130] rounded-xl shadow-sm border border-[#dbdfe6] dark:border-[#2a303c] p-6">
+                                <div class="flex items-center gap-2 mb-4 text-primary">
+                                    <span class="material-symbols-outlined text-lg">work</span>
+                                    <h3 class="text-base font-bold">Detail Pekerjaan</h3>
+                                </div>
+                                <div class="space-y-3 text-sm">
+                                    <div>
+                                        <p class="text-xs text-[#616f89] dark:text-gray-400">Nama Perusahaan</p>
+                                        <p class="font-medium">{{ $pendaftar->nama_perusahaan ?? '-' }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-[#616f89] dark:text-gray-400">Jabatan</p>
+                                        <p class="font-medium">{{ $pendaftar->jabatan ?? '-' }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-[#616f89] dark:text-gray-400">Alamat Kerja</p>
+                                        <p class="font-medium truncate"
+                                            title="{{ $pendaftar->alamat_perusahaan ?? '-' }}">
+                                            {{ $pendaftar->alamat_perusahaan ?? '-' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="bg-white dark:bg-[#1a2130] rounded-xl shadow-sm border border-[#dbdfe6] dark:border-[#2a303c] p-6">
+                                <div class="flex items-center gap-2 mb-4 text-primary">
+                                    <span class="material-symbols-outlined text-lg">card_membership</span>
+                                    <h3 class="text-base font-bold">Data KIP / KPS</h3>
+                                </div>
+                                <div class="space-y-3 text-sm">
+                                    <div>
+                                        <p class="text-xs text-[#616f89] dark:text-gray-400">No. KIP (Kartu Indonesia
+                                            Pintar)</p>
+                                        <p class="font-medium font-mono">{{ $pendaftar->no_kip ?? '-' }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-[#616f89] dark:text-gray-400">No. KPS / PKH</p>
+                                        <p class="font-medium font-mono">{{ $pendaftar->no_kps ?? '-' }}</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-[10px] font-bold">
+                                            {{ $pendaftar->peserta_kip == 'Ya' ? 'Peserta KIP' : 'Bukan KIP' }}
+                                        </span>
+                                        <span
+                                            class="px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-[10px] font-bold">
+                                            {{ $pendaftar->penerima_kps == 'Ya' ? 'Penerima KPS' : 'Bukan KPS' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dokumen Persyaratan -->
+                        <div
+                            class="bg-white dark:bg-[#1a2130] rounded-xl shadow-sm border border-[#dbdfe6] dark:border-[#2a303c] p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="flex items-center gap-2 text-primary">
+                                    <span class="material-symbols-outlined">folder_open</span>
+                                    <h3 class="text-lg font-bold">Dokumen Persyaratan</h3>
+                                </div>
+                                <span
+                                    class="bg-[#f0f2f4] dark:bg-[#2a303c] px-3 py-1 rounded-full text-xs font-bold">{{ $pendaftar->dokumen->count() }}
+                                    Berkas</span>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                @forelse($pendaftar->dokumen as $doc)
+                                    <div
+                                        class="flex items-center justify-between p-3 rounded-lg border border-[#dbdfe6] dark:border-[#2a303c] bg-[#fbfbfb] dark:bg-[#202737]">
+                                        <div class="flex items-center gap-3 overflow-hidden">
+                                            <div
+                                                class="size-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                                                <span class="material-symbols-outlined text-xl">description</span>
+                                            </div>
+                                            <div class="overflow-hidden">
+                                                <p class="text-xs font-bold truncate uppercase">
+                                                    {{ str_replace('_', ' ', $doc->jenis_dokumen) }}</p>
+                                                <p class="text-[10px] text-[#616f89] dark:text-gray-400 truncate">
+                                                    {{ $doc->original_name }}</p>
+                                            </div>
+                                        </div>
+                                        <a href="{{ Storage::url($doc->file_path) }}" target="_blank"
+                                            class="shrink-0 size-8 flex items-center justify-center rounded-lg hover:bg-primary/10 text-primary transition-colors">
+                                            <span class="material-symbols-outlined text-lg">visibility</span>
+                                        </a>
+                                    </div>
+                                @empty
+                                    <div
+                                        class="col-span-2 py-8 text-center bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-200 dark:border-gray-700">
+                                        <span class="material-symbols-outlined text-4xl text-gray-300 mb-2">cloud_off</span>
+                                        <p class="text-sm text-[#616f89]">Belum ada dokumen yang diunggah</p>
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
                     </div>
