@@ -73,8 +73,10 @@ class AdminController extends Controller
         }
 
         if ($request->has('prodi') && $request->prodi != '' && $request->prodi != 'Semua Program Studi') {
-            // Use LIKE because pilihan_prodi can be a comma-separated string (Choice 1, Choice 2)
-            $query->where('pilihan_prodi', 'like', '%' . $request->prodi . '%');
+            // Only match the PRIMARY (first) choice. 
+            // The format is "Choice 1, Choice 2" or just "Choice 1".
+            // Matching the string at the START ensures Choice 2 is ignored.
+            $query->where('pilihan_prodi', 'like', $request->prodi . '%');
         }
 
         if ($request->has('tahun') && $request->tahun != '' && $request->tahun != 'Semua Tahun') {
