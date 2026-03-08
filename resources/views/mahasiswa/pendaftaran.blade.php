@@ -135,6 +135,7 @@
         <form id="pendaftaran-form" action="{{ route('mahasiswa.store', [], false) }}" method="POST"
             class="flex flex-col grow" enctype="multipart/form-data" @submit="isLoading = true">
             @csrf
+            <input type="hidden" name="action" id="form-action" value="submit">
             <!-- Modal Toggles (using checkbox hack from User HTML) -->
             <input class="peer/modal1 hidden modal-toggle" id="modal-1" type="checkbox" />
             <input class="peer/modal2 hidden modal-toggle" id="modal-2" type="checkbox" />
@@ -360,13 +361,14 @@
                         class="flex flex-col-reverse md:flex-row justify-end gap-4 mt-8 pt-8 border-t border-slate-200 dark:border-slate-700">
                         <button
                             class="flex items-center justify-center gap-2 h-14 px-8 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-transparent text-slate-600 dark:text-white font-bold hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 transition-all"
-                            type="submit" name="action" value="draft">
+                            type="submit" onclick="document.getElementById('form-action').value='draft'">
                             <span class="material-symbols-outlined text-[20px]">save</span>
                             <span>Simpan Draf</span>
                         </button>
                         <button
                             class="flex items-center justify-center gap-2 h-14 px-10 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all transform w-full md:w-auto disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-                            type="submit" name="action" value="submit" :disabled="isLoading">
+                            type="submit" onclick="document.getElementById('form-action').value='submit'"
+                            :disabled="isLoading">
 
                             <!-- Loading Spinner -->
                             <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white"

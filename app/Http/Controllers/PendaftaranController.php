@@ -93,7 +93,7 @@ class PendaftaranController extends Controller
 
         $data = $request->except(['_token', 'action']);
 
-        if ($request->input('action') === 'draft') {
+        if ($request->input('action') === 'draft' || $request->input('action') === 'submit') {
             $defaults = [
                 'gelombang' => '1',
                 'pilihan_prodi' => '-',
@@ -120,7 +120,7 @@ class PendaftaranController extends Controller
                 'nama_ibu' => '-',
                 'pekerjaan_ibu' => '-',
                 'hp_ibu' => '-',
-                'email' => 'draft' . time() . '@example.com', // Unique dummy email
+                'email' => Auth::user()->email, // Use authenticated user's email if empty
             ];
 
             foreach ($defaults as $key => $val) {
@@ -186,7 +186,7 @@ class PendaftaranController extends Controller
         session(['pendaftar_id' => $pendaftar->id]);
 
         if ($request->wantsJson() || $request->ajax()) {
-            return response()->json(['status' => 'success', 'redirect' => route('mahasiswa.pendaftaran')]);
+            return response()->json(['status' => 'success', 'redirect' => $request->input('action') === 'draft' ? route('mahasiswa.pendaftaran') : route('mahasiswa.upload')]);
         }
 
         if ($request->input('action') === 'draft') {
