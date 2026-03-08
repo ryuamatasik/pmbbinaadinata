@@ -1202,7 +1202,7 @@
                                 if (this.pendingUrl) {
                                     window.location.href = this.pendingUrl;
                                 } else {
-                                    window.location.href = '{{ route("mahasiswa.upload") }}';
+                                    window.location.reload();
                                 }
                             } else {
                                 response.json().then(data => {

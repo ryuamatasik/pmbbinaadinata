@@ -186,11 +186,11 @@ class PendaftaranController extends Controller
         session(['pendaftar_id' => $pendaftar->id]);
 
         if ($request->wantsJson() || $request->ajax()) {
-            return response()->json(['status' => 'success', 'redirect' => route('mahasiswa.upload')]);
+            return response()->json(['status' => 'success', 'redirect' => route('mahasiswa.pendaftaran')]);
         }
 
         if ($request->input('action') === 'draft') {
-            return redirect()->route('mahasiswa.upload')->with('success', 'Data draf pendaftaran berhasil disimpan. Anda dapat melanjutkan ke upload berkas atau melengkapi formulir nanti.');
+            return redirect()->route('mahasiswa.pendaftaran')->with('success', 'Data draf pendaftaran berhasil disimpan.');
         }
 
         return redirect()->route('mahasiswa.upload')->with('success', 'Data pendaftaran berhasil disimpan. Silakan unggah dokumen.');
