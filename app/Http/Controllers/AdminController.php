@@ -141,7 +141,9 @@ class AdminController extends Controller
                 ->toArray();
         }
 
-        return view('admin.verifikasi_berkas', compact('antrean', 'pendaftar', 'dokumen', 'countMenunggu', 'countSelesai', 'countRevisi', 'status'));
+        $syaratDokumen = \App\Models\SyaratDokumen::all();
+
+        return view('admin.verifikasi_berkas', compact('antrean', 'pendaftar', 'dokumen', 'countMenunggu', 'countSelesai', 'countRevisi', 'status', 'syaratDokumen'));
     }
 
     // VERIFIKASI FILES

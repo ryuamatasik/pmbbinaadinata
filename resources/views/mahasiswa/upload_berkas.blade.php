@@ -144,38 +144,40 @@
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-4 max-w-[1200px] mx-auto mb-16">
-                    @php
-                        $uploadItems = [
-                            ['id' => 'ktp', 'title' => '1. Kartu Identitas (KTP)', 'icon' => 'badge', 'max' => '2MB', 'ext' => 'PDF/JPG'],
-                            ['id' => 'ktp_ortu', 'title' => '2. KTP Orang Tua/Wali', 'icon' => 'family_restroom', 'max' => '2MB', 'ext' => 'PDF/JPG'],
-                            ['id' => 'akte', 'title' => '3. Akte Kelahiran', 'icon' => 'child_care', 'max' => '3MB', 'ext' => 'PDF/JPG'],
-                            ['id' => 'ijazah', 'title' => '4. Ijazah/SKL', 'icon' => 'history_edu', 'max' => '5MB', 'ext' => 'PDF/JPG'],
-                            ['id' => 'kk', 'title' => '5. Kartu Keluarga', 'icon' => 'groups', 'max' => '3MB', 'ext' => 'PDF/JPG'],
-                            ['id' => 'foto', 'title' => '6. Pass Foto', 'icon' => 'account_box', 'max' => '2MB', 'ext' => 'JPG/PNG'],
-                            ['id' => 'transkrip', 'title' => '7. Transkrip Nilai', 'icon' => 'description', 'max' => '5MB', 'ext' => 'PDF/JPG'],
-                            ['id' => 'bukti_pembayaran', 'title' => '8. Bukti Pembayaran', 'icon' => 'payments', 'max' => '2MB', 'ext' => 'JPG/PDF/PNG'],
-                            ['id' => 'kip', 'title' => '9. Kartu Indonesia Pintar', 'icon' => 'card_membership', 'max' => '2MB', 'ext' => 'PDF/JPG', 'optional' => true],
-                        ];
-                    @endphp
-
-                    @foreach ($uploadItems as $item)
-                        @php $hasDoc = isset($dokumen[$item['id']]); @endphp
+                    @foreach ($syaratDokumen as $syarat)
+                        @php 
+                            $field = \Illuminate\Support\Str::slug($syarat->nama, '_');
+                            $hasDoc = isset($dokumen[$field]); 
+                            
+                            // Map names to icons for better visual
+                            $icon = 'description';
+                            $lowerNama = strtolower($syarat->nama);
+                            if (str_contains($lowerNama, 'ktp')) $icon = 'badge';
+                            elseif (str_contains($lowerNama, 'ortu') || str_contains($lowerNama, 'wali')) $icon = 'family_restroom';
+                            elseif (str_contains($lowerNama, 'akte')) $icon = 'child_care';
+                            elseif (str_contains($lowerNama, 'ijazah') || str_contains($lowerNama, 'skl')) $icon = 'history_edu';
+                            elseif (str_contains($lowerNama, 'kk') || str_contains($lowerNama, 'keluarga')) $icon = 'groups';
+                            elseif (str_contains($lowerNama, 'foto')) $icon = 'account_box';
+                            elseif (str_contains($lowerNama, 'transkrip') || str_contains($lowerNama, 'nilai')) $icon = 'description';
+                            elseif (str_contains($lowerNama, 'bayar') || str_contains($lowerNama, 'bukti')) $icon = 'payments';
+                            elseif (str_contains($lowerNama, 'kip')) $icon = 'card_membership';
+                        @endphp
                         <div class="w-full md:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.7rem)] xl:w-[calc(25%-0.75rem)]">
                             <div
                                 class="flex flex-col h-full rounded-xl bg-white dark:bg-[#1a202c] shadow-sm border border-[#dbdfe6] dark:border-[#2a3441] overflow-hidden group hover:border-primary/50 transition-colors">
                                 <div
                                     class="p-3 border-b border-[#f0f2f4] dark:border-[#2a3441] flex items-center justify-between bg-gray-50 dark:bg-[#202836]">
                                     <h3 class="font-bold text-[#111318] dark:text-white text-xs truncate mr-2">
-                                        {{ $item['title'] }}@if(isset($item['optional']) && $item['optional']) <span
+                                        {{ $loop->iteration }}. {{ $syarat->nama }}@if(!$syarat->wajib) <span
                                             class="text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-1 py-0.5 rounded ml-1 font-medium">Opsional</span>
                                         @endif
                                     </h3>
-                                    <span class="material-symbols-outlined text-primary text-lg">{{ $item['icon'] }}</span>
+                                    <span class="material-symbols-outlined text-primary text-lg">{{ $icon }}</span>
                                 </div>
-                                <div class="p-4 flex flex-col items-center justify-center border-2 border-dashed {{ $hasDoc && $dokumen[$item['id']]->status == 'invalid' ? 'border-red-500 bg-red-50 dark:bg-red-900/10' : ($hasDoc ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30') }} m-3 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
-                                    onclick="document.getElementById('file-{{ $item['id'] }}').click()">
+                                <div class="p-4 flex flex-col items-center justify-center border-2 border-dashed {{ $hasDoc && $dokumen[$field]->status == 'invalid' ? 'border-red-500 bg-red-50 dark:bg-red-900/10' : ($hasDoc ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-[#dbdfe6] dark:border-[#2a3441] bg-background-light/50 dark:bg-background-dark/30') }} m-3 rounded-lg group-hover:bg-primary/5 transition-colors cursor-pointer"
+                                    onclick="document.getElementById('file-{{ $field }}').click()">
 
-                                    @if($hasDoc && $dokumen[$item['id']]->status == 'invalid')
+                                    @if($hasDoc && $dokumen[$field]->status == 'invalid')
                                         <div
                                             class="mb-3 w-full p-2 bg-red-100 dark:bg-red-900/40 rounded-lg border border-red-200 dark:border-red-800 text-center">
                                             <p
@@ -183,31 +185,31 @@
                                                 <span class="material-symbols-outlined text-[14px]">warning</span> Revisi
                                                 Diperlukan
                                             </p>
-                                            @if($dokumen[$item['id']]->catatan)
+                                            @if($dokumen[$field]->catatan)
                                                 <p class="text-[10px] text-red-600 dark:text-red-400 mt-1 italic leading-tight">
-                                                    "{{ $dokumen[$item['id']]->catatan }}"</p>
+                                                    "{{ $dokumen[$field]->catatan }}"</p>
                                             @endif
                                         </div>
                                     @endif
 
                                     <span
-                                        class="material-symbols-outlined text-2xl {{ $hasDoc && $dokumen[$item['id']]->status == 'invalid' ? 'text-red-500' : ($hasDoc ? 'text-green-500' : 'text-[#9ca3af]') }} mb-1">{{ $hasDoc ? ($dokumen[$item['id']]->status == 'invalid' ? 'error' : 'check_circle') : 'cloud_upload' }}</span>
+                                        class="material-symbols-outlined text-2xl {{ $hasDoc && $dokumen[$field]->status == 'invalid' ? 'text-red-500' : ($hasDoc ? 'text-green-500' : 'text-[#9ca3af]') }} mb-1">{{ $hasDoc ? ($dokumen[$field]->status == 'invalid' ? 'error' : 'check_circle') : 'cloud_upload' }}</span>
                                     <div class="text-center mb-3 h-8 flex flex-col justify-center">
                                         <p class="text-[11px] font-medium text-[#111318] dark:text-gray-200 line-clamp-2"
-                                            id="text-{{ $item['id'] }}">
-                                            {{ $hasDoc ? $dokumen[$item['id']]->original_name : 'Klik/Tarik file' }}
+                                            id="text-{{ $field }}">
+                                            {{ $hasDoc ? $dokumen[$field]->original_name : 'Klik/Tarik file' }}
                                         </p>
                                         <p
                                             class="text-[9px] {{ $hasDoc ? 'text-green-600 dark:text-green-400 font-bold' : 'text-[#616f89] dark:text-gray-400' }} mt-0.5">
-                                            {{ $hasDoc ? 'Tersimpan (Klik ubah)' : $item['ext'] . ', Maks: ' . $item['max'] }}
+                                            {{ $hasDoc ? 'Tersimpan (Klik ubah)' : $syarat->format . ', Maks: ' . $syarat->max_size }}
                                         </p>
                                     </div>
                                     <button type="button"
                                         class="flex items-center justify-center rounded-md h-7 px-3 bg-white dark:bg-[#2a3441] border border-[#dbdfe6] dark:border-[#4a5568] text-[#111318] dark:text-white text-[10px] font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-[#323c4e] transition-colors w-full">Pilih
                                         Berkas</button>
-                                    <input type="file" name="{{ $item['id'] }}" id="file-{{ $item['id'] }}" class="hidden"
+                                    <input type="file" name="{{ $field }}" id="file-{{ $field }}" class="hidden"
                                         accept=".pdf,.jpg,.jpeg,.png,.webp"
-                                        onchange="updateFileName('{{ $item['id'] }}', this)">
+                                        onchange="updateFileName('{{ $field }}', this)">
                                 </div>
                             </div>
                         </div>

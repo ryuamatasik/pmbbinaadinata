@@ -214,7 +214,9 @@ class PendaftaranController extends Controller
                 ->keyBy('jenis_dokumen'); // Returns collection keyed by jenis_dokumen
         }
 
-        return view('mahasiswa.upload_berkas', compact('pendaftar', 'dokumen'));
+        $syaratDokumen = \App\Models\SyaratDokumen::all();
+
+        return view('mahasiswa.upload_berkas', compact('pendaftar', 'dokumen', 'syaratDokumen'));
     }
 
     public function uploadStore(Request $request)
@@ -225,17 +227,24 @@ class PendaftaranController extends Controller
         }
         $pendaftar_id = $pendaftar->id;
 
-        $rules = [
-            'ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:2048',
-            'ktp_ortu' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:2048',
-            'akte' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:3072',
-            'ijazah' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:5120',
-            'kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:3072',
-            'foto' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'transkrip' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:5120',
-            'bukti_pembayaran' => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:2048',
-            'kip' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:2048',
-        ];
+        $syaratDokumen = \App\Models\SyaratDokumen::all();
+        $rules = [];
+        $attributes = [];
+
+        foreach ($syaratDokumen as $syarat) {
+            // Slugify or use ID for the field name. 
+            // The existing ones used 'ktp', 'ijazah' etc.
+            // We'll use a simple slug of the name for compatibility.
+            $field = \Illuminate\Support\Str::slug($syarat->nama, '_');
+
+            // Allow dynamic extensions from the DB (e.g., "PDF, JPG")
+            $mimes = strtolower(str_replace(' ', '', $syarat->format));
+            // Max size from DB (e.g., "2 MB" -> 2048)
+            $max = (int) $syarat->max_size * 1024;
+
+            $rules[$field] = "nullable|file|mimes:{$mimes}|max:{$max}";
+            $attributes[$field] = $syarat->nama;
+        }
 
         $messages = [
             'mimes' => 'Format file :attribute harus berupa: :values.',
@@ -244,36 +253,24 @@ class PendaftaranController extends Controller
             'uploaded' => 'Gagal mengunggah :attribute. Ukuran file mungkin melebihi batas server.',
         ];
 
-        $attributes = [
-            'ktp' => 'KTP',
-            'ktp_ortu' => 'KTP Orang Tua',
-            'akte' => 'Akte Kelahiran',
-            'ijazah' => 'Ijazah',
-            'kk' => 'Kartu Keluarga',
-            'foto' => 'Pas Foto',
-            'transkrip' => 'Transkrip Nilai',
-            'bukti_pembayaran' => 'Bukti Pembayaran',
-            'kip' => 'Kartu Indonesia Pintar',
-        ];
-
         $request->validate($rules, $messages, $attributes);
 
-        $documents = ['ktp', 'ktp_ortu', 'akte', 'ijazah', 'kk', 'foto', 'transkrip', 'bukti_pembayaran', 'kip'];
+        foreach ($syaratDokumen as $syarat) {
+            $field = \Illuminate\Support\Str::slug($syarat->nama, '_');
 
-        foreach ($documents as $doc) {
-            if ($request->hasFile($doc)) {
-                $file = $request->file($doc);
+            if ($request->hasFile($field)) {
+                $file = $request->file($field);
                 $path = $file->store('uploads', 'public');
                 $originalName = $file->getClientOriginalName();
 
                 // Delete old one if exists
                 \App\Models\DokumenPendaftar::where('pendaftar_id', $pendaftar_id)
-                    ->where('jenis_dokumen', $doc)
+                    ->where('jenis_dokumen', $field)
                     ->delete();
 
                 \App\Models\DokumenPendaftar::create([
                     'pendaftar_id' => $pendaftar_id,
-                    'jenis_dokumen' => $doc,
+                    'jenis_dokumen' => $field,
                     'file_path' => $path,
                     'original_name' => $originalName,
                     'status' => 'valid' // Default to valid when uploaded by user

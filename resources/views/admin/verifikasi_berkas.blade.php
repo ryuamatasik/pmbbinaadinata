@@ -104,8 +104,8 @@
                                         <button @click="setActiveDoc(doc)"
                                             class="w-full flex items-center justify-between p-2.5 rounded text-[11px] transition-all group border"
                                             :class="activeDoc.name === doc.name ? 
-                                                                                                                                                                                                                     'bg-primary/10 border-primary/20 text-primary font-bold shadow-sm' : 
-                                                                                                                                                                                                                     'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium'">
+                                                                                                                                                                                                                             'bg-primary/10 border-primary/20 text-primary font-bold shadow-sm' : 
+                                                                                                                                                                                                                             'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium'">
                                             <span class="flex items-center gap-2.5">
                                                 <span class="material-symbols-outlined text-[16px]"
                                                     :class="activeDoc.name === doc.name ? 'font-normal' : 'text-slate-400'"
@@ -362,16 +362,36 @@
                     activeDoc: {},
                     zoomLevel: 100,
                     rotation: 0,
-                    documents: [
-                        { name: 'KTP Pribadi', icon: 'badge', key: 'ktp', uploaded: false, url: null },
-                        { name: 'KTP Orang Tua / Wali', icon: 'diversity_3', key: 'ktp_ortu', uploaded: false, url: null },
-                        { name: 'Akte Kelahiran', icon: 'child_care', key: 'akte', uploaded: false, url: null },
-                        { name: 'Ijazah SMA', icon: 'description', key: 'ijazah', uploaded: false, url: null },
-                        { name: 'Kartu Keluarga', icon: 'family_restroom', key: 'kk', uploaded: false, url: null },
-                        { name: 'Pass Foto', icon: 'account_circle', key: 'foto', uploaded: false, url: null },
-                        { name: 'Transkrip Nilai', icon: 'receipt_long', key: 'transkrip', uploaded: false, url: null },
-                        { name: 'Bukti Pembayaran', icon: 'payments', key: 'bukti_pembayaran', uploaded: false, url: null }
-                    ],
+                    documents: @json($syaratDokumen->map(function ($s) {
+                        $icon = 'description';
+                        $lowerNama = strtolower($s->nama);
+                        if (str_contains($lowerNama, 'ktp'))
+                            $icon = 'badge';
+                        elseif (str_contains($lowerNama, 'ortu') || str_contains($lowerNama, 'wali'))
+                            $icon = 'diversity_3';
+                        elseif (str_contains($lowerNama, 'akte'))
+                            $icon = 'child_care';
+                        elseif (str_contains($lowerNama, 'ijazah') || str_contains($lowerNama, 'skl'))
+                            $icon = 'description';
+                        elseif (str_contains($lowerNama, 'kk') || str_contains($lowerNama, 'keluarga'))
+                            $icon = 'family_restroom';
+                        elseif (str_contains($lowerNama, 'foto'))
+                            $icon = 'account_circle';
+                        elseif (str_contains($lowerNama, 'transkrip') || str_contains($lowerNama, 'nilai'))
+                            $icon = 'receipt_long';
+                        elseif (str_contains($lowerNama, 'bayar') || str_contains($lowerNama, 'bukti'))
+                            $icon = 'payments';
+                        elseif (str_contains($lowerNama, 'kip'))
+                            $icon = 'card_membership';
+
+                        return [
+                            'name' => $s->nama,
+                            'icon' => $icon,
+                            'key' => \Illuminate\Support\Str::slug($s->nama, '_'),
+                            'uploaded' => false,
+                            'url' => null
+                        ];
+                    })),
                     uploadedDocs: @json($dokumen ?: (object) []),
 
                     init() {
