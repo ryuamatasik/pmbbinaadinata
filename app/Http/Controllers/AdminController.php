@@ -68,14 +68,24 @@ class AdminController extends Controller
         }
 
         if ($request->has('status') && $request->status != '' && $request->status != 'Semua Status') {
-            $query->where('status', $request->status);
+            // Flexible status match
+            $query->where('status', 'like', $request->status);
         }
 
         if ($request->has('prodi') && $request->prodi != '' && $request->prodi != 'Semua Program Studi') {
-            $query->where('pilihan_prodi', $request->prodi);
+            // Use LIKE because pilihan_prodi can be a comma-separated string (Choice 1, Choice 2)
+            $query->where('pilihan_prodi', 'like', '%' . $request->prodi . '%');
         }
 
-        $pendaftars = $query->paginate(10);
+        if ($request->has('tahun') && $request->tahun != '') {
+            // Academic year is usually part of nomor_pendaftaran (e.g., REG-2024-...)
+            // Extracting the start year if the format is 2024/2025
+            $yearParts = explode('/', $request->tahun);
+            $year = $yearParts[0];
+            $query->where('nomor_pendaftaran', 'like', "%-{$year}-%");
+        }
+
+        $pendaftars = $query->paginate(10)->withQueryString();
 
         return view('admin.data_calon_mahasiswa', compact('pendaftars'));
     }

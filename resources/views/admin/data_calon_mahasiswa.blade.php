@@ -41,10 +41,10 @@
                 <div>
                     <label class="block text-xs font-semibold text-[#616f89] uppercase mb-2">Tahun
                         Akademik</label>
-                    <select name="tahun"
+                    <select name="tahun" onchange="this.form.submit()"
                         class="w-full flex items-center justify-between px-4 py-2 bg-white md:bg-background-light dark:bg-gray-800 border md:border-none border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium focus:ring-primary">
-                        <option value="2024/2025">2024/2025</option>
-                        <option value="2023/2024">2023/2024</option>
+                        <option value="2024/2025" {{ request('tahun') == '2024/2025' ? 'selected' : '' }}>2024/2025</option>
+                        <option value="2023/2024" {{ request('tahun') == '2023/2024' ? 'selected' : '' }}>2023/2024</option>
                     </select>
                 </div>
                 <div>
@@ -98,165 +98,168 @@
                     <tbody
                         class="block md:table-row-group space-y-4 md:space-y-0 divide-y-0 md:divide-y divide-[#e5e7eb] dark:divide-gray-800">
                         @forelse($pendaftars as $index => $pendaftar)
-                                            <!-- Mobile Compact Card View -->
-                                            <tr
-                                                class="md:hidden block bg-white dark:bg-[#1a212e] rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-4 relative">
-                                                <td class="block p-0 border-none">
-                                                    <!-- Card Header: Profile & Status -->
-                                                    <div class="flex justify-between items-start mb-3">
-                                                        <div class="flex items-center gap-3">
-                                                            <div
-                                                                class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm uppercase shrink-0">
-                                                                {{ substr($pendaftar->nama_lengkap ?? 'Unknown', 0, 2) }}
-                                                            </div>
-                                                            <div>
-                                                                <h4
-                                                                    class="text-sm font-bold text-[#111318] dark:text-white line-clamp-1 break-all">
-                                                                    {{ $pendaftar->nama_lengkap }}</h4>
-                                                                <p class="text-[11px] text-[#616f89]">
-                                                                    {{ $pendaftar->nomor_pendaftaran ?? 'N/A' }}</p>
-                                                            </div>
-                                                        </div>
-                                                        @php
-                                                            $statusClass = match ($pendaftar->status) {
-                                                                'Diterima' => 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-                                                                'Ditolak' => 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-                                                                'Verifikasi' => 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
-                                                                default => 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
-                                                            };
-                                                        @endphp
-                             <span
-                                                            class="px-2 py-1 rounded-md {{ $statusClass }} text-[10px] font-bold uppercase tracking-wide shrink-0">
-                                                            {{ $pendaftar->status }}
-                                                        </span>
-                                                    </div>
+                            <!-- Mobile Compact Card View -->
+                            <tr
+                                class="md:hidden block bg-white dark:bg-[#1a212e] rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-4 relative">
+                                <td class="block p-0 border-none">
+                                    <!-- Card Header: Profile & Status -->
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm uppercase shrink-0">
+                                                {{ substr($pendaftar->nama_lengkap ?? 'Unknown', 0, 2) }}
+                                            </div>
+                                            <div>
+                                                <h4
+                                                    class="text-sm font-bold text-[#111318] dark:text-white line-clamp-1 break-all">
+                                                    {{ $pendaftar->nama_lengkap }}
+                                                </h4>
+                                                <p class="text-[11px] text-[#616f89]">
+                                                    {{ $pendaftar->nomor_pendaftaran ?? 'N/A' }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        @php
+                                            $statusClass = match ($pendaftar->status) {
+                                                'Diterima' => 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+                                                'Ditolak' => 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+                                                'Verifikasi' => 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+                                                default => 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                                            };
+                                        @endphp
+                                        <span
+                                            class="px-2 py-1 rounded-md {{ $statusClass }} text-[10px] font-bold uppercase tracking-wide shrink-0">
+                                            {{ $pendaftar->status }}
+                                        </span>
+                                    </div>
 
-                                                    <!-- Card Body: Details -->
-                                                    <div class="space-y-2 mb-4">
-                                                        <div class="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-400">
-                                                            <span
-                                                                class="material-symbols-outlined text-[16px] text-slate-400 shrink-0">school</span>
-                                                            <span class="line-clamp-2">{{ $pendaftar->pilihan_prodi }}</span>
-                                                        </div>
-                                                        <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
-                                                            <span
-                                                                class="material-symbols-outlined text-[16px] text-slate-400 shrink-0">payments</span>
-                                                            <span
-                                                                class="{{ $pendaftar->status_pembayaran == 'lunas' ? 'text-green-600 font-bold' : 'text-slate-500' }}">
-                                                                {{ $pendaftar->status_pembayaran == 'lunas' ? 'Lunas' : 'Belum Bayar' }}
-                                                            </span>
-                                                        </div>
-                                                    </div>
+                                    <!-- Card Body: Details -->
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-400">
+                                            <span
+                                                class="material-symbols-outlined text-[16px] text-slate-400 shrink-0">school</span>
+                                            <span class="line-clamp-2">{{ $pendaftar->pilihan_prodi }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                                            <span
+                                                class="material-symbols-outlined text-[16px] text-slate-400 shrink-0">payments</span>
+                                            <span
+                                                class="{{ $pendaftar->status_pembayaran == 'lunas' ? 'text-green-600 font-bold' : 'text-slate-500' }}">
+                                                {{ $pendaftar->status_pembayaran == 'lunas' ? 'Lunas' : 'Belum Bayar' }}
+                                            </span>
+                                        </div>
+                                    </div>
 
-                                                    <!-- Card Footer: Actions -->
-                                                    <div
-                                                        class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700/50">
-                                                        <div class="text-[10px] uppercase font-bold text-slate-400">
-                                                            {{ $pendaftar->updated_at->diffForHumans() }}
-                                                        </div>
-                                                        <div class="flex gap-1">
-                                                            <form action="{{ route('admin.pendaftar.toggle_bayar', $pendaftar->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('PUT')
-                                                                <button type="submit"
-                                                                    class="p-2 {{ $pendaftar->status_pembayaran == 'lunas' ? 'bg-green-50 text-green-600 dark:bg-green-900/20' : 'bg-gray-50 text-gray-400 dark:bg-gray-800' }} rounded-lg"
-                                                                    title="Pembayaran">
-                                                                    <span
-                                                                        class="material-symbols-outlined text-[18px]">{{ $pendaftar->status_pembayaran == 'lunas' ? 'paid' : 'money_off' }}</span>
-                                                                </button>
-                                                            </form>
-                                                            <a href="{{ route('admin.pendaftar.detail', $pendaftar->id) }}"
-                                                                class="p-2 bg-blue-50 text-blue-600 dark:bg-blue-900/20 rounded-lg"
-                                                                title="Detail">
-                                                                <span class="material-symbols-outlined text-[18px]">visibility</span>
-                                                            </a>
-                                                            <a href="{{ route('admin.pendaftar.edit', $pendaftar->id) }}"
-                                                                class="p-2 bg-amber-50 text-amber-600 dark:bg-amber-900/20 rounded-lg"
-                                                                title="Edit">
-                                                                <span class="material-symbols-outlined text-[18px]">edit</span>
-                                                            </a>
-                                                            <button type="button"
-                                                                onclick="openConfirmModal('{{ route('admin.pendaftar.destroy', $pendaftar->id) }}', 'Hapus Data?', 'Hapus data {{ $pendaftar->nama_lengkap }}?', 'DELETE', 'red')"
-                                                                class="p-2 bg-red-50 text-red-600 dark:bg-red-900/20 rounded-lg">
-                                                                <span class="material-symbols-outlined text-[18px]">delete</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                    <!-- Card Footer: Actions -->
+                                    <div
+                                        class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700/50">
+                                        <div class="text-[10px] uppercase font-bold text-slate-400">
+                                            {{ $pendaftar->updated_at->diffForHumans() }}
+                                        </div>
+                                        <div class="flex gap-1">
+                                            <form action="{{ route('admin.pendaftar.toggle_bayar', $pendaftar->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit"
+                                                    class="p-2 {{ $pendaftar->status_pembayaran == 'lunas' ? 'bg-green-50 text-green-600 dark:bg-green-900/20' : 'bg-gray-50 text-gray-400 dark:bg-gray-800' }} rounded-lg"
+                                                    title="Pembayaran">
+                                                    <span
+                                                        class="material-symbols-outlined text-[18px]">{{ $pendaftar->status_pembayaran == 'lunas' ? 'paid' : 'money_off' }}</span>
+                                                </button>
+                                            </form>
+                                            <a href="{{ route('admin.pendaftar.detail', $pendaftar->id) }}"
+                                                class="p-2 bg-blue-50 text-blue-600 dark:bg-blue-900/20 rounded-lg"
+                                                title="Detail">
+                                                <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                            </a>
+                                            <a href="{{ route('admin.pendaftar.edit', $pendaftar->id) }}"
+                                                class="p-2 bg-amber-50 text-amber-600 dark:bg-amber-900/20 rounded-lg"
+                                                title="Edit">
+                                                <span class="material-symbols-outlined text-[18px]">edit</span>
+                                            </a>
+                                            <button type="button"
+                                                onclick="openConfirmModal('{{ route('admin.pendaftar.destroy', $pendaftar->id) }}', 'Hapus Data?', 'Hapus data {{ $pendaftar->nama_lengkap }}?', 'DELETE', 'red')"
+                                                class="p-2 bg-red-50 text-red-600 dark:bg-red-900/20 rounded-lg">
+                                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
 
-                                            <!-- Desktop Table Row View -->
-                                            <tr class="hidden md:table-row hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                                                <td class="px-6 py-4 text-sm font-medium border-b border-[#e5e7eb] dark:border-gray-800">
-                                                    {{ $pendaftars->firstItem() + $index }}</td>
-                                                <td class="px-6 py-4 border-b border-[#e5e7eb] dark:border-gray-800">
-                                                    <div class="flex items-center gap-3">
-                                                        <div
-                                                            class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-xs uppercase">
-                                                            {{ substr($pendaftar->nama_lengkap ?? 'Unknown', 0, 2) }}
-                                                        </div>
-                                                        <div>
-                                                            <p class="text-sm font-bold text-[#111318] dark:text-white">
-                                                                {{ $pendaftar->nama_lengkap }}
-                                                            </p>
-                                                            <p class="text-[11px] text-[#616f89]">{{ $pendaftar->nomor_pendaftaran ?? 'N/A' }}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 text-sm border-b border-[#e5e7eb] dark:border-gray-800">Mandiri</td>
-                                                <td class="px-6 py-4 text-sm font-medium border-b border-[#e5e7eb] dark:border-gray-800 max-w-[200px] truncate"
-                                                    title="{{ $pendaftar->pilihan_prodi }}">
-                                                    {{ $pendaftar->pilihan_prodi }}
-                                                </td>
-                                                <td class="px-6 py-4 border-b border-[#e5e7eb] dark:border-gray-800">
-                                                    @php
-                                                        $statusClass = match ($pendaftar->status) {
-                                                            'Diterima' => 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-                                                            'Ditolak' => 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-                                                            'Verifikasi' => 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
-                                                            default => 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
-                                                        };
-                                                    @endphp
-                             <span
-                                                        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full {{ $statusClass }} text-xs font-bold">
-                                                        <span class="w-1 h-1 rounded-full bg-current"></span>
-                                                        {{ $pendaftar->status }}
-                                                    </span>
-                                                </td>
-                                                <td class="px-6 py-4 border-b border-[#e5e7eb] dark:border-gray-800">
-                                                    <div class="flex justify-center gap-2">
-                                                        <form action="{{ route('admin.pendaftar.toggle_bayar', $pendaftar->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="submit"
-                                                                class="p-1.5 {{ $pendaftar->status_pembayaran == 'lunas' ? 'text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20' : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800' }} rounded-md transition-all"
-                                                                title="{{ $pendaftar->status_pembayaran == 'lunas' ? 'Sudah Lunas (Klik untuk batalkan)' : 'Belum Bayar (Klik untuk lunas)' }}">
-                                                                <span
-                                                                    class="material-symbols-outlined text-[20px]">{{ $pendaftar->status_pembayaran == 'lunas' ? 'paid' : 'money_off' }}</span>
-                                                            </button>
-                                                        </form>
-                                                        <a href="{{ route('admin.pendaftar.detail', $pendaftar->id) }}"
-                                                            class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-all"
-                                                            title="Lihat Detail">
-                                                            <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                                        </a>
-                                                        <a href="{{ route('admin.pendaftar.edit', $pendaftar->id) }}"
-                                                            class="p-1.5 text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-md transition-all"
-                                                            title="Edit">
-                                                            <span class="material-symbols-outlined text-[20px]">edit</span>
-                                                        </a>
-                                                        <button type="button"
-                                                            onclick="openConfirmModal('{{ route('admin.pendaftar.destroy', $pendaftar->id) }}', 'Hapus Data?', 'Apakah Anda yakin ingin menghapus data calon mahasiswa {{ $pendaftar->nama_lengkap }}? Tindakan ini tidak dapat dibatalkan.', 'DELETE', 'red')"
-                                                            class="p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-all inline-block"
-                                                            title="Hapus">
-                                                            <span class="material-symbols-outlined text-[20px]">delete</span>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                            <!-- Desktop Table Row View -->
+                            <tr class="hidden md:table-row hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm font-medium border-b border-[#e5e7eb] dark:border-gray-800">
+                                    {{ $pendaftars->firstItem() + $index }}
+                                </td>
+                                <td class="px-6 py-4 border-b border-[#e5e7eb] dark:border-gray-800">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-xs uppercase">
+                                            {{ substr($pendaftar->nama_lengkap ?? 'Unknown', 0, 2) }}
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-bold text-[#111318] dark:text-white">
+                                                {{ $pendaftar->nama_lengkap }}
+                                            </p>
+                                            <p class="text-[11px] text-[#616f89]">{{ $pendaftar->nomor_pendaftaran ?? 'N/A' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm border-b border-[#e5e7eb] dark:border-gray-800">Mandiri</td>
+                                <td class="px-6 py-4 text-sm font-medium border-b border-[#e5e7eb] dark:border-gray-800 max-w-[200px] truncate"
+                                    title="{{ $pendaftar->pilihan_prodi }}">
+                                    {{ $pendaftar->pilihan_prodi }}
+                                </td>
+                                <td class="px-6 py-4 border-b border-[#e5e7eb] dark:border-gray-800">
+                                    @php
+                                        $statusClass = match ($pendaftar->status) {
+                                            'Diterima' => 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+                                            'Ditolak' => 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+                                            'Verifikasi' => 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+                                            default => 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                                        };
+                                    @endphp
+                                    <span
+                                        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full {{ $statusClass }} text-xs font-bold">
+                                        <span class="w-1 h-1 rounded-full bg-current"></span>
+                                        {{ $pendaftar->status }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 border-b border-[#e5e7eb] dark:border-gray-800">
+                                    <div class="flex justify-center gap-2">
+                                        <form action="{{ route('admin.pendaftar.toggle_bayar', $pendaftar->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit"
+                                                class="p-1.5 {{ $pendaftar->status_pembayaran == 'lunas' ? 'text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20' : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800' }} rounded-md transition-all"
+                                                title="{{ $pendaftar->status_pembayaran == 'lunas' ? 'Sudah Lunas (Klik untuk batalkan)' : 'Belum Bayar (Klik untuk lunas)' }}">
+                                                <span
+                                                    class="material-symbols-outlined text-[20px]">{{ $pendaftar->status_pembayaran == 'lunas' ? 'paid' : 'money_off' }}</span>
+                                            </button>
+                                        </form>
+                                        <a href="{{ route('admin.pendaftar.detail', $pendaftar->id) }}"
+                                            class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-all"
+                                            title="Lihat Detail">
+                                            <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                        </a>
+                                        <a href="{{ route('admin.pendaftar.edit', $pendaftar->id) }}"
+                                            class="p-1.5 text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-md transition-all"
+                                            title="Edit">
+                                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                                        </a>
+                                        <button type="button"
+                                            onclick="openConfirmModal('{{ route('admin.pendaftar.destroy', $pendaftar->id) }}', 'Hapus Data?', 'Apakah Anda yakin ingin menghapus data calon mahasiswa {{ $pendaftar->nama_lengkap }}? Tindakan ini tidak dapat dibatalkan.', 'DELETE', 'red')"
+                                            class="p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-all inline-block"
+                                            title="Hapus">
+                                            <span class="material-symbols-outlined text-[20px]">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
                         @empty
                             <tr>
                                 <td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada data pendaftar ditemukan.
