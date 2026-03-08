@@ -38,7 +38,17 @@
 
 <body
     class="bg-background-light dark:bg-background-dark font-display text-[#111318] dark:text-white transition-colors duration-200"
-    x-data="{ isLoading: false }">
+    x-data="{ 
+        isLoading: false, 
+        toasts: [],
+        showToast(message, type = 'info') {
+            const id = Date.now();
+            this.toasts.push({ id, message, type });
+            setTimeout(() => {
+                this.toasts = this.toasts.filter(t => t.id !== id);
+            }, 5000);
+        }
+    }">
     <div class="relative flex min-h-screen flex-col overflow-x-hidden">
         <header
             class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-[#dbdfe6] dark:border-[#2a3441] bg-white dark:bg-[#1a202c] px-4 md:px-10 py-3">
@@ -364,8 +374,9 @@
 
                 if (missing.length > 0) {
                     e.preventDefault();
-                    this.isLoading = false;
                     const alpine = document.querySelector('body').__x?.$data || Alpine.find(document.querySelector('body'));
+                    if (alpine) alpine.isLoading = false;
+                    
                     const msg = 'Dokumen belum lengkap (1-8). Silakan lengkapi atau klik \'Simpan Draf\' dahulu agar bisa ke dashboard.';
                     if (alpine) {
                         alpine.showToast(msg, 'warning');
@@ -391,6 +402,8 @@
             if (totalSize > maxTotalSize) {
                 e.preventDefault();
                 const alpine = document.querySelector('body').__x?.$data || Alpine.find(document.querySelector('body'));
+                if (alpine) alpine.isLoading = false;
+                
                 const msg = 'Total ukuran semua file terlalu besar (' + (totalSize / (1024 * 1024)).toFixed(2) + ' MB). Mohon kurangi ukuran file atau upload secara bertahap. Maksimal: 30 MB.';
                 if (alpine) {
                     alpine.showToast(msg, 'error');
