@@ -77,12 +77,13 @@ class AdminController extends Controller
             $query->where('pilihan_prodi', 'like', '%' . $request->prodi . '%');
         }
 
-        if ($request->has('tahun') && $request->tahun != '') {
-            // Academic year is usually part of nomor_pendaftaran (e.g., REG-2024-...)
-            // Extracting the start year if the format is 2024/2025
+        if ($request->has('tahun') && $request->tahun != '' && $request->tahun != 'Semua Tahun') {
+            // Academic year in nomor_pendaftaran format: REG-YYYY-XXXXX
             $yearParts = explode('/', $request->tahun);
-            $year = $yearParts[0];
-            $query->where('nomor_pendaftaran', 'like', "%-{$year}-%");
+            if (isset($yearParts[0]) && strlen($yearParts[0]) == 4) {
+                $year = $yearParts[0];
+                $query->where('nomor_pendaftaran', 'like', "%-{$year}-%");
+            }
         }
 
         $pendaftars = $query->paginate(10)->withQueryString();

@@ -43,6 +43,7 @@
                         Akademik</label>
                     <select name="tahun" onchange="this.form.submit()"
                         class="w-full flex items-center justify-between px-4 py-2 bg-white md:bg-background-light dark:bg-gray-800 border md:border-none border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium focus:ring-primary">
+                        <option value="">Semua Tahun</option>
                         <option value="2024/2025" {{ request('tahun') == '2024/2025' ? 'selected' : '' }}>2024/2025</option>
                         <option value="2023/2024" {{ request('tahun') == '2023/2024' ? 'selected' : '' }}>2023/2024</option>
                     </select>
