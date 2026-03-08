@@ -367,7 +367,7 @@
                         </button>
                         <button
                             class="flex items-center justify-center gap-2 h-14 px-10 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all transform w-full md:w-auto disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-                            type="submit" onclick="document.getElementById('form-action').value='submit'" @click="const isDraftSaved = {{ session('success') && (str_contains(strtolower(session('success')), 'draf') || str_contains(strtolower(session('success')), 'berhasil disimpan')) ? 'true' : 'false' }};
+                            type="submit" onclick="document.getElementById('form-action').value='submit'" @click="const isDraftSaved = {{ session('was_draft') ? 'true' : 'false' }};
                                     if(!isDraftSaved && (!step1Complete || !step2Complete || !step3Complete || !step4Complete)) { 
                                         $event.preventDefault(); 
                                         showToast('Data belum lengkap. Silakan lengkapi atau klik \'Simpan Draf\' terlebih dahulu agar bisa melanjutkan.', 'warning'); 

@@ -338,7 +338,7 @@
 
         document.getElementById('uploadForm').addEventListener('submit', function (e) {
             const action = document.getElementById('form-action').value;
-            const isDraftSaved = {{ session('success') && (str_contains(strtolower(session('success')), 'draf') || str_contains(strtolower(session('success')), 'berhasil disimpan')) ? 'true' : 'false' }};
+            const isDraftSaved = {{ session('was_draft') ? 'true' : 'false' }};
 
             if (action === 'submit' && !isDraftSaved) {
                 const mandatoryDocs = [

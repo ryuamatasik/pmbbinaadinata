@@ -190,7 +190,7 @@ class PendaftaranController extends Controller
         }
 
         if ($request->input('action') === 'draft') {
-            return redirect()->route('mahasiswa.pendaftaran')->with('success', 'Data draf pendaftaran berhasil disimpan.');
+            return redirect()->route('mahasiswa.pendaftaran')->with('success', 'Data draf pendaftaran berhasil disimpan.')->with('was_draft', true);
         }
 
         return redirect()->route('mahasiswa.upload')->with('success', 'Data pendaftaran berhasil disimpan. Silakan unggah dokumen.');
@@ -282,7 +282,7 @@ class PendaftaranController extends Controller
         }
 
         if ($request->input('action') === 'draft') {
-            return redirect()->back()->with('success', 'Draf dokumen berhasil disimpan.');
+            return redirect()->back()->with('success', 'Draf dokumen berhasil disimpan.')->with('was_draft', true);
         }
 
         // Update status to Verifikasi so it appears in Admin Dashboard if they click Selesai
