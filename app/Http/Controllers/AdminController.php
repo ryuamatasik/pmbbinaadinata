@@ -277,6 +277,40 @@ class AdminController extends Controller
         return view('admin.kelola_dokumen', compact('dokumens'));
     }
 
+    public function storeDokumen(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required|string',
+            'format' => 'required|string',
+            'max_size' => 'required|string',
+        ]);
+        $data['wajib'] = $request->has('wajib') ? 1 : 0;
+
+        \App\Models\SyaratDokumen::create($data);
+        return back()->with('success', 'Dokumen berhasil ditambahkan.');
+    }
+
+    public function updateDokumen(Request $request, $id)
+    {
+        $dokumen = \App\Models\SyaratDokumen::findOrFail($id);
+        $data = $request->validate([
+            'nama' => 'required|string',
+            'format' => 'required|string',
+            'max_size' => 'required|string',
+        ]);
+        $data['wajib'] = $request->has('wajib') ? 1 : 0;
+
+        $dokumen->update($data);
+        return back()->with('success', 'Dokumen berhasil diperbarui.');
+    }
+
+    public function destroyDokumen($id)
+    {
+        $dokumen = \App\Models\SyaratDokumen::findOrFail($id);
+        $dokumen->delete();
+        return back()->with('success', 'Dokumen berhasil dihapus.');
+    }
+
     public function pengaturan()
     {
         $gelombangs = \App\Models\Gelombang::latest()->get()->map(function ($g) {
