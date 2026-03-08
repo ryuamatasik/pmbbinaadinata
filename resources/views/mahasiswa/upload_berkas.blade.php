@@ -38,79 +38,7 @@
 
 <body
     class="bg-background-light dark:bg-background-dark font-display text-[#111318] dark:text-white transition-colors duration-200"
-    x-data="{ 
-        isLoading: false, 
-        toasts: [],
-        showToast(message, type = 'info') {
-            const id = Date.now();
-            this.toasts.push({ id, message, type });
-            setTimeout(() => {
-                this.toasts = this.toasts.filter(t => t.id !== id);
-            }, 5000);
-        },
-        handleSubmit(e) {
-            const action = document.getElementById('form-action').value;
-            const isDraftSaved = {{ session('was_draft') ? 'true' : 'false' }};
-
-            if (action === 'submit' && !isDraftSaved) {
-                const mandatoryDocs = [
-                    { id: 'ktp', title: 'Kartu Identitas (KTP)' },
-                    { id: 'ktp_ortu', title: 'KTP Orang Tua/Wali' },
-                    { id: 'akte', title: 'Akte Kelahiran' },
-                    { id: 'ijazah', title: 'Ijazah/SKL' },
-                    { id: 'kk', title: 'Kartu Keluarga' },
-                    { id: 'foto', title: 'Pass Foto' },
-                    { id: 'transkrip', title: 'Transkrip Nilai' },
-                    { id: 'bukti_pembayaran', title: 'Bukti Pembayaran' }
-                ];
-
-                let missing = [];
-                mandatoryDocs.forEach(doc => {
-                    const textEl = document.getElementById('text-' + doc.id);
-                    const hasExisting = textEl && textEl.textContent.trim() !== 'Klik/Tarik file' &&
-                        textEl.textContent.trim() !== 'Klik atau tarik file ke sini';
-
-                    if (!hasExisting) {
-                        missing.push(doc.title);
-                    }
-                });
-
-                if (missing.length > 0) {
-                    this.showToast('Dokumen belum lengkap (1-8). Silakan lengkapi atau klik \'Simpan Draf\' dahulu agar bisa ke dashboard.', 'warning');
-                    return;
-                }
-            }
-
-            // Check total size
-            let totalSize = 0;
-            const fileInputs = document.querySelectorAll('#uploadForm input[type=" file"]'); fileInputs.forEach(input=>
-    {
-    if (input.files && input.files[0]) {
-    totalSize += input.files[0].size;
-    }
-    });
-
-    if (totalSize > 30 * 1024 * 1024) {
-    this.showToast('Total ukuran semua file terlalu besar (Maks: 30 MB).', 'error');
-    return;
-    }
-
-    this.isLoading = true;
-    // Use native submit to bypass prevent
-    e.target.submit();
-    },
-    updateFileNameAlpine(itemId, fileInput) {
-    const textElement = document.getElementById('text-' + itemId);
-    if (fileInput.files && fileInput.files[0]) {
-    textElement.textContent = fileInput.files[0].name;
-    } else {
-    // If no file is selected (e.g., user cancels file dialog), revert to original placeholder or saved name
-    // This assumes the initial state is correctly rendered by Blade
-    const originalText = textElement.getAttribute('data-original-text');
-    textElement.textContent = originalText || 'Klik/Tarik file';
-    }
-    }
-    }">
+    x-data="uploadPage">
     <div class="relative flex min-h-screen flex-col overflow-x-hidden">
         <header
             class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-[#dbdfe6] dark:border-[#2a3441] bg-white dark:bg-[#1a202c] px-4 md:px-10 py-3">
@@ -372,6 +300,73 @@
     </div>
 
     <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('uploadPage', () => ({
+                isLoading: false,
+                toasts: [],
+                showToast(message, type = 'info') {
+                    const id = Date.now();
+                    this.toasts.push({ id, message, type });
+                    setTimeout(() => {
+                        this.toasts = this.toasts.filter(t => t.id !== id);
+                    }, 5000);
+                },
+                handleSubmit(e) {
+                    const action = document.getElementById('form-action').value;
+                    const isDraftSaved = {{ session('was_draft') ? 'true' : 'false' }};
+
+                    if (action === 'submit' && !isDraftSaved) {
+                        const mandatoryDocs = [
+                            { id: 'ktp', title: 'Kartu Identitas (KTP)' },
+                            { id: 'ktp_ortu', title: 'KTP Orang Tua/Wali' },
+                            { id: 'akte', title: 'Akte Kelahiran' },
+                            { id: 'ijazah', title: 'Ijazah/SKL' },
+                            { id: 'kk', title: 'Kartu Keluarga' },
+                            { id: 'foto', title: 'Pass Foto' },
+                            { id: 'transkrip', title: 'Transkrip Nilai' },
+                            { id: 'bukti_pembayaran', title: 'Bukti Pembayaran' }
+                        ];
+
+                        let missing = [];
+                        mandatoryDocs.forEach(doc => {
+                            const textEl = document.getElementById('text-' + doc.id);
+                            const text = textEl ? textEl.textContent.trim() : '';
+                            const hasExisting = text !== '' && 
+                                               text !== 'Klik/Tarik file' && 
+                                               text !== 'Klik atau tarik file ke sini';
+
+                            if (!hasExisting) {
+                                missing.push(doc.title);
+                            }
+                        });
+
+                        if (missing.length > 0) {
+                            this.showToast('Dokumen belum lengkap (1-8). Silakan lengkapi atau klik \'Simpan Draf\' dahulu agar bisa ke dashboard.', 'warning');
+                            return;
+                        }
+                    }
+
+                    // Check total size
+                    let totalSize = 0;
+                    const fileInputs = document.querySelectorAll('#uploadForm input[type="file"]');
+                    fileInputs.forEach(input => {
+                        if (input.files && input.files[0]) {
+                            totalSize += input.files[0].size;
+                        }
+                    });
+
+                    if (totalSize > 30 * 1024 * 1024) {
+                        this.showToast('Total ukuran semua file terlalu besar (Maks: 30 MB).', 'error');
+                        return;
+                    }
+
+                    this.isLoading = true;
+                    // Directly submit the form element
+                    e.target.submit();
+                }
+            }));
+        });
+
         function updateFileName(id, input) {
             if (input.files && input.files[0]) {
                 const file = input.files[0];
@@ -386,7 +381,6 @@
                 const maxSize = maxSizes[id] || 2048;
 
                 if (fileSize > maxSize) {
-                    // Safe access to showToast via Alpine global
                     const alpineData = Alpine.$data(document.body);
                     if (alpineData) {
                         alpineData.showToast('Ukuran file terlalu besar! Maksimal ' + (maxSize / 1024) + 'MB.', 'error');
@@ -401,8 +395,6 @@
                 document.getElementById('text-' + id).textContent = fileName;
             }
         }
-
-        // Vanilla form submit handler REMOVED - now handled by Alpine handleSubmit
 
         function confirmExit(event) {
             event.preventDefault();
