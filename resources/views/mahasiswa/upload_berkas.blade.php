@@ -339,42 +339,8 @@
         document.getElementById('uploadForm').addEventListener('submit', function (e) {
             const action = document.getElementById('form-action').value;
 
-            if (action === 'submit') {
-                const mandatoryDocs = [
-                    { id: 'ktp', title: 'Kartu Identitas (KTP)' },
-                    { id: 'ktp_ortu', title: 'KTP Orang Tua/Wali' },
-                    { id: 'akte', title: 'Akte Kelahiran' },
-                    { id: 'ijazah', title: 'Ijazah/SKL' },
-                    { id: 'kk', title: 'Kartu Keluarga' },
-                    { id: 'foto', title: 'Pass Foto' },
-                    { id: 'transkrip', title: 'Transkrip Nilai' },
-                    { id: 'bukti_pembayaran', title: 'Bukti Pembayaran' }
-                ];
-
-                let missing = [];
-                mandatoryDocs.forEach(doc => {
-                    const input = document.getElementById('file-' + doc.id);
-                    const hasExisting = document.getElementById('text-' + doc.id).textContent.trim() !== 'Klik/Tarik file' &&
-                        document.getElementById('text-' + doc.id).textContent.trim() !== 'Klik atau tarik file ke sini';
-
-                    if (!input.files[0] && !hasExisting) {
-                        missing.push(doc.title);
-                    }
-                });
-
-                if (missing.length > 0) {
-                    e.preventDefault();
-                    this.isLoading = false;
-                    const alpine = document.querySelector('body').__x?.$data || Alpine.find(document.querySelector('body'));
-                    const msg = 'Mohon lengkapi dokumen wajib berikut: ' + missing.join(', ');
-                    if (alpine) {
-                        alpine.showToast(msg, 'error');
-                    } else {
-                        alert(msg);
-                    }
-                    return;
-                }
-            }
+            // No mandatory check on client side to allow "non-blocking" flow.
+            // Client is now allowed to click 'Selesai' even if documents are incomplete.
 
             let totalSize = 0;
             const fileInputs = this.querySelectorAll('input[type="file"]');

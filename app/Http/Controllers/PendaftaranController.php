@@ -285,17 +285,9 @@ class PendaftaranController extends Controller
             return redirect()->back()->with('success', 'Draf dokumen berhasil disimpan.');
         }
 
-        // Only update status to Verifikasi if all mandatory documents (1-8) are uploaded
-        $mandatoryDocs = ['ktp', 'ktp_ortu', 'akte', 'ijazah', 'kk', 'foto', 'transkrip', 'bukti_pembayaran'];
-        $uploadedDocsCount = \App\Models\DokumenPendaftar::where('pendaftar_id', $pendaftar_id)
-            ->whereIn('jenis_dokumen', $mandatoryDocs)
-            ->count();
-
-        if ($uploadedDocsCount < count($mandatoryDocs)) {
-            return redirect()->back()->with('error', 'Mohon lengkapi semua dokumen wajib (Nomor 1-8) sebelum menekan Selesai.');
-        }
-
-        // Update status to Verifikasi so it appears in Admin Dashboard
+        // Update status to Verifikasi so it appears in Admin Dashboard if they click Selesai
+        // regardless of completeness, as requested for a "non-blocking" flow.
+        // The Admin can then request revisions if something is missing.
         \App\Models\Pendaftar::where('id', $pendaftar_id)->update(['status' => 'Verifikasi']);
 
         return redirect()->route('mahasiswa.dashboard')->with('success', 'Pendaftaran berhasil diselesaikan! Data Anda kini sedang dalam proses verifikasi.');
