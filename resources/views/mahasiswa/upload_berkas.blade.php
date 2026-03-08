@@ -338,9 +338,43 @@
 
         document.getElementById('uploadForm').addEventListener('submit', function (e) {
             const action = document.getElementById('form-action').value;
+            const isDraftSaved = {{ session('success') && (str_contains(strtolower(session('success')), 'draf') || str_contains(strtolower(session('success')), 'berhasil disimpan')) ? 'true' : 'false' }};
 
-            // No mandatory check on client side to allow "non-blocking" flow.
-            // Client is now allowed to click 'Selesai' even if documents are incomplete.
+            if (action === 'submit' && !isDraftSaved) {
+                const mandatoryDocs = [
+                    { id: 'ktp', title: 'Kartu Identitas (KTP)' },
+                    { id: 'ktp_ortu', title: 'KTP Orang Tua/Wali' },
+                    { id: 'akte', title: 'Akte Kelahiran' },
+                    { id: 'ijazah', title: 'Ijazah/SKL' },
+                    { id: 'kk', title: 'Kartu Keluarga' },
+                    { id: 'foto', title: 'Pass Foto' },
+                    { id: 'transkrip', title: 'Transkrip Nilai' },
+                    { id: 'bukti_pembayaran', title: 'Bukti Pembayaran' }
+                ];
+
+                let missing = [];
+                mandatoryDocs.forEach(doc => {
+                    const hasExisting = document.getElementById('text-' + doc.id).textContent.trim() !== 'Klik/Tarik file' &&
+                        document.getElementById('text-' + doc.id).textContent.trim() !== 'Klik atau tarik file ke sini';
+
+                    if (!hasExisting) {
+                        missing.push(doc.title);
+                    }
+                });
+
+                if (missing.length > 0) {
+                    e.preventDefault();
+                    this.isLoading = false;
+                    const alpine = document.querySelector('body').__x?.$data || Alpine.find(document.querySelector('body'));
+                    const msg = 'Dokumen belum lengkap (1-8). Silakan lengkapi atau klik \'Simpan Draf\' dahulu agar bisa ke dashboard.';
+                    if (alpine) {
+                        alpine.showToast(msg, 'warning');
+                    } else {
+                        alert(msg);
+                    }
+                    return;
+                }
+            }
 
             let totalSize = 0;
             const fileInputs = this.querySelectorAll('input[type="file"]');
