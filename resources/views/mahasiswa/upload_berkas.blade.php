@@ -47,7 +47,69 @@
             setTimeout(() => {
                 this.toasts = this.toasts.filter(t => t.id !== id);
             }, 5000);
-        }
+        },
+        handleSubmit(e) {
+            const action = document.getElementById('form-action').value;
+            const isDraftSaved = {{ session('was_draft') ? 'true' : 'false' }};
+
+            if (action === 'submit' && !isDraftSaved) {
+                const mandatoryDocs = [
+                    { id: 'ktp', title: 'Kartu Identitas (KTP)' },
+                    { id: 'ktp_ortu', title: 'KTP Orang Tua/Wali' },
+                    { id: 'akte', title: 'Akte Kelahiran' },
+                    { id: 'ijazah', title: 'Ijazah/SKL' },
+                    { id: 'kk', title: 'Kartu Keluarga' },
+                    { id: 'foto', title: 'Pass Foto' },
+                    { id: 'transkrip', title: 'Transkrip Nilai' },
+                    { id: 'bukti_pembayaran', title: 'Bukti Pembayaran' }
+                ];
+
+                let missing = [];
+                mandatoryDocs.forEach(doc => {
+                    const textEl = document.getElementById('text-' + doc.id);
+                    const hasExisting = textEl && textEl.textContent.trim() !== 'Klik/Tarik file' &&
+                        textEl.textContent.trim() !== 'Klik atau tarik file ke sini';
+
+                    if (!hasExisting) {
+                        missing.push(doc.title);
+                    }
+                });
+
+                if (missing.length > 0) {
+                    this.showToast('Dokumen belum lengkap (1-8). Silakan lengkapi atau klik \'Simpan Draf\' dahulu agar bisa ke dashboard.', 'warning');
+                    return;
+                }
+            }
+
+            // Check total size
+            let totalSize = 0;
+            const fileInputs = document.querySelectorAll('#uploadForm input[type=" file"]'); fileInputs.forEach(input=>
+    {
+    if (input.files && input.files[0]) {
+    totalSize += input.files[0].size;
+    }
+    });
+
+    if (totalSize > 30 * 1024 * 1024) {
+    this.showToast('Total ukuran semua file terlalu besar (Maks: 30 MB).', 'error');
+    return;
+    }
+
+    this.isLoading = true;
+    // Use native submit to bypass prevent
+    e.target.submit();
+    },
+    updateFileNameAlpine(itemId, fileInput) {
+    const textElement = document.getElementById('text-' + itemId);
+    if (fileInput.files && fileInput.files[0]) {
+    textElement.textContent = fileInput.files[0].name;
+    } else {
+    // If no file is selected (e.g., user cancels file dialog), revert to original placeholder or saved name
+    // This assumes the initial state is correctly rendered by Blade
+    const originalText = textElement.getAttribute('data-original-text');
+    textElement.textContent = originalText || 'Klik/Tarik file';
+    }
+    }
     }">
     <div class="relative flex min-h-screen flex-col overflow-x-hidden">
         <header
@@ -125,7 +187,7 @@
             </div>
 
             <form action="{{ route('mahasiswa.upload.store') }}" method="POST" enctype="multipart/form-data"
-                id="uploadForm" @submit="isLoading = true">
+                id="uploadForm" @submit.prevent="handleSubmit($event)">
                 @csrf
 
                 @if ($errors->any())
@@ -317,27 +379,21 @@
                 const fileSize = file.size / 1024; // in KB
 
                 const maxSizes = {
-                    'ktp': 2048,
-                    'ktp_ortu': 2048,
-                    'akte': 3072,
-                    'ijazah': 5120,
-                    'kk': 3072,
-                    'foto': 2048,
-                    'transkrip': 5120,
-                    'bukti_pembayaran': 2048,
-                    'kip': 2048
+                    'ktp': 2048, 'ktp_ortu': 2048, 'akte': 3072, 'ijazah': 5120,
+                    'kk': 3072, 'foto': 2048, 'transkrip': 5120, 'bukti_pembayaran': 2048, 'kip': 2048
                 };
 
-                const maxSize = maxSizes[id] || 2048; // default 2MB
+                const maxSize = maxSizes[id] || 2048;
 
                 if (fileSize > maxSize) {
-                    const alpine = document.querySelector('body').__x?.$data || Alpine.find(document.querySelector('body'));
-                    if (alpine) {
-                        alpine.showToast('Ukuran file terlalu besar! Maksimal ' + (maxSize / 1024) + 'MB.', 'error');
+                    // Safe access to showToast via Alpine global
+                    const alpineData = Alpine.$data(document.body);
+                    if (alpineData) {
+                        alpineData.showToast('Ukuran file terlalu besar! Maksimal ' + (maxSize / 1024) + 'MB.', 'error');
                     } else {
-                        alert('Ukuran file terlalu besar! Maksimal ' + (maxSize / 1024) + 'MB.');
+                        alert('Ukuran file terlalu besar!');
                     }
-                    input.value = ''; // Reset input
+                    input.value = '';
                     document.getElementById('text-' + id).textContent = 'Klik atau tarik file ke sini';
                     return;
                 }
@@ -346,72 +402,7 @@
             }
         }
 
-        document.getElementById('uploadForm').addEventListener('submit', function (e) {
-            const action = document.getElementById('form-action').value;
-            const isDraftSaved = {{ session('was_draft') ? 'true' : 'false' }};
-
-            if (action === 'submit' && !isDraftSaved) {
-                const mandatoryDocs = [
-                    { id: 'ktp', title: 'Kartu Identitas (KTP)' },
-                    { id: 'ktp_ortu', title: 'KTP Orang Tua/Wali' },
-                    { id: 'akte', title: 'Akte Kelahiran' },
-                    { id: 'ijazah', title: 'Ijazah/SKL' },
-                    { id: 'kk', title: 'Kartu Keluarga' },
-                    { id: 'foto', title: 'Pass Foto' },
-                    { id: 'transkrip', title: 'Transkrip Nilai' },
-                    { id: 'bukti_pembayaran', title: 'Bukti Pembayaran' }
-                ];
-
-                let missing = [];
-                mandatoryDocs.forEach(doc => {
-                    const hasExisting = document.getElementById('text-' + doc.id).textContent.trim() !== 'Klik/Tarik file' &&
-                        document.getElementById('text-' + doc.id).textContent.trim() !== 'Klik atau tarik file ke sini';
-
-                    if (!hasExisting) {
-                        missing.push(doc.title);
-                    }
-                });
-
-                if (missing.length > 0) {
-                    e.preventDefault();
-                    const alpine = document.querySelector('body').__x?.$data || Alpine.find(document.querySelector('body'));
-                    if (alpine) alpine.isLoading = false;
-                    
-                    const msg = 'Dokumen belum lengkap (1-8). Silakan lengkapi atau klik \'Simpan Draf\' dahulu agar bisa ke dashboard.';
-                    if (alpine) {
-                        alpine.showToast(msg, 'warning');
-                    } else {
-                        alert(msg);
-                    }
-                    return;
-                }
-            }
-
-            let totalSize = 0;
-            const fileInputs = this.querySelectorAll('input[type="file"]');
-
-            fileInputs.forEach(input => {
-                if (input.files && input.files[0]) {
-                    totalSize += input.files[0].size;
-                }
-            });
-
-            // Limit total upload to 30MB (Safety buffer for 40MB server limit)
-            const maxTotalSize = 30 * 1024 * 1024;
-
-            if (totalSize > maxTotalSize) {
-                e.preventDefault();
-                const alpine = document.querySelector('body').__x?.$data || Alpine.find(document.querySelector('body'));
-                if (alpine) alpine.isLoading = false;
-                
-                const msg = 'Total ukuran semua file terlalu besar (' + (totalSize / (1024 * 1024)).toFixed(2) + ' MB). Mohon kurangi ukuran file atau upload secara bertahap. Maksimal: 30 MB.';
-                if (alpine) {
-                    alpine.showToast(msg, 'error');
-                } else {
-                    alert(msg);
-                }
-            }
-        });
+        // Vanilla form submit handler REMOVED - now handled by Alpine handleSubmit
 
         function confirmExit(event) {
             event.preventDefault();
