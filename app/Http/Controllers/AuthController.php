@@ -17,7 +17,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $validatedData = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
@@ -27,15 +27,19 @@ class AuthController extends Controller
         // The previous web.php had logic to "Find or Create" based on email role string. 
         // We should PROBABLY standardize this, but to keep existing accounts working:
 
-        $email = strtolower($request->email);
+        $credentials = [
+            'email' => strtolower($validatedData['email']), // Lowercase email for authentication
+            'password' => $validatedData['password'],
+        ];
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $user = Auth::user();
+            \Log::info('Login successful', ['email' => $user->email, 'role' => $user->role]);
             $request->session()->regenerate();
-            return $this->redirectBasedOnRole(Auth::user());
+            return $this->redirectBasedOnRole($user);
         }
 
-
-
+        \Log::warning('Login failed', ['email' => $request->email]);
         return back()->withErrors([
             'email' => 'Kombinasi email dan password tidak cocok.',
         ])->onlyInput('email');
@@ -126,6 +130,8 @@ class AuthController extends Controller
 
     protected function redirectBasedOnRole($user)
     {
+        \Log::info('Redirecting based on role', ['email' => $user->email, 'role' => $user->role]);
+
         switch ($user->role) {
             case 'admin':
                 return redirect()->route('admin.dashboard');
