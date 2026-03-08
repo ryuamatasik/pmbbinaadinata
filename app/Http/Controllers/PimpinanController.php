@@ -17,7 +17,8 @@ class PimpinanController extends Controller
         $persentaseKuota = $targetPenerimaan > 0 ? ($totalLolos / $targetPenerimaan) * 100 : 0;
 
         // Pendapatan Real (Hanya yang status_pembayaran = 'lunas')
-        $pendapatan = Pendaftar::where('status_pembayaran', 'lunas')->count() * 150000;
+        $regFee = \App\Models\SystemSetting::where('key', 'reg_fee')->value('value') ?? 150000;
+        $pendapatan = Pendaftar::where('status_pembayaran', 'lunas')->count() * $regFee;
 
         $recentPendaftar = Pendaftar::latest()->take(5)->get();
 
@@ -41,6 +42,17 @@ class PimpinanController extends Controller
             ];
         }
 
+        // Weekly Stats for Chart (Last 6 weeks)
+        $weeklyStats = [];
+        $weeklyLabels = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $start = now()->subWeeks($i)->startOfWeek();
+            $end = now()->subWeeks($i)->endOfWeek();
+            $count = Pendaftar::whereBetween('created_at', [$start, $end])->count();
+            $weeklyStats[] = $count;
+            $weeklyLabels[] = $start->format('d M');
+        }
+
         // Fetch Gelombang
         $gelombangs = \App\Models\Gelombang::all();
 
@@ -52,6 +64,8 @@ class PimpinanController extends Controller
             'persentaseKuota',
             'pendapatan',
             'dailyStats',
+            'weeklyStats',
+            'weeklyLabels',
             'gelombangs'
         ));
     }

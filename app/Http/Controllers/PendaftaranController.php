@@ -20,7 +20,8 @@ class PendaftaranController extends Controller
 
     public function store(Request $request)
     {
-        \Illuminate\Support\Facades\Log::info('PendaftaranController::store reached', $request->all());
+        $user = Auth::user();
+        $pendaftar = \App\Models\Pendaftar::where('user_id', $user->id)->first();
         $rules = [
             'gelombang' => 'required',
             'pilihan_prodi' => 'required',
@@ -185,11 +186,11 @@ class PendaftaranController extends Controller
         session(['pendaftar_id' => $pendaftar->id]);
 
         if ($request->wantsJson() || $request->ajax()) {
-            return response()->json(['status' => 'success', 'redirect' => $request->input('action') === 'draft' ? route('mahasiswa.dashboard') : route('mahasiswa.upload')]);
+            return response()->json(['status' => 'success', 'redirect' => $request->input('action') === 'draft' ? route('mahasiswa.pendaftaran') : route('mahasiswa.upload')]);
         }
 
         if ($request->input('action') === 'draft') {
-            return redirect()->route('mahasiswa.dashboard')->with('success', 'Data draf pendaftaran berhasil disimpan.');
+            return redirect()->route('mahasiswa.pendaftaran')->with('success', 'Data draf pendaftaran berhasil disimpan.');
         }
 
         return redirect()->route('mahasiswa.upload')->with('success', 'Data pendaftaran berhasil disimpan. Silakan unggah dokumen.');
@@ -197,12 +198,14 @@ class PendaftaranController extends Controller
 
     public function uploadIndex()
     {
-        if (!session()->has('pendaftar_id')) {
+        $pendaftar = \App\Models\Pendaftar::where('user_id', Auth::id())->first();
+
+        if (!$pendaftar) {
             return redirect()->route('mahasiswa.pendaftaran')->with('error', 'Silakan isi formulir pendaftaran terlebih dahulu.');
         }
 
-        $pendaftar_id = session('pendaftar_id');
-        $pendaftar = \App\Models\Pendaftar::find($pendaftar_id);
+        // Keep session for legacy compatibility if needed, but primary is DB
+        session(['pendaftar_id' => $pendaftar->id]);
 
         $dokumen = [];
         if ($pendaftar) {
@@ -216,10 +219,11 @@ class PendaftaranController extends Controller
 
     public function uploadStore(Request $request)
     {
-        $pendaftar_id = session('pendaftar_id');
-        if (!$pendaftar_id) {
-            return redirect()->route('mahasiswa.pendaftaran');
+        $pendaftar = \App\Models\Pendaftar::where('user_id', Auth::id())->first();
+        if (!$pendaftar) {
+            return redirect()->route('mahasiswa.pendaftaran')->with('error', 'Silakan isi formulir pendaftaran terlebih dahulu.');
         }
+        $pendaftar_id = $pendaftar->id;
 
         $rules = [
             'ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:2048',

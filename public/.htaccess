@@ -5,7 +5,8 @@
 
     RewriteEngine On
 
-    # Force WWW and HTTPS
+    # Force HTTPS and WWW
+    RewriteCond %{HTTPS} off [OR]
     RewriteCond %{HTTP_HOST} !^www\. [NC]
     RewriteRule ^(.*)$ https://www.pmbbinaadinata.com/$1 [L,R=301]
 

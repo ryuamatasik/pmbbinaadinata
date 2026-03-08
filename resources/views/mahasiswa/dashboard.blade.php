@@ -261,7 +261,7 @@
                             <div class="p-6 text-center text-gray-500 text-sm">Belum ada dokumen yang diunggah.</div>
                         @endforelse
 
-                        @if(count($dokumen ?? []) < 8)
+                        @if($pendaftar && count($dokumen ?? []) < 8)
                             <div
                                 class="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors bg-red-50/50 dark:bg-red-900/10">
                                 <div class="flex items-center gap-4">
@@ -281,6 +281,17 @@
                                     <span class="material-symbols-outlined text-sm">upload</span>
                                     Upload
                                 </a>
+                            </div>
+                        @elseif(!$pendaftar)
+                            <div
+                                class="flex flex-col items-center justify-center p-8 bg-blue-50/30 dark:bg-blue-900/10 border-2 border-dashed border-blue-100 dark:border-blue-900/30 rounded-xl text-center">
+                                <span class="material-symbols-outlined text-3xl text-primary mb-3">edit_note</span>
+                                <h4 class="font-bold text-slate-800 dark:text-white text-sm mb-1">Formulir Belum Diisi</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 max-w-[200px] mb-4">Silakan lengkapi
+                                    formulir pendaftaran terlebih dahulu untuk memulai.</p>
+                                <a href="{{ route('mahasiswa.pendaftaran') }}"
+                                    class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary-dark transition-all">Lengkapi
+                                    Formulir</a>
                             </div>
                         @endif
 

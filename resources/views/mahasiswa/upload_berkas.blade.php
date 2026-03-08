@@ -280,10 +280,11 @@
                         </p>
                     </div>
                     <div class="flex flex-row items-center justify-center gap-3 w-full">
-                        <a href="{{ url('/') }}"
+                        <button type="submit" form="uploadForm"
+                            onclick="document.getElementById('form-action').value='draft'; closeExitModal();"
                             class="flex items-center justify-center flex-1 px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-900 hover:shadow-lg transition-all active:scale-95">
                             Simpan Draft
-                        </a>
+                        </button>
                         <button type="button" onclick="closeExitModal()"
                             class="flex-1 px-5 py-2.5 bg-transparent text-slate-500 dark:text-slate-400 text-sm font-semibold rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-all active:scale-95">
                             Tetap di Halaman

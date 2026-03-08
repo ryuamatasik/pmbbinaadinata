@@ -107,53 +107,150 @@
         <div
             class="lg:col-span-2 bg-white dark:bg-[#151b2b] p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold text-[#111318] dark:text-white">Tren Pendaftaran Harian</h3>
-                <button class="text-primary text-sm font-medium hover:underline">Lihat Detail</button>
+                <div class="flex flex-col">
+                    <h3 class="font-bold text-[#111318] dark:text-white">Tren Pendaftaran</h3>
+                    <p class="text-xs text-gray-400 mt-1">Harian & Mingguan</p>
+                </div>
+                <div
+                    class="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 p-1 rounded-lg border border-gray-100 dark:border-gray-700">
+                    <button id="btn-daily" onclick="updateChart('daily')"
+                        class="px-3 py-1 text-xs font-bold rounded-md bg-white dark:bg-[#2a3040] text-primary shadow-sm transition-all">Harian</button>
+                    <button id="btn-weekly" onclick="updateChart('weekly')"
+                        class="px-3 py-1 text-xs font-bold rounded-md text-gray-500 hover:text-primary transition-all">Mingguan</button>
+                </div>
             </div>
             <!-- Dynamic Chart -->
-            <div class="flex items-end justify-between h-64 gap-2 sm:gap-4 mt-4">
-                @php $maxDaily = collect($dailyStats)->max('count');
-                    if ($maxDaily == 0)
-                $maxDaily = 1; @endphp
-                @foreach($dailyStats as $stat)
-                    @php $height = ($stat['count'] / $maxDaily) * 100; @endphp
-                    <div class="flex flex-col items-center gap-2 flex-1 group cursor-pointer"
-                        title="{{ $stat['count'] }} Pendaftar">
-                        <div class="w-full bg-primary/20 dark:bg-primary/20 rounded-t-sm relative h-{{ $loop->index % 2 == 0 ? '32' : '40' }} group-hover:bg-primary/40 transition-colors"
-                            style="height: 180px">
-                            <!-- Helper container height fixed, inner bar dynamic -->
-                            <div class="absolute bottom-0 w-full bg-primary rounded-t-sm transition-all duration-500"
-                                style="height: {{ $height < 5 ? 5 : $height }}%"></div>
-                        </div>
-                        <span
-                            class="text-xs text-gray-400 {{ $loop->last ? 'font-bold text-primary' : '' }}">{{ $stat['day'] }}</span>
-                    </div>
-                @endforeach
+            <div class="relative h-64 mt-4">
+                <canvas id="registrationChart"></canvas>
             </div>
         </div>
+
+        @push('scripts')
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                const dailyLabels = {!! json_encode(array_column($dailyStats, 'day')) !!};
+                const dailyData = {!! json_encode(array_column($dailyStats, 'count')) !!};
+                const weeklyLabels = {!! json_encode($weeklyLabels) !!};
+                const weeklyData = {!! json_encode($weeklyStats) !!};
+
+                let currentChart;
+
+                function initChart() {
+                    const ctx = document.getElementById('registrationChart').getContext('2d');
+
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.4)');
+                    gradient.addColorStop(1, 'rgba(37, 99, 235, 0)');
+
+                    currentChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: dailyLabels,
+                            datasets: [{
+                                label: 'Pendaftar',
+                                data: dailyData,
+                                borderColor: '#2563eb',
+                                borderWidth: 3,
+                                backgroundColor: gradient,
+                                fill: true,
+                                tension: 0.4,
+                                pointBackgroundColor: '#fff',
+                                pointBorderColor: '#2563eb',
+                                pointBorderWidth: 2,
+                                pointRadius: 4,
+                                pointHoverRadius: 6
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#1e293b',
+                                    titleFont: { size: 13, weight: 'bold' },
+                                    padding: 12,
+                                    displayColors: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: 'rgba(0,0,0,0.05)', drawBorder: false },
+                                    ticks: { font: { size: 11 }, color: '#94a3b8' }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { size: 11 }, color: '#94a3b8' }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                function updateChart(type) {
+                    const btnDaily = document.getElementById('btn-daily');
+                    const btnWeekly = document.getElementById('btn-weekly');
+
+                    if (type === 'daily') {
+                        currentChart.data.labels = dailyLabels;
+                        currentChart.data.datasets[0].data = dailyData;
+                        btnDaily.classList.add('bg-white', 'dark:bg-[#2a3040]', 'text-primary', 'shadow-sm');
+                        btnDaily.classList.remove('text-gray-500');
+                        btnWeekly.classList.remove('bg-white', 'dark:bg-[#2a3040]', 'text-primary', 'shadow-sm');
+                        btnWeekly.classList.add('text-gray-500');
+                    } else {
+                        currentChart.data.labels = weeklyLabels;
+                        currentChart.data.datasets[0].data = weeklyData;
+                        btnWeekly.classList.add('bg-white', 'dark:bg-[#2a3040]', 'text-primary', 'shadow-sm');
+                        btnWeekly.classList.remove('text-gray-500');
+                        btnDaily.classList.remove('bg-white', 'dark:bg-[#2a3040]', 'text-primary', 'shadow-sm');
+                        btnDaily.classList.add('text-gray-500');
+                    }
+                    currentChart.update();
+                }
+
+                document.addEventListener('DOMContentLoaded', initChart);
+            </script>
+        @endpush
         <div
             class="bg-white dark:bg-[#151b2b] p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col">
-            <h3 class="font-bold text-[#111318] dark:text-white mb-6">Program Studi Terfavorit</h3>
-            <div class="flex flex-col gap-6">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="material-symbols-outlined text-primary">stars</span>
+                <h3 class="font-bold text-[#111318] dark:text-white">Program Studi Terfavorit</h3>
+            </div>
+            <div class="flex flex-col gap-5">
                 <!-- Dynamic Prodi Stats -->
                 @forelse($prodiStats as $stat)
-                    <div class="flex flex-col gap-1">
-                        <div class="flex justify-between text-sm mb-1">
-                            <span
-                                class="font-medium text-[#111318] dark:text-white">{{ $stat->pilihan_prodi ?? 'Tidak Ada Data' }}</span>
-                            <span class="text-gray-500">{{ $stat->count }} pendaftar</span>
+                    @php $percent = ($totalPendaftar > 0) ? ($stat->count / $totalPendaftar) * 100 : 0; @endphp
+                    <div class="flex flex-col gap-2 group cursor-default">
+                        <div class="flex justify-between items-end">
+                            <div class="flex flex-col">
+                                <span class="text-xs text-gray-400 uppercase font-bold tracking-wider">{{ $loop->iteration }}. Pilihan Utama</span>
+                                <span class="font-bold text-sm text-[#111318] dark:text-white group-hover:text-primary transition-colors text-balance">{{ $stat->pilihan_prodi ?? 'Lainnya' }}</span>
+                            </div>
+                            <div class="flex flex-col items-end">
+                                <span class="text-lg font-black text-primary font-display">{{ round($percent) }}%</span>
+                                <span class="text-[10px] text-gray-400 font-medium">{{ $stat->count }} Mhs</span>
+                            </div>
                         </div>
-                        <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2">
-                            @php $percent = ($totalPendaftar > 0) ? ($stat->count / $totalPendaftar) * 100 : 0; @endphp
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: {{ $percent }}%"></div>
+                        <div class="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-primary h-full rounded-full transition-all duration-1000 ease-out" 
+                                 style="width: 0%" 
+                                 x-init="setTimeout(() => $el.style.width = '{{ $percent }}%', 500)"></div>
                         </div>
                     </div>
                 @empty
-                    <p class="text-sm text-gray-500">Belum ada data program studi.</p>
+                    <div class="flex flex-col items-center justify-center py-10 text-center">
+                        <span class="material-symbols-outlined text-4xl text-gray-200 mb-2">analytics</span>
+                        <p class="text-sm text-gray-500 font-medium">Belum ada data pendaftar.</p>
+                    </div>
                 @endforelse
             </div>
-            <button class="mt-auto pt-6 text-primary text-sm font-medium hover:underline text-center w-full">Lihat
-                Semua Prodi</button>
+            <a href="{{ route('pimpinan.analitik') }}" class="mt-auto pt-8 text-primary text-xs font-bold hover:underline text-center w-full flex items-center justify-center gap-1 group">
+                Lihat Analitik Lengkap 
+                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </a>
         </div>
     </div>
     <div
@@ -196,7 +293,8 @@
     <!-- Pendaftar Realtime Table (Responsive & Fixes) -->
     <div
         class="bg-white dark:bg-[#151b2b] rounded-xl border border-gray-100 dark:border-gray-100 shadow-sm overflow-hidden animate-fade-in-up delay-700 mt-6">
-        <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div
+            class="p-6 border-b border-gray-100 dark:border-gray-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <h3 class="font-bold text-[#111318] dark:text-white">Pendaftar Terbaru</h3>
         </div>
 
@@ -228,8 +326,10 @@
                                         {{ substr($pendaftar->nama_lengkap ?? 'X', 0, 2) }}
                                     </div>
                                     <div class="flex flex-col">
-                                        <span class="text-[#111318] dark:text-white font-medium">{{ $pendaftar->nama_lengkap }}</span>
-                                        <span class="text-xs text-gray-400">#REG-{{ $pendaftar->created_at->year }}-{{ $pendaftar->id }}</span>
+                                        <span
+                                            class="text-[#111318] dark:text-white font-medium">{{ $pendaftar->nama_lengkap }}</span>
+                                        <span
+                                            class="text-xs text-gray-400">#REG-{{ $pendaftar->created_at->year }}-{{ $pendaftar->id }}</span>
                                     </div>
                                 </div>
                             </td>
@@ -277,14 +377,16 @@
                             </div>
                             <div>
                                 <h4 class="text-sm font-bold text-[#111318] dark:text-white">{{ $pendaftar->nama_lengkap }}</h4>
-                                <p class="text-xs text-gray-500">ID: #REG-{{ $pendaftar->created_at->year }}-{{ $pendaftar->id }}</p>
+                                <p class="text-xs text-gray-500">ID:
+                                    #REG-{{ $pendaftar->created_at->year }}-{{ $pendaftar->id }}</p>
                             </div>
                         </div>
-                        <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-900">
+                        <span
+                            class="px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-900">
                             {{ ucfirst($pendaftar->status) }}
                         </span>
                     </div>
-                    
+
                     <div class="grid grid-cols-2 gap-2 text-xs text-gray-600 dark:text-gray-400 mt-1">
                         <div>
                             <span class="block text-gray-400 text-[10px] uppercase">Program Studi</span>
@@ -299,7 +401,7 @@
                     <div class="flex items-center justify-between mt-1">
                         <span class="text-xs text-gray-400">{{ $pendaftar->created_at->format('d M Y') }}</span>
                         <a href="{{ route('pimpinan.pendaftar.detail', $pendaftar->id) }}"
-                           class="flex items-center gap-1 text-xs font-medium text-primary hover:text-primary-dark">
+                            class="flex items-center gap-1 text-xs font-medium text-primary hover:text-primary-dark">
                             Detail <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                         </a>
                     </div>
@@ -318,9 +420,10 @@
             </a>
         </div>
     </div>
-    
+
     <!-- Footer -->
-    <div class="mt-8 pt-6 pb-6 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 gap-4">
+    <div
+        class="mt-8 pt-6 pb-6 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 gap-4">
         <p>&copy; 2026 Bina Adinata. Dashboard Sistem Pendaftaran.</p>
         <div class="flex gap-4">
             <a class="hover:text-primary transition-colors" href="#">Bantuan</a>
