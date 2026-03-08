@@ -76,8 +76,9 @@ class PendaftaranController extends Controller
             'ipk' => 'nullable',
         ];
 
-        if ($request->input('action') === 'draft') {
-            // Relaxed rules for draft: only require minimal info to create a record
+        if ($request->input('action') === 'draft' || $request->input('action') === 'submit') {
+            // Relaxed rules: only require minimal info to create/update a record
+            // Enforce only the most critical fields if necessary, or make all nullable
             $rules = [
                 'gelombang' => 'nullable',
                 'pilihan_prodi' => 'nullable',
@@ -85,7 +86,6 @@ class PendaftaranController extends Controller
                 'nama_lengkap' => 'nullable|string',
                 'email' => 'nullable|email',
                 'no_hp' => 'nullable',
-                // Make everything else nullable
             ];
         }
 

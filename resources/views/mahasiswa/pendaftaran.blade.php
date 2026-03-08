@@ -366,8 +366,7 @@
                         </button>
                         <button
                             class="flex items-center justify-center gap-2 h-14 px-10 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all transform w-full md:w-auto disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-                            type="submit" name="action" value="submit" :disabled="isLoading"
-                            @click="if(!step1Complete || !step2Complete || !step3Complete || !step4Complete) { $event.preventDefault(); showToast('Mohon lengkapi semua bagian (Program Studi, Identitas Diri, Sekolah, dan Keluarga) sebelum melanjutkan.', 'warning'); }">
+                            type="submit" name="action" value="submit" :disabled="isLoading">
 
                             <!-- Loading Spinner -->
                             <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white"
