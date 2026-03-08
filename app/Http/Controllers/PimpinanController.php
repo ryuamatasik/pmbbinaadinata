@@ -22,18 +22,24 @@ class PimpinanController extends Controller
 
         $recentPendaftar = Pendaftar::latest()->take(5)->get();
 
-        $prodiStats = Pendaftar::selectRaw('pilihan_prodi, count(*) as count')
-            ->groupBy('pilihan_prodi')
+        $prodiStats = Pendaftar::selectRaw('SUBSTRING_INDEX(pilihan_prodi, ",", 1) as main_prodi, count(*) as count')
+            ->groupBy('main_prodi')
             ->orderByDesc('count')
             ->take(5)
             ->get();
 
-        // Daily Stats for Chart (Last 7 days)
+        // Map main_prodi back to pilihan_prodi for view compatibility
+        $prodiStats->map(function ($item) {
+            $item->pilihan_prodi = $item->main_prodi;
+            return $item;
+        });
+
+        // Daily Stats for Chart (Last 30 days) - Extended from 7 to see more data
         $dailyStats = [];
-        for ($i = 6; $i >= 0; $i--) {
+        for ($i = 29; $i >= 0; $i--) {
             $date = now()->subDays($i)->format('Y-m-d');
             $count = Pendaftar::whereDate('created_at', $date)->count();
-            $simpleDay = now()->subDays($i)->format('D');
+            $simpleDay = now()->subDays($i)->format('d M');
 
             $dailyStats[] = [
                 'day' => $simpleDay,
@@ -53,8 +59,8 @@ class PimpinanController extends Controller
             $weeklyLabels[] = $start->format('d M');
         }
 
-        // Fetch Gelombang
-        $gelombangs = \App\Models\Gelombang::all();
+        // Fetch Gelombang with pendaftar counts
+        $gelombangs = \App\Models\Gelombang::withCount('pendaftar')->get();
 
         return view('pimpinan.dashboard', compact(
             'totalPendaftar',
@@ -89,15 +95,15 @@ class PimpinanController extends Controller
             'Prestasi' => $jalurPrestasi
         ];
 
-        // Fetch all prodi counts (Jurusan)
-        $prodiCounts = Pendaftar::selectRaw('pilihan_prodi, count(*) as count')
-            ->groupBy('pilihan_prodi')
-            ->pluck('count', 'pilihan_prodi');
+        // Fetch all prodi counts (Jurusan) - Group by first choice
+        $prodiCounts = Pendaftar::selectRaw('SUBSTRING_INDEX(pilihan_prodi, ",", 1) as main_prodi, count(*) as count')
+            ->groupBy('main_prodi')
+            ->pluck('count', 'main_prodi');
 
         // Format for view (Jurusan)
         $jurusanStats = [];
         foreach ($prodiCounts as $key => $val) {
-            if (empty($key))
+            if (empty($key) || $key == '-')
                 continue;
             $jurusanStats[] = ['name' => $key, 'count' => $val];
         }

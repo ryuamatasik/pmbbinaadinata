@@ -124,4 +124,9 @@ class Pendaftar extends Model
     {
         return $this->hasMany(DokumenPendaftar::class);
     }
+
+    public function gelombang_record()
+    {
+        return $this->belongsTo(Gelombang::class, 'gelombang', 'nama');
+    }
 }

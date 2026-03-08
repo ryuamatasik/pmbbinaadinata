@@ -226,8 +226,10 @@
                     <div class="flex flex-col gap-2 group cursor-default">
                         <div class="flex justify-between items-end">
                             <div class="flex flex-col">
-                                <span class="text-xs text-gray-400 uppercase font-bold tracking-wider">{{ $loop->iteration }}. Pilihan Utama</span>
-                                <span class="font-bold text-sm text-[#111318] dark:text-white group-hover:text-primary transition-colors text-balance">{{ $stat->pilihan_prodi ?? 'Lainnya' }}</span>
+                                <span class="text-xs text-gray-400 uppercase font-bold tracking-wider">{{ $loop->iteration }}.
+                                    Pilihan Utama</span>
+                                <span
+                                    class="font-bold text-sm text-[#111318] dark:text-white group-hover:text-primary transition-colors text-balance">{{ $stat->pilihan_prodi ?? 'Lainnya' }}</span>
                             </div>
                             <div class="flex flex-col items-end">
                                 <span class="text-lg font-black text-primary font-display">{{ round($percent) }}%</span>
@@ -235,9 +237,8 @@
                             </div>
                         </div>
                         <div class="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-1.5 overflow-hidden">
-                            <div class="bg-primary h-full rounded-full transition-all duration-1000 ease-out" 
-                                 style="width: 0%" 
-                                 x-init="setTimeout(() => $el.style.width = '{{ $percent }}%', 500)"></div>
+                            <div class="bg-primary h-full rounded-full transition-all duration-1000 ease-out" style="width: 0%"
+                                x-init="setTimeout(() => $el.style.width = '{{ $percent }}%', 500)"></div>
                         </div>
                     </div>
                 @empty
@@ -247,9 +248,11 @@
                     </div>
                 @endforelse
             </div>
-            <a href="{{ route('pimpinan.analitik') }}" class="mt-auto pt-8 text-primary text-xs font-bold hover:underline text-center w-full flex items-center justify-center gap-1 group">
-                Lihat Analitik Lengkap 
-                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            <a href="{{ route('pimpinan.analitik') }}"
+                class="mt-auto pt-8 text-primary text-xs font-bold hover:underline text-center w-full flex items-center justify-center gap-1 group">
+                Lihat Analitik Lengkap
+                <span
+                    class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </a>
         </div>
     </div>
@@ -265,6 +268,7 @@
                     <tr>
                         <th class="px-6 py-3 font-medium">Gelombang Pendaftaran</th>
                         <th class="px-6 py-3 font-medium text-center">Tahun</th>
+                        <th class="px-6 py-3 font-medium text-center">Pendaftar</th>
                         <th class="px-6 py-3 font-medium text-center">Status</th>
                     </tr>
                 </thead>
@@ -274,6 +278,10 @@
                             <td class="px-6 py-4 font-bold text-[#111318] dark:text-white">{{ $gelombang->nama }}</td>
                             <td class="px-6 py-4 text-center text-gray-500">{{ $gelombang->tahun }}</td>
                             <td class="px-6 py-4 text-center">
+                                <span class="font-bold text-primary">{{ number_format($gelombang->pendaftar_count) }}</span>
+                                <span class="text-[10px] text-gray-400 block">Mahasiswa</span>
+                            </td>
+                            <td class="px-6 py-4 text-center">
                                 <span
                                     class="px-2.5 py-1 rounded-full text-xs font-medium {{ $gelombang->status == 'Aktif' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600' }}">
                                     {{ $gelombang->status }}
@@ -282,7 +290,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="px-6 py-4 text-center text-gray-500">Belum ada data gelombang.</td>
+                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">Belum ada data gelombang.</td>
                         </tr>
                     @endforelse
                 </tbody>
