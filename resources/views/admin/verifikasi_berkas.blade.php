@@ -356,42 +356,36 @@
     </div>
 
     @push('scripts')
+        @php
+            $docsList = $syaratDokumen->map(function($s) {
+                $icon = 'description';
+                $lowerNama = strtolower($s->nama);
+                if (str_contains($lowerNama, 'ktp')) $icon = 'badge';
+                elseif (str_contains($lowerNama, 'ortu') || str_contains($lowerNama, 'wali')) $icon = 'diversity_3';
+                elseif (str_contains($lowerNama, 'akte')) $icon = 'child_care';
+                elseif (str_contains($lowerNama, 'ijazah') || str_contains($lowerNama, 'skl')) $icon = 'description';
+                elseif (str_contains($lowerNama, 'kk') || str_contains($lowerNama, 'keluarga')) $icon = 'family_restroom';
+                elseif (str_contains($lowerNama, 'foto')) $icon = 'account_circle';
+                elseif (str_contains($lowerNama, 'transkrip') || str_contains($lowerNama, 'nilai')) $icon = 'receipt_long';
+                elseif (str_contains($lowerNama, 'bayar') || str_contains($lowerNama, 'bukti')) $icon = 'payments';
+                elseif (str_contains($lowerNama, 'kip')) $icon = 'card_membership';
+                
+                return [
+                    'name' => $s->nama,
+                    'icon' => $icon,
+                    'key' => \Illuminate\Support\Str::slug($s->nama, '_'),
+                    'uploaded' => false,
+                    'url' => null
+                ];
+            });
+        @endphp
         <script>
             function verifikasiAppV2() {
                 return {
                     activeDoc: {},
                     zoomLevel: 100,
                     rotation: 0,
-                    documents: @json($syaratDokumen->map(function ($s) {
-                        $icon = 'description';
-                        $lowerNama = strtolower($s->nama);
-                        if (str_contains($lowerNama, 'ktp'))
-                            $icon = 'badge';
-                        elseif (str_contains($lowerNama, 'ortu') || str_contains($lowerNama, 'wali'))
-                            $icon = 'diversity_3';
-                        elseif (str_contains($lowerNama, 'akte'))
-                            $icon = 'child_care';
-                        elseif (str_contains($lowerNama, 'ijazah') || str_contains($lowerNama, 'skl'))
-                            $icon = 'description';
-                        elseif (str_contains($lowerNama, 'kk') || str_contains($lowerNama, 'keluarga'))
-                            $icon = 'family_restroom';
-                        elseif (str_contains($lowerNama, 'foto'))
-                            $icon = 'account_circle';
-                        elseif (str_contains($lowerNama, 'transkrip') || str_contains($lowerNama, 'nilai'))
-                            $icon = 'receipt_long';
-                        elseif (str_contains($lowerNama, 'bayar') || str_contains($lowerNama, 'bukti'))
-                            $icon = 'payments';
-                        elseif (str_contains($lowerNama, 'kip'))
-                            $icon = 'card_membership';
-
-                        return [
-                            'name' => $s->nama,
-                            'icon' => $icon,
-                            'key' => \Illuminate\Support\Str::slug($s->nama, '_'),
-                            'uploaded' => false,
-                            'url' => null
-                        ];
-                    })),
+                    documents: @json($docsList),
                     uploadedDocs: @json($dokumen ?: (object) []),
 
                     init() {
