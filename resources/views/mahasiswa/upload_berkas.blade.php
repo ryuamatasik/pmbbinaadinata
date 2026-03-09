@@ -327,26 +327,29 @@
                             })->values();
                         @endphp
                         const mandatoryDocs = {!! json_encode($mandatorySlugs) !!};
+                        console.log('Mandatory check for mandatoryDocs:', mandatoryDocs);
 
                         let missing = [];
                         mandatoryDocs.forEach(doc => {
+                            const input = document.getElementById('file-' + doc.id);
                             const textEl = document.getElementById('text-' + doc.id);
-                            const text = textEl ? textEl.textContent.trim() : '';
-                            const hasExisting = text !== '' && 
-                                               text !== 'Klik/Tarik file' && 
-                                               text !== 'Klik atau tarik file ke sini' &&
-                                               text !== 'Tersimpan (Klik ubah)'; // Added safety check
+                            const card = textEl ? textEl.closest('.border-2') : null;
+                            
+                            // A slot is filled if:
+                            // 1. It already was saved (card has specific border/bg)
+                            // 2. A new file is currently selected in the input
+                            const isSavedOnServer = card && (card.classList.contains('border-green-500') || card.classList.contains('border-red-500'));
+                            const isNewlySelected = input && input.files && input.files.length > 0;
 
-                            // Specifically check if the "Tersimpan" text is present or a filename
-                            const isFilled = hasExisting || (textEl && textEl.closest('.border-green-500'));
+                            console.log(`Checking [${doc.id}]: Saved=${isSavedOnServer}, New=${isNewlySelected}`);
 
-                            if (!isFilled) {
+                            if (!isSavedOnServer && !isNewlySelected) {
                                 missing.push(doc.title);
                             }
                         });
 
                         if (missing.length > 0) {
-                            this.showToast('Dokumen belum lengkap: ' + missing.join(', ') + '. Silakan lengkapi atau klik \'Simpan Draf\' dahulu.', 'warning');
+                            this.showToast('Dokumen belum lengkap: ' + missing.join(', ') + '. Silakan lengkapi semua yang wajib.', 'warning');
                             return;
                         }
                     }
@@ -366,38 +369,45 @@
                     }
 
                     this.isLoading = true;
-                    // Directly submit the form element
                     e.target.submit();
                 }
             }));
         });
 
         function updateFileName(id, input) {
+            console.log('updateFileName triggered for:', id);
             if (input.files && input.files[0]) {
                 const file = input.files[0];
                 const fileName = file.name;
                 const fileSize = file.size / 1024; // in KB
 
-                const maxSizes = {
-                    'ktp': 2048, 'ktp_ortu': 2048, 'akte': 3072, 'ijazah': 5120,
-                    'kk': 3072, 'foto': 2048, 'transkrip': 5120, 'bukti_pembayaran': 2048, 'kip': 2048
-                };
-
-                const maxSize = maxSizes[id] || 2048;
+                // Attempt to get max size from UI/Attributes, or fallback
+                let maxSize = 2048; 
+                if (id.includes('transkrip') || id.includes('ijazah')) maxSize = 5120;
+                else if (id.includes('akte') || id.includes('kk')) maxSize = 3072;
 
                 if (fileSize > maxSize) {
                     const alpineData = Alpine.$data(document.body);
-                    if (alpineData) {
-                        alpineData.showToast('Ukuran file terlalu besar! Maksimal ' + (maxSize / 1024) + 'MB.', 'error');
-                    } else {
-                        alert('Ukuran file terlalu besar!');
-                    }
+                    const msg = 'Ukuran file terlalu besar! Maksimal ' + Math.round(maxSize / 1024) + 'MB.';
+                    if (alpineData) alpineData.showToast(msg, 'error');
+                    else alert(msg);
+                    
+                    // Nuclear clear
                     input.value = '';
+                    input.type = '';
+                    input.type = 'file';
+                    
                     document.getElementById('text-' + id).textContent = 'Klik atau tarik file ke sini';
                     return;
                 }
 
                 document.getElementById('text-' + id).textContent = fileName;
+                // Visually indicate selection even before upload
+                const card = document.getElementById('text-' + id).closest('.border-2');
+                if (card) {
+                    card.classList.remove('border-[#dbdfe6]', 'dark:border-[#2a3441]');
+                    card.classList.add('border-primary/50', 'bg-primary/5');
+                }
             }
         }
 

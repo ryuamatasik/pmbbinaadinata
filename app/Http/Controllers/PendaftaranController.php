@@ -234,31 +234,29 @@ class PendaftaranController extends Controller
         foreach ($syaratDokumen as $syarat) {
             $field = \Illuminate\Support\Str::slug($syarat->nama, '_');
 
-            // Only apply file validation if a file is actually provided in THIS request.
-            // This prevents validation from failing if a field is empty even though it was
-            // already uploaded in a previous step, or if optional fields are left empty.
             if ($request->hasFile($field)) {
-                // Sanitize format: remove dots, spaces, ensure it's lowercase
-                $formatRaw = str_replace([' ', '.'], '', $syarat->format);
-                $mimes = strtolower($formatRaw);
-                // Handle "PDF/JPG" or other separators
-                $mimes = str_replace('/', ',', $mimes);
+                $file = $request->file($field);
 
-                // Max size from DB (e.g., "2 MB" -> 2048)
-                $maxSize = (int) $syarat->max_size * 1024;
+                if ($file->isValid()) {
+                    $formatRaw = str_replace([' ', '.'], '', $syarat->format);
+                    $mimes = strtolower(str_replace('/', ',', $formatRaw));
+                    $maxSize = (int) $syarat->max_size * 1024;
 
-                $rules[$field] = "file|mimes:{$mimes}|max:{$maxSize}";
-                $attributes[$field] = $syarat->nama;
+                    $rules[$field] = "file|mimes:{$mimes}|max:{$maxSize}";
+                    $attributes[$field] = $syarat->nama;
 
-                \Illuminate\Support\Facades\Log::info("PendaftaranController@uploadStore: Generated rule for [{$field}]: {$rules[$field]}");
+                    \Illuminate\Support\Facades\Log::info("Upload: [{$field}] Name: [{$file->getClientOriginalName()}] MIME: [{$file->getMimeType()}] Ext: [{$file->getClientOriginalExtension()}] Rule: [{$rules[$field]}]");
+                } else {
+                    \Illuminate\Support\Facades\Log::warning("Upload Failed for [{$field}]: Error Code " . $file->getError());
+                }
             }
         }
 
         $messages = [
-            'mimes' => 'Format file :attribute harus berupa: :values.',
-            'max' => 'Ukuran file :attribute maksimal :max KB.',
+            'mimes' => 'Format file :attribute tidak sesuai. Harus berupa: :values.',
+            'max' => 'Ukuran file :attribute terlalu besar (Maks: :max KB).',
             'file' => ':attribute harus berupa file yang valid.',
-            'uploaded' => 'Gagal mengunggah :attribute. Ukuran file mungkin melebihi batas server.',
+            'uploaded' => 'Gagal mengunggah :attribute. Batas server mungkin terlampaui (Maks total: 30MB).',
         ];
 
         $request->validate($rules, $messages, $attributes);
