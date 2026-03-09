@@ -318,16 +318,15 @@
                     const isDraftSaved = {{ session('was_draft') ? 'true' : 'false' }};
 
                     if (action === 'submit' && !isDraftSaved) {
-                        const mandatoryDocs = [
-                            { id: 'ktp', title: 'Kartu Identitas (KTP)' },
-                            { id: 'ktp_ortu', title: 'KTP Orang Tua/Wali' },
-                            { id: 'akte', title: 'Akte Kelahiran' },
-                            { id: 'ijazah', title: 'Ijazah/SKL' },
-                            { id: 'kk', title: 'Kartu Keluarga' },
-                            { id: 'foto', title: 'Pass Foto' },
-                            { id: 'transkrip', title: 'Transkrip Nilai' },
-                            { id: 'bukti_pembayaran', title: 'Bukti Pembayaran' }
-                        ];
+                        @php
+                            $mandatorySlugs = $syaratDokumen->where('wajib', true)->map(function($s) {
+                                return [
+                                    'id' => \Illuminate\Support\Str::slug($s->nama, '_'),
+                                    'title' => $s->nama
+                                ];
+                            })->values();
+                        @endphp
+                        const mandatoryDocs = {!! json_encode($mandatorySlugs) !!};
 
                         let missing = [];
                         mandatoryDocs.forEach(doc => {
@@ -335,15 +334,19 @@
                             const text = textEl ? textEl.textContent.trim() : '';
                             const hasExisting = text !== '' && 
                                                text !== 'Klik/Tarik file' && 
-                                               text !== 'Klik atau tarik file ke sini';
+                                               text !== 'Klik atau tarik file ke sini' &&
+                                               text !== 'Tersimpan (Klik ubah)'; // Added safety check
 
-                            if (!hasExisting) {
+                            // Specifically check if the "Tersimpan" text is present or a filename
+                            const isFilled = hasExisting || (textEl && textEl.closest('.border-green-500'));
+
+                            if (!isFilled) {
                                 missing.push(doc.title);
                             }
                         });
 
                         if (missing.length > 0) {
-                            this.showToast('Dokumen belum lengkap (1-8). Silakan lengkapi atau klik \'Simpan Draf\' dahulu agar bisa ke dashboard.', 'warning');
+                            this.showToast('Dokumen belum lengkap: ' + missing.join(', ') + '. Silakan lengkapi atau klik \'Simpan Draf\' dahulu.', 'warning');
                             return;
                         }
                     }
