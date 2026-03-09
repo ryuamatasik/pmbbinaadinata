@@ -232,18 +232,26 @@ class PendaftaranController extends Controller
         $attributes = [];
 
         foreach ($syaratDokumen as $syarat) {
-            // Slugify or use ID for the field name. 
-            // The existing ones used 'ktp', 'ijazah' etc.
-            // We'll use a simple slug of the name for compatibility.
             $field = \Illuminate\Support\Str::slug($syarat->nama, '_');
 
-            // Allow dynamic extensions from the DB (e.g., "PDF, JPG")
-            $mimes = strtolower(str_replace(' ', '', $syarat->format));
-            // Max size from DB (e.g., "2 MB" -> 2048)
-            $max = (int) $syarat->max_size * 1024;
+            // Only apply file validation if a file is actually provided in THIS request.
+            // This prevents validation from failing if a field is empty even though it was
+            // already uploaded in a previous step, or if optional fields are left empty.
+            if ($request->hasFile($field)) {
+                // Sanitize format: remove dots, spaces, ensure it's lowercase
+                $formatRaw = str_replace([' ', '.'], '', $syarat->format);
+                $mimes = strtolower($formatRaw);
+                // Handle "PDF/JPG" or other separators
+                $mimes = str_replace('/', ',', $mimes);
 
-            $rules[$field] = "nullable|file|mimes:{$mimes}|max:{$max}";
-            $attributes[$field] = $syarat->nama;
+                // Max size from DB (e.g., "2 MB" -> 2048)
+                $maxSize = (int) $syarat->max_size * 1024;
+
+                $rules[$field] = "file|mimes:{$mimes}|max:{$maxSize}";
+                $attributes[$field] = $syarat->nama;
+
+                \Illuminate\Support\Facades\Log::info("PendaftaranController@uploadStore: Generated rule for [{$field}]: {$rules[$field]}");
+            }
         }
 
         $messages = [
