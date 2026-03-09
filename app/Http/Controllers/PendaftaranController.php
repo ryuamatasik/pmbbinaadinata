@@ -236,30 +236,52 @@ class PendaftaranController extends Controller
 
             if ($request->hasFile($field)) {
                 $file = $request->file($field);
-
                 if ($file->isValid()) {
-                    $formatRaw = str_replace([' ', '.'], '', $syarat->format);
-                    $mimes = strtolower(str_replace('/', ',', $formatRaw));
                     $maxSize = (int) $syarat->max_size * 1024;
-
-                    $rules[$field] = "file|mimes:{$mimes}|max:{$maxSize}";
+                    $rules[$field] = "file|max:{$maxSize}";
                     $attributes[$field] = $syarat->nama;
-
-                    \Illuminate\Support\Facades\Log::info("Upload: [{$field}] Name: [{$file->getClientOriginalName()}] MIME: [{$file->getMimeType()}] Ext: [{$file->getClientOriginalExtension()}] Rule: [{$rules[$field]}]");
-                } else {
-                    \Illuminate\Support\Facades\Log::warning("Upload Failed for [{$field}]: Error Code " . $file->getError());
                 }
             }
         }
 
         $messages = [
-            'mimes' => 'Format file :attribute tidak sesuai. Harus berupa: :values.',
             'max' => 'Ukuran file :attribute terlalu besar (Maks: :max KB).',
             'file' => ':attribute harus berupa file yang valid.',
             'uploaded' => 'Gagal mengunggah :attribute. Batas server mungkin terlampaui (Maks total: 30MB).',
         ];
 
-        $request->validate($rules, $messages, $attributes);
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), $rules, $messages, $attributes);
+
+        // Manual Extension Check Hook (More robust than MIME detection)
+        $validator->after(function ($validator) use ($request, $syaratDokumen) {
+            $debugLog = "--- Upload Debug " . date('Y-m-d H:i:s') . " ---\n";
+
+            foreach ($syaratDokumen as $syarat) {
+                $field = \Illuminate\Support\Str::slug($syarat->nama, '_');
+                if ($request->hasFile($field)) {
+                    $file = $request->file($field);
+                    $fileExt = strtolower($file->getClientOriginalExtension());
+
+                    // Sanitize comparison: remove spaces and dots
+                    $formatRaw = str_replace([' ', '.'], '', $syarat->format);
+                    $allowedExts = explode(',', strtolower(str_replace('/', ',', $formatRaw)));
+
+                    $debugLog .= "Field: [{$field}], File: [{$file->getClientOriginalName()}], Ext: [{$fileExt}], Allowed: [" . implode(',', $allowedExts) . "]\n";
+
+                    if (!in_array($fileExt, $allowedExts)) {
+                        $validator->errors()->add($field, "Format file {$syarat->nama} (.{$fileExt}) tidak didukung. Harus berupa: " . implode(', ', $allowedExts));
+                        $debugLog .= ">> REJECTED: Extension mismatch\n";
+                    } else {
+                        $debugLog .= ">> ACCEPTED\n";
+                    }
+                }
+            }
+
+            @file_put_contents(storage_path('logs/upload_debug.log'), $debugLog, FILE_APPEND);
+            \Illuminate\Support\Facades\Log::info($debugLog);
+        });
+
+        $validator->validate();
 
         foreach ($syaratDokumen as $syarat) {
             $field = \Illuminate\Support\Str::slug($syarat->nama, '_');
