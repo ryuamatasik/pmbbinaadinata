@@ -332,32 +332,6 @@
                             </li>
                         </ul>
                     </div>
-                    <div
-                        class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-5">
-                        <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-3">Dokumen Saya</h3>
-                        <div
-                            class="flex items-center justify-between p-2 rounded-lg border border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-800/50">
-                            <div class="flex items-center gap-2">
-                                <span
-                                    class="material-symbols-outlined {{ $pendaftar->status == 'Diterima' ? 'text-primary' : 'text-gray-400' }} text-[20px]">insert_drive_file</span>
-                                <span
-                                    class="text-sm font-medium {{ $pendaftar->status == 'Diterima' ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400' }}">
-                                    {{ $pendaftar->status == 'Diterima' ? 'Kartu Peserta Ujian' : 'Kartu Peserta (Segera Hadir)' }}
-                                </span>
-                            </div>
-
-                            @if($pendaftar->status == 'Diterima')
-                                <a href="{{ route('mahasiswa.cetak_kartu') }}" target="_blank"
-                                    class="text-primary hover:text-primary-dark transition-colors" title="Download Kartu">
-                                    <span class="material-symbols-outlined text-[20px]">download</span>
-                                </a>
-                            @else
-                                <button class="text-slate-300 cursor-not-allowed" title="Fitur belum tersedia" disabled>
-                                    <span class="material-symbols-outlined text-[20px]">pending</span>
-                                </button>
-                            @endif
-                        </div>
-                    </div>
                 </div>
             </div>
         </main>
