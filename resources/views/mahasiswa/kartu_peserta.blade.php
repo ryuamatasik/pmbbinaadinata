@@ -139,17 +139,13 @@
             </div>
         </div>
 
-        <!-- Footer -->
-        <div class="mt-8 pt-6 border-t border-gray-200 flex items-end justify-between relative z-10">
-            <div>
-                <img src="https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl={{ $pendaftar->nomor_ujian ?? $pendaftar->nomor_pendaftaran }}&choe=UTF-8"
-                    alt="QR Code" class="size-16">
-            </div>
-            <div class="text-right">
-                <p class="text-xs text-gray-500">Dicetak pada: {{ date('d F Y H:i') }}</p>
-                <p class="text-sm font-bold text-gray-900 mt-1">Panitia Penerimaan Mahasiswa Baru</p>
-            </div>
+        <div>
         </div>
+        <div class="text-right">
+            <p class="text-xs text-gray-500">Dicetak pada: {{ date('d F Y H:i') }}</p>
+            <p class="text-sm font-bold text-gray-900 mt-1">Panitia Penerimaan Mahasiswa Baru</p>
+        </div>
+    </div>
 
     </div>
 
