@@ -57,9 +57,9 @@
                 </div>
             </div>
             <div class="text-right">
-                <h2 class="text-xl font-bold text-blue-600">KARTU TANDA MAHASISWA</h2>
-                <p class="text-sm font-semibold bg-green-100 text-green-700 px-3 py-1 rounded inline-block mt-1">
-                    SEMENTARA</p>
+                <h2 class="text-xl font-bold text-blue-600 uppercase">Kartu Peserta Ujian</h2>
+                <p class="text-sm font-semibold bg-blue-100 text-blue-700 px-3 py-1 rounded inline-block mt-1">
+                    SELEKSI MASUK</p>
             </div>
         </div>
 
@@ -92,6 +92,10 @@
             <div class="col-span-2">
                 <table class="w-full">
                     <tbody class="text-sm">
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 w-40 font-semibold text-gray-500">Nomor Ujian</td>
+                            <td class="py-3 font-black text-blue-600 text-lg">{{ $pendaftar->nomor_ujian ?? '-' }}</td>
+                        </tr>
                         <tr class="border-b border-gray-100">
                             <td class="py-3 w-40 font-semibold text-gray-500">Nomor Pendaftaran</td>
                             <td class="py-3 font-bold text-gray-900">{{ $pendaftar->nomor_pendaftaran }}</td>
@@ -140,7 +144,7 @@
         <!-- Footer -->
         <div class="mt-8 pt-6 border-t border-gray-200 flex items-end justify-between relative z-10">
             <div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ $pendaftar->nomor_pendaftaran }}"
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ $pendaftar->nomor_ujian ?? $pendaftar->nomor_pendaftaran }}"
                     alt="QR Code" class="size-16">
             </div>
             <div class="text-right">

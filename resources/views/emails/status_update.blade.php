@@ -242,7 +242,13 @@
                     </div>
                 @endif
 
-                <div style="margin-top: 35px;">
+                <div style="margin-top: 35px; display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                    @if ($statusCheck == 'Diterima')
+                        <a href="{{ route('mahasiswa.cetak_kartu') }}" class="btn"
+                            style="background-color: #10b981; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);">
+                            Download Kartu Ujian
+                        </a>
+                    @endif
                     <a href="{{ route('login') }}" class="btn">Login ke Portal PMB</a>
                 </div>
 

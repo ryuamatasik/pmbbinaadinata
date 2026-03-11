@@ -248,6 +248,23 @@
                             </h2>
                         </div>
 
+                        @if($pendaftar->status == 'Diterima')
+                            <div
+                                class="mb-4 p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                                <div class="flex items-center gap-3 mb-3 text-green-700 dark:text-green-400">
+                                    <span class="material-symbols-outlined shrink-0 text-[24px]">verified</span>
+                                    <p class="text-sm font-bold">Selamat! Berkas Anda telah diverifikasi.</p>
+                                </div>
+                                <a href="{{ route('mahasiswa.cetak_kartu') }}" target="_blank"
+                                    class="w-full flex items-center justify-center gap-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-bold h-11 px-4 transition-all shadow-lg shadow-green-200 dark:shadow-none hover:scale-[1.02] active:scale-[0.98]">
+                                    <span class="material-symbols-outlined text-[20px]">print</span>
+                                    DOWNLOAD KARTU UJIAN
+                                </a>
+                                <p class="text-[10px] text-green-600 dark:text-green-500 mt-2 text-center">Silakan cetak
+                                    kartu ini sebagai bukti peserta ujian yang sah.</p>
+                            </div>
+                        @endif
+
                         @if($pendaftar->status == 'Ditolak' && $pendaftar->catatan)
                             <div
                                 class="mb-4 p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
@@ -322,15 +339,23 @@
                             class="flex items-center justify-between p-2 rounded-lg border border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-800/50">
                             <div class="flex items-center gap-2">
                                 <span
-                                    class="material-symbols-outlined text-gray-400 text-[20px]">insert_drive_file</span>
-                                <span class="text-sm font-medium text-slate-500 dark:text-slate-400">
-                                    Kartu Peserta (Segera Hadir)
+                                    class="material-symbols-outlined {{ $pendaftar->status == 'Diterima' ? 'text-primary' : 'text-gray-400' }} text-[20px]">insert_drive_file</span>
+                                <span
+                                    class="text-sm font-medium {{ $pendaftar->status == 'Diterima' ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400' }}">
+                                    {{ $pendaftar->status == 'Diterima' ? 'Kartu Peserta Ujian' : 'Kartu Peserta (Segera Hadir)' }}
                                 </span>
                             </div>
 
-                            <button class="text-slate-300 cursor-not-allowed" title="Fitur belum tersedia" disabled>
-                                <span class="material-symbols-outlined text-[20px]">pending</span>
-                            </button>
+                            @if($pendaftar->status == 'Diterima')
+                                <a href="{{ route('mahasiswa.cetak_kartu') }}" target="_blank"
+                                    class="text-primary hover:text-primary-dark transition-colors" title="Download Kartu">
+                                    <span class="material-symbols-outlined text-[20px]">download</span>
+                                </a>
+                            @else
+                                <button class="text-slate-300 cursor-not-allowed" title="Fitur belum tersedia" disabled>
+                                    <span class="material-symbols-outlined text-[20px]">pending</span>
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>
