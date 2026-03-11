@@ -43,6 +43,7 @@ class Pendaftar extends Model
         'hp_ibu',
         'univ_asal',
         'prodi_asal',
+        'nomor_kk',
         'status',
         'status_pembayaran',
         'catatan',

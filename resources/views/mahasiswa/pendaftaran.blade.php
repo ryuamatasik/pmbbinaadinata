@@ -367,10 +367,9 @@
                         </button>
                         <button
                             class="flex items-center justify-center gap-2 h-14 px-10 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all transform w-full md:w-auto disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-                            type="submit" onclick="document.getElementById('form-action').value='submit'" @click="const isDraftSaved = {{ session('was_draft') ? 'true' : 'false' }};
-                                    if(!isDraftSaved && (!step1Complete || !step2Complete || !step3Complete || !step4Complete)) { 
+                            type="submit" onclick="document.getElementById('form-action').value='submit'" @click="if(!step1Complete) { 
                                         $event.preventDefault(); 
-                                        showToast('Data belum lengkap. Silakan lengkapi atau klik \'Simpan Draf\' terlebih dahulu agar bisa melanjutkan.', 'warning'); 
+                                        showToast('Data Program Studi belum lengkap. Silakan pilih Program Studi terlebih dahulu.', 'warning'); 
                                     }" :disabled="isLoading">
 
                             <!-- Loading Spinner -->
@@ -1031,27 +1030,27 @@
                 },
 
                 checkCompletion() {
-                    // Step 1: Program Studi
+                    // Step 1: Program Studi (Mandatory)
                     const gelombang = document.querySelector('[name="gelombang"]:checked');
                     this.step1Complete = !!(gelombang && this.prodiUtama && this.prodiCadangan && this.prodiUtama !== this.prodiCadangan);
 
-                    // Step 2: Identitas Diri
+                    // Step 2: Identitas Diri (Only fields with * in UI)
                     const step2Fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
                     this.step2Complete = step2Fields.every(name => {
                         const el = document.querySelector(`[name="${name}"]`);
                         return el && el.value.trim() !== '';
                     });
 
-                    // Step 3: Identitas Sekolah
-                    const step3Fields = ['nama_sekolah', 'jurusan_sekolah', 'nilai_rata_rata', 'tahun_lulus', 'alamat_sekolah'];
+                    // Step 3: Identitas Sekolah (Only fields with * in UI - Note: UI only marks some as required)
+                    const step3Fields = ['nama_sekolah', 'jurusan_sekolah', 'tahun_lulus'];
                     this.step3Complete = step3Fields.every(name => {
                         const el = document.querySelector(`[name="${name}"]`);
                         return el && el.value.trim() !== '';
                     });
 
-                    // Step 4: Identitas Keluarga
-                    const ayahFields = ['status_ayah', 'nomor_kk', 'nama_ayah', 'nik_ayah', 'hp_ayah', 'alamat_ayah', 'pendidikan_ayah', 'pekerjaan_ayah', 'penghasilan_ayah'];
-                    const ibuFields = ['status_ibu', 'nama_ibu', 'nik_ibu', 'hp_ibu', 'alamat_ibu', 'pendidikan_ibu', 'pekerjaan_ibu', 'penghasilan_ibu'];
+                    // Step 4: Identitas Keluarga (Only fields with * in UI)
+                    const ayahFields = ['status_ayah', 'nomor_kk', 'nama_ayah', 'nik_ayah', 'hp_ayah', 'alamat_ayah'];
+                    const ibuFields = ['status_ibu', 'nama_ibu', 'nik_ibu', 'hp_ibu', 'alamat_ibu'];
 
                     const checkFields = (fields) => {
                         return fields.every(name => {
@@ -1100,7 +1099,7 @@
                         fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
                         stepName = "Identitas Diri";
                     } else if (step === 3) {
-                        fields = ['nama_sekolah', 'jurusan_sekolah', 'nilai_rata_rata', 'tahun_lulus', 'alamat_sekolah'];
+                        fields = ['nama_sekolah', 'jurusan_sekolah', 'tahun_lulus'];
                         stepName = "Identitas Sekolah";
                     } else if (step === 4) {
                         fields = ['status_ayah', 'nomor_kk', 'nama_ayah', 'nik_ayah', 'hp_ayah', 'alamat_ayah', 'status_ibu', 'nama_ibu', 'nik_ibu', 'hp_ibu', 'alamat_ibu'];
