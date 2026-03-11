@@ -350,11 +350,11 @@ class PendaftaranController extends Controller
 
             $hasRejection = $dokumen->contains('status', 'invalid') || $pendaftar->status == 'Ditolak';
 
-            // Calculate Progress (Comprehensive List from Form Steps)
+            // Calculate Progress (Synchronized with Mandatory UI Fields)
             $fields = [
-                // Step 1 & 2
                 'pilihan_prodi',
                 'nik',
+                'nomor_kk',
                 'nama_lengkap',
                 'jenis_kelamin',
                 'tempat_lahir',
@@ -370,44 +370,38 @@ class PendaftaranController extends Controller
                 'status_pernikahan',
                 'tinggal_bersama',
                 'kode_pos',
-                // Step 3
                 'nama_sekolah',
                 'jurusan_sekolah',
-                'nilai_rata_rata',
                 'tahun_lulus',
-                'alamat_sekolah',
-                // Step 4
+                'status_ayah',
                 'nama_ayah',
                 'nik_ayah',
                 'hp_ayah',
-                'pekerjaan_ayah',
+                'alamat_ayah',
+                'status_ibu',
                 'nama_ibu',
                 'nik_ibu',
                 'hp_ibu',
-                'pekerjaan_ibu'
+                'alamat_ibu'
             ];
             $filled = 0;
             foreach ($fields as $field) {
-                if (!empty($pendaftar->$field)) {
+                if (!empty($pendaftar->$field) && $pendaftar->$field !== '-') {
                     $filled++;
                 }
             }
-            // Document progress (8 mandatory)
-            $mandatoryDocs = [
-                'Pas Foto',
-                'Ijazah/SKL',
-                'SKHU',
-                'Rapor Pengetahuan',
-                'KTP/KK',
-                'Akte Kelahiran',
-                'Kartu KPS/KIP',
-                'Bukti Pembayaran'
-            ];
-            $docsFilled = $dokumen->whereIn('jenis_dokumen', $mandatoryDocs)->count();
 
-            $totalFields = count($fields) + count($mandatoryDocs);
-            $totalFilled = $filled + $docsFilled;
-            $progress = round(($totalFilled / $totalFields) * 100);
+            // Document progress (Dynamic based on DB requirements)
+            $mandatoryDocs = \App\Models\SyaratDokumen::where('wajib', true)->get();
+            $mandatoryDocSlugs = $mandatoryDocs->map(function ($doc) {
+                return \Illuminate\Support\Str::slug($doc->nama, '_');
+            })->toArray();
+
+            $docsFilled = $dokumen->whereIn('jenis_dokumen', $mandatoryDocSlugs)->count();
+
+            $totalFieldsCount = count($fields) + count($mandatoryDocSlugs);
+            $totalFilledCount = $filled + $docsFilled;
+            $progress = $totalFieldsCount > 0 ? round(($totalFilledCount / $totalFieldsCount) * 100) : 0;
         }
 
         // Fetch Active Announcements
