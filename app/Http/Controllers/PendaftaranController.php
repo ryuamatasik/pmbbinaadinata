@@ -489,6 +489,12 @@ class PendaftaranController extends Controller
             return redirect()->route('mahasiswa.dashboard')->with('error', 'Status Anda belum diverifikasi atau diterima.');
         }
 
+        if ($pendaftar->status == 'Diterima' && empty($pendaftar->nomor_ujian)) {
+            $lastNumber = \App\Models\Pendaftar::whereNotNull('nomor_ujian')->count();
+            $pendaftar->nomor_ujian = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+            $pendaftar->save();
+        }
+
         return view('mahasiswa.kartu_peserta', compact('pendaftar'));
     }
 
