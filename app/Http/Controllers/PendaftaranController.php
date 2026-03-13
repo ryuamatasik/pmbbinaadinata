@@ -412,7 +412,14 @@ class PendaftaranController extends Controller
             ->orderBy('tanggal', 'asc')
             ->first();
 
-        return view('mahasiswa.dashboard', compact('pendaftar', 'dokumen', 'pengumuman', 'jadwalUjian', 'hasRejection', 'progress', 'activeGelombang'));
+        // Registration Statistics
+        $stats = [
+            'total' => \App\Models\Pendaftar::count(),
+            'diterima' => \App\Models\Pendaftar::where('status', 'Diterima')->count(),
+            'ditolak' => \App\Models\Pendaftar::where('status', 'Ditolak')->count(),
+        ];
+
+        return view('mahasiswa.dashboard', compact('pendaftar', 'dokumen', 'pengumuman', 'jadwalUjian', 'hasRejection', 'progress', 'activeGelombang', 'stats'));
     }
 
     public function status()

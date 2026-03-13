@@ -305,6 +305,28 @@
                         <span class="material-symbols-outlined text-primary">campaign</span>
                         Pengumuman Terbaru
                     </h3>
+
+                    <!-- Registration Statistics -->
+                    @if(isset($stats))
+                    <div class="mb-6 p-4 rounded-xl border border-gray-100 dark:border-gray-800 bg-blue-50/50 dark:bg-blue-900/10">
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Statistik Pendaftar</h4>
+                        <div class="grid grid-cols-3 gap-2 text-center">
+                            <div class="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+                                <p class="text-[10px] text-gray-500 mb-1">Mendaftar</p>
+                                <p class="text-lg font-bold text-blue-600 dark:text-blue-400">{{ number_format($stats['total']) }}</p>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+                                <p class="text-[10px] text-gray-500 mb-1">Diterima</p>
+                                <p class="text-lg font-bold text-green-600 dark:text-green-400">{{ number_format($stats['diterima']) }}</p>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+                                <p class="text-[10px] text-gray-500 mb-1">Ditolak</p>
+                                <p class="text-lg font-bold text-red-600 dark:text-red-400">{{ number_format($stats['ditolak']) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="space-y-6">
                         @forelse($pengumuman as $info)
                             <div class="flex gap-3 items-start relative pl-4 border-l-2 border-primary">

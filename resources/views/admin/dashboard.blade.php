@@ -242,6 +242,25 @@
                         </div>
                     </div>
                     <div class="p-4 flex flex-col gap-3">
+                        <!-- Registration Statistics Quick View -->
+                        <div class="mb-2 p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-blue-50/30 dark:bg-blue-900/10">
+                            <h4 class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 text-center">Statistik Cepat</h4>
+                            <div class="grid grid-cols-3 gap-2 text-center divide-x divide-gray-200 dark:divide-gray-700">
+                                <div>
+                                    <p class="text-[10px] text-gray-500 mb-0.5">Mendaftar</p>
+                                    <p class="text-sm font-bold text-blue-600 dark:text-blue-400">{{ number_format($totalPendaftar) }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-gray-500 mb-0.5">Diterima</p>
+                                    <p class="text-sm font-bold text-green-600 dark:text-green-400">{{ number_format($lolosSeleksi) }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-gray-500 mb-0.5">Ditolak</p>
+                                    <p class="text-sm font-bold text-red-600 dark:text-red-400">{{ number_format($ditolak) }}</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="flex gap-3 items-start border-b border-gray-100 dark:border-gray-800 pb-3">
                             <div class="bg-primary/10 p-2 rounded text-primary">
                                 <span class="material-symbols-outlined text-[20px]">campaign</span>
