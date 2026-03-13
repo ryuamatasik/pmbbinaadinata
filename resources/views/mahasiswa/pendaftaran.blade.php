@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="id">
 
 <head>
@@ -536,19 +536,22 @@
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">NIK <span
                                     class="text-red-500">*</span></label>
-                            <input name="nik" value="{{ old('nik', $pendaftar->nik ?? '') }}"
+                            <input name="nik" value="{{ old('nik', str_replace('-', '', $pendaftar->nik ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 type="text" placeholder="16 digit NIK" maxlength="16"
+                                autocomplete="username"
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                 onkeypress="return event.charCode >= 48 && event.charCode <= 57" required />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
-                            <label class="text-sm font-bold text-slate-900 dark:text-white">NISN</label>
-                            <input name="nisn" value="{{ old('nisn', $pendaftar->nisn ?? '') }}"
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">NISN <span
+                                    class="text-red-500">*</span></label>
+                            <input name="nisn" value="{{ old('nisn', str_replace('-', '', $pendaftar->nisn ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                type="text" placeholder="10 digit NISN (Opsional)" maxlength="10"
+                                type="text" placeholder="10 digit NISN" maxlength="10"
+                                autocomplete="username"
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+                                onkeypress="return event.charCode >= 48 && event.charCode <= 57" required />
                         </div>
 
                         <!-- Status Pernikahan & NPWP -->
@@ -575,9 +578,9 @@
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Nama Lengkap <span
                                     class="text-red-500">*</span></label>
                             <input name="nama_lengkap"
-                                value="{{ old('nama_lengkap', $pendaftar->nama_lengkap ?? Auth::user()->name ?? '') }}"
+                                value="{{ old('nama_lengkap', str_replace('-', '', $pendaftar->nama_lengkap ?? Auth::user()->name ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                type="text" placeholder="Sesuai ijazah" required />
+                                type="text" placeholder="Sesuai ijazah" autocomplete="name" required />
                         </div>
                         <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Jenis Kelamin <span
@@ -594,9 +597,9 @@
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Tempat Lahir <span
                                     class="text-red-500">*</span></label>
-                            <input name="tempat_lahir" value="{{ old('tempat_lahir', $pendaftar->tempat_lahir ?? '') }}"
+                            <input name="tempat_lahir" value="{{ old('tempat_lahir', str_replace('-', '', $pendaftar->tempat_lahir ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                type="text" />
+                                type="text" autocomplete="address-level2" />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Tanggal Lahir <span
@@ -604,7 +607,7 @@
                             <input name="tanggal_lahir"
                                 value="{{ old('tanggal_lahir', $pendaftar->tanggal_lahir ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                type="date" />
+                                type="date" autocomplete="bday" required />
                         </div>
 
                         <!-- Row 4: Agama & Physical -->
@@ -624,13 +627,13 @@
                         </div>
                         <div class="col-span-6 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Tinggi (cm)</label>
-                            <input name="tinggi_badan" value="{{ old('tinggi_badan', $pendaftar->tinggi_badan ?? '') }}"
+                            <input name="tinggi_badan" value="{{ old('tinggi_badan', str_replace(['-', '0'], '', $pendaftar->tinggi_badan ?? '')) }}"
                                 type="number"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm" />
                         </div>
                         <div class="col-span-6 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Berat (kg)</label>
-                            <input name="berat_badan" value="{{ old('berat_badan', $pendaftar->berat_badan ?? '') }}"
+                            <input name="berat_badan" value="{{ old('berat_badan', str_replace(['-', '0'], '', $pendaftar->berat_badan ?? '')) }}"
                                 type="number"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm" />
                         </div>
@@ -643,49 +646,49 @@
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Jalan / Dusun / Lingkungan
                                 <span class="text-red-500">*</span></label>
                             <input name="alamat_lengkap"
-                                value="{{ old('alamat_lengkap', $pendaftar->alamat_lengkap ?? '') }}"
+                                value="{{ old('alamat_lengkap', str_replace('-', '', $pendaftar->alamat_lengkap ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                type="text" />
+                                type="text" autocomplete="street-address" />
                         </div>
                         <div class="col-span-6 md:col-span-3 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">RT</label>
-                            <input name="rt" value="{{ old('rt', $pendaftar->rt ?? '') }}"
+                            <input name="rt" value="{{ old('rt', str_replace('-', '', $pendaftar->rt ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
-                                type="number" />
+                                type="text" autocomplete="address-line2" />
                         </div>
                         <div class="col-span-6 md:col-span-3 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">RW</label>
-                            <input name="rw" value="{{ old('rw', $pendaftar->rw ?? '') }}"
+                            <input name="rw" value="{{ old('rw', str_replace('-', '', $pendaftar->rw ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
-                                type="number" />
+                                type="text" autocomplete="address-line2" />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Kelurahan/Desa <span
                                     class="text-red-500">*</span></label>
-                            <input name="kelurahan" value="{{ old('kelurahan', $pendaftar->kelurahan ?? '') }}"
+                            <input name="kelurahan" value="{{ old('kelurahan', str_replace('-', '', $pendaftar->kelurahan ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
-                                type="text" />
+                                type="text" autocomplete="address-level3" />
                         </div>
                         <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Kecamatan <span
                                     class="text-red-500">*</span></label>
-                            <input name="kecamatan" value="{{ old('kecamatan', $pendaftar->kecamatan ?? '') }}"
+                            <input name="kecamatan" value="{{ old('kecamatan', str_replace('-', '', $pendaftar->kecamatan ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
-                                type="text" />
+                                type="text" autocomplete="address-level2" />
                         </div>
                         <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Kabupaten/Kota <span
                                     class="text-red-500">*</span></label>
-                            <input name="kabupaten" value="{{ old('kabupaten', $pendaftar->kabupaten ?? '') }}"
+                            <input name="kabupaten" value="{{ old('kabupaten', str_replace('-', '', $pendaftar->kabupaten ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
-                                type="text" />
+                                type="text" autocomplete="address-level1" />
                         </div>
                         <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Provinsi <span
                                     class="text-red-500">*</span></label>
-                            <input name="provinsi" value="{{ old('provinsi', $pendaftar->provinsi ?? '') }}"
+                            <input name="provinsi" value="{{ old('provinsi', str_replace('-', '', $pendaftar->provinsi ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
-                                type="text" />
+                                type="text" autocomplete="address-level1" />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Tinggal Bersama <span
@@ -703,9 +706,9 @@
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Kode Pos <span
                                     class="text-red-500">*</span></label>
-                            <input name="kode_pos" value="{{ old('kode_pos', $pendaftar->kode_pos ?? '') }}"
+                            <input name="kode_pos" value="{{ old('kode_pos', str_replace(['-', '0'], '', $pendaftar->kode_pos ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                type="text" placeholder="5 digit kode pos" />
+                                type="text" placeholder="5 digit kode pos" autocomplete="postal-code" />
                         </div>
 
                         <!-- Row 6: Kontak -->
@@ -713,16 +716,16 @@
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Email <span
                                     class="text-red-500">*</span></label>
                             <input name="email"
-                                value="{{ old('email', $pendaftar->email ?? Auth::user()->email ?? '') }}"
+                                value="{{ old('email', str_replace('-', '', $pendaftar->email ?? Auth::user()->email ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
-                                type="email" />
+                                type="email" autocomplete="email" />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">No HP / WA <span
                                     class="text-red-500">*</span></label>
-                            <input name="no_hp" value="{{ old('no_hp', $pendaftar->no_hp ?? '') }}"
+                            <input name="no_hp" value="{{ old('no_hp', str_replace('-', '', $pendaftar->no_hp ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
-                                type="tel" />
+                                type="tel" autocomplete="tel" />
                         </div>
                         <!-- Data KIP/KPS (Moved from Keluarga) -->
                         <div class="col-span-12 pt-6 border-t border-gray-100 dark:border-gray-700">
@@ -743,9 +746,9 @@
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Nomor KIP</label>
-                            <input name="no_kip" value="{{ old('no_kip', $pendaftar->no_kip ?? '') }}"
+                            <input name="no_kip" value="{{ old('no_kip', str_replace(['-', '0'], '', $pendaftar->no_kip ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
-                                placeholder="Opsional (Jika ada)" />
+                                placeholder="Opsional (Jika ada)" autocomplete="off" />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Penerima KPS/PKH?</label>
@@ -757,9 +760,9 @@
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Nomor KPS/PKH</label>
-                            <input name="no_kps" value="{{ old('no_kps', $pendaftar->no_kps ?? '') }}"
+                            <input name="no_kps" value="{{ old('no_kps', str_replace(['-', '0'], '', $pendaftar->no_kps ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm"
-                                placeholder="Opsional (Jika ada)" />
+                                placeholder="Opsional (Jika ada)" autocomplete="off" />
                         </div>
 
                         <!-- Row 7: Detail Pekerjaan -->
@@ -835,15 +838,15 @@
                     <div class="p-6 md:p-8 grid grid-cols-12 gap-6">
                         <!-- Row 1: Nama Sekolah -->
                         <div class="col-span-12 flex flex-col gap-2">
-                            <label class="text-sm font-bold text-slate-900 dark:text-white">Nama Sekolah</label>
-                            <input name="nama_sekolah" value="{{ old('nama_sekolah', $pendaftar->nama_sekolah ?? '') }}"
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Nama Sekolah <span class="text-red-500">*</span></label>
+                            <input name="nama_sekolah" value="{{ old('nama_sekolah', str_replace('-', '', $pendaftar->nama_sekolah ?? '')) }}"
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all"
-                                type="text" placeholder="Contoh: SMA Negeri 1 Jakarta" />
+                                type="text" placeholder="Contoh: SMA Negeri 1 Jakarta" autocomplete="organization" />
                         </div>
 
                         <!-- Row 2: Jurusan & Nilai -->
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
-                            <label class="text-sm font-bold text-slate-900 dark:text-white">Jurusan / Program</label>
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Jurusan / Program <span class="text-red-500">*</span></label>
                             <select name="jurusan_sekolah"
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all">
                                 <option value="" disabled selected>Pilih Jurusan</option>
@@ -859,16 +862,16 @@
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Nilai UN / Rata-rata
-                                Ijazah</label>
+                                Ijazah <span class="text-red-500">*</span></label>
                             <input name="nilai_rata_rata"
-                                value="{{ old('nilai_rata_rata', $pendaftar->nilai_rata_rata ?? '') }}"
+                                value="{{ old('nilai_rata_rata', str_replace(['-', '0'], '', $pendaftar->nilai_rata_rata ?? '')) }}"
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all"
-                                type="text" placeholder="0.00" />
+                                type="text" placeholder="0.00" autocomplete="off" />
                         </div>
 
                         <!-- Row 3: Tahun Lulus -->
                         <div class="col-span-12 flex flex-col gap-2">
-                            <label class="text-sm font-bold text-slate-900 dark:text-white">Tahun Lulus</label>
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Tahun Lulus <span class="text-red-500">*</span></label>
                             <select name="tahun_lulus"
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all">
                                 <option value="" disabled selected>Pilih Tahun</option>
@@ -887,10 +890,10 @@
 
                         <!-- Row 5: Alamat Sekolah Textarea -->
                         <div class="col-span-12 flex flex-col gap-2">
-                            <label class="text-sm font-bold text-slate-900 dark:text-white">Alamat Sekolah</label>
+                            <label class="text-sm font-bold text-slate-900 dark:text-white">Alamat Sekolah <span class="text-red-500">*</span></label>
                             <textarea name="alamat_sekolah"
                                 class="w-full h-32 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 p-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all resize-none"
-                                placeholder="Tuliskan alamat lengkap sekolah (Jalan, No, Kelurahan, Kecamatan, Kota, Provinsi)">{{ old('alamat_sekolah', $pendaftar->alamat_sekolah ?? '') }}</textarea>
+                                placeholder="Tuliskan alamat lengkap sekolah (Jalan, No, Kelurahan, Kecamatan, Kota, Provinsi)" autocomplete="street-address">{{ old('alamat_sekolah', str_replace('-', '', $pendaftar->alamat_sekolah ?? '')) }}</textarea>
                         </div>
                     </div>
                     <div
@@ -935,17 +938,17 @@
                         <div class="col-span-12 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Asal Perguruan
                                 Tinggi</label>
-                            <input name="asal_pt" value="{{ old('asal_pt', $pendaftar->asal_pt ?? '') }}"
+                            <input name="asal_pt" value="{{ old('asal_pt', str_replace('-', '', $pendaftar->asal_pt ?? '')) }}"
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all"
-                                type="text" placeholder="Contoh: Universitas Indonesia" />
+                                type="text" placeholder="Contoh: Universitas Indonesia" autocomplete="organization" />
                         </div>
 
                         <!-- Asal Program Studi -->
                         <div class="col-span-12 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Asal Program Studi</label>
-                            <input name="asal_prodi" value="{{ old('asal_prodi', $pendaftar->asal_prodi ?? '') }}"
+                            <input name="asal_prodi" value="{{ old('asal_prodi', str_replace('-', '', $pendaftar->asal_prodi ?? '')) }}"
                                 class="w-full h-12 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all"
-                                type="text" placeholder="Contoh: Teknik Informatika" />
+                                type="text" placeholder="Contoh: Teknik Informatika" autocomplete="organization-title" />
                         </div>
 
                         <!-- Status Terakreditasi -->
@@ -1035,14 +1038,14 @@
                     this.step1Complete = !!(gelombang && this.prodiUtama && this.prodiCadangan && this.prodiUtama !== this.prodiCadangan);
 
                     // Step 2: Identitas Diri (Only fields with * in UI)
-                    const step2Fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
+                    const step2Fields = ['nik', 'nisn', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
                     this.step2Complete = step2Fields.every(name => {
                         const el = document.querySelector(`[name="${name}"]`);
                         return el && el.value.trim() !== '';
                     });
 
-                    // Step 3: Identitas Sekolah (Only fields with * in UI - Note: UI only marks some as required)
-                    const step3Fields = ['nama_sekolah', 'jurusan_sekolah', 'tahun_lulus'];
+                    // Step 3: Identitas Sekolah (Only fields with * in UI)
+                    const step3Fields = ['nama_sekolah', 'jurusan_sekolah', 'tahun_lulus', 'nilai_rata_rata', 'alamat_sekolah'];
                     this.step3Complete = step3Fields.every(name => {
                         const el = document.querySelector(`[name="${name}"]`);
                         return el && el.value.trim() !== '';
@@ -1096,10 +1099,10 @@
                         }
                         stepName = "Program Studi";
                     } else if (step === 2) {
-                        fields = ['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
+                        fields = ['nik', 'nisn', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'agama', 'alamat_lengkap', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'email', 'no_hp', 'status_pernikahan', 'tinggal_bersama', 'kode_pos'];
                         stepName = "Identitas Diri";
                     } else if (step === 3) {
-                        fields = ['nama_sekolah', 'jurusan_sekolah', 'tahun_lulus'];
+                        fields = ['nama_sekolah', 'jurusan_sekolah', 'tahun_lulus', 'nilai_rata_rata', 'alamat_sekolah'];
                         stepName = "Identitas Sekolah";
                     } else if (step === 4) {
                         fields = ['status_ayah', 'nomor_kk', 'nama_ayah', 'nik_ayah', 'hp_ayah', 'alamat_ayah', 'status_ibu', 'nama_ibu', 'nik_ibu', 'hp_ibu', 'alamat_ibu'];
@@ -1107,11 +1110,8 @@
                     }
 
                     fields.forEach(name => {
-                        // EXPLICIT GUARD: Never validate NISN as required
-                        if (name === 'nisn') return;
-
                         let el = document.querySelector(`[name="${name}"]`);
-                        if (!el) return;
+                       if (!el) return;
 
                         // Check if it's a radio group (multiple elements with same name)
                         const isRadioGroup = document.querySelectorAll(`[name="${name}"][type="radio"]`).length > 0;

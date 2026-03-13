@@ -94,46 +94,20 @@ class PendaftaranController extends Controller
         $data = $request->except(['_token', 'action']);
 
         if ($request->input('action') === 'draft' || $request->input('action') === 'submit') {
-            $defaults = [
-                'gelombang' => '1',
-                'pilihan_prodi' => '-',
-                'nik' => '0000000000000000',
-                'nisn' => '0',
-                'nama_lengkap' => 'Calon Mahasiswa',
-                'jenis_kelamin' => 'L',
-                'tempat_lahir' => '-',
-                'tanggal_lahir' => '2000-01-01',
-                'alamat_lengkap' => '-',
-                'kelurahan' => '-',
-                'kecamatan' => '-',
-                'kabupaten' => '-',
-                'provinsi' => '-',
-                'no_hp' => '-',
-                'nama_sekolah' => '-',
-                'jurusan_sekolah' => '-',
-                'tahun_lulus' => date('Y'),
-                'nilai_rata_rata' => 0,
-                'alamat_sekolah' => '-',
-                'nama_ayah' => '-',
-                'pekerjaan_ayah' => '-',
-                'hp_ayah' => '-',
-                'nama_ibu' => '-',
-                'pekerjaan_ibu' => '-',
-                'hp_ibu' => '-',
-                'email' => Auth::user()->email, // Use authenticated user's email if empty
-            ];
-
-            foreach ($defaults as $key => $val) {
-                if (empty($data[$key])) {
-                    $data[$key] = $val;
-                }
-            }
+            // Defaults removed to keep form clean (no more '-' or '0')
+            $data['gelombang'] = $data['gelombang'] ?? '1';
+            $data['email'] = $data['email'] ?? Auth::user()->email;
+            $data['nama_lengkap'] = $data['nama_lengkap'] ?? Auth::user()->name;
         }
 
-        // Handle numeric fields that cannot be null in DB but are nullable in form
-        $data['nilai_rata_rata'] = $data['nilai_rata_rata'] ?? 0;
-        $data['tinggi_badan'] = $data['tinggi_badan'] ?? 0;
-        $data['berat_badan'] = $data['berat_badan'] ?? 0;
+        // Ensure numeric/date fields don't cause errors if null and DB expects something
+        // But with nullable migration, we can leave most as null.
+        // We only keep essential transformations.
+        
+        // Handle numeric fields that might need a default for calculation/logic if null
+        $data['nilai_rata_rata'] = !isset($data['nilai_rata_rata']) || $data['nilai_rata_rata'] === '' ? null : $data['nilai_rata_rata'];
+        $data['tinggi_badan'] = !isset($data['tinggi_badan']) || $data['tinggi_badan'] === '' ? null : $data['tinggi_badan'];
+        $data['berat_badan'] = !isset($data['berat_badan']) || $data['berat_badan'] === '' ? null : $data['berat_badan'];
         $data['penghasilan_ayah'] = $data['penghasilan_ayah'] ?? '< 1 Juta';
         $data['penghasilan_ibu'] = $data['penghasilan_ibu'] ?? '< 1 Juta';
 

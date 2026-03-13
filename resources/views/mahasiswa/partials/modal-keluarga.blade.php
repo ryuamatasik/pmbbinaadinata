@@ -70,8 +70,8 @@
                                 Keluarga) <span class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nomor_kk" value="{{ old('nomor_kk', $pendaftar->nomor_kk ?? '') }}"
-                                placeholder="16 digit nomor KK" type="text" />
+                                name="nomor_kk" value="{{ old('nomor_kk', str_replace(['-', '0'], '', $pendaftar->nomor_kk ?? '')) }}"
+                                placeholder="16 digit nomor KK" type="text" autocomplete="off" />
                         </label>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -81,24 +81,24 @@
                             </p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nama_ayah" value="{{ old('nama_ayah', $pendaftar->nama_ayah ?? '') }}"
-                                placeholder="Sesuai KTP" />
+                                name="nama_ayah" value="{{ old('nama_ayah', str_replace('-', '', $pendaftar->nama_ayah ?? '')) }}"
+                                placeholder="Sesuai KTP" autocomplete="name" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">NIK <span
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nik_ayah" value="{{ old('nik_ayah', $pendaftar->nik_ayah ?? '') }}"
-                                placeholder="16 digit angka" type="text" />
+                                name="nik_ayah" value="{{ old('nik_ayah', str_replace(['-', '0'], '', $pendaftar->nik_ayah ?? '')) }}"
+                                placeholder="16 digit angka" type="text" autocomplete="username" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">No. Telepon / HP <span
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="hp_ayah" value="{{ old('hp_ayah', $pendaftar->hp_ayah ?? '') }}"
-                                placeholder="08xxxxxxxxxx" type="tel" />
+                                name="hp_ayah" value="{{ old('hp_ayah', str_replace('-', '', $pendaftar->hp_ayah ?? '')) }}"
+                                placeholder="08xxxxxxxxxx" type="tel" autocomplete="tel" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Pendidikan Terakhir
@@ -172,23 +172,23 @@
                                     (Jalan/Dusun) <span class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="alamat_ayah" value="{{ old('alamat_ayah', $pendaftar->alamat_ayah ?? '') }}"
-                                    placeholder="Nama Jalan, Blok, atau No. Rumah" />
+                                    name="alamat_ayah" value="{{ old('alamat_ayah', str_replace('-', '', $pendaftar->alamat_ayah ?? '')) }}"
+                                    placeholder="Nama Jalan, Blok, atau No. Rumah" autocomplete="street-address" />
                             </label>
                             <div class="grid grid-cols-2 gap-4">
                                 <label class="flex flex-col">
                                     <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">RT</p>
                                     <input
                                         class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                        name="rt_ayah" value="{{ old('rt_ayah', $pendaftar->rt_ayah ?? '') }}"
-                                        placeholder="000" />
+                                        name="rt_ayah" value="{{ old('rt_ayah', str_replace('-', '', $pendaftar->rt_ayah ?? '')) }}"
+                                        placeholder="000" autocomplete="address-line2" />
                                 </label>
                                 <label class="flex flex-col">
                                     <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">RW</p>
                                     <input
                                         class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                        name="rw_ayah" value="{{ old('rw_ayah', $pendaftar->rw_ayah ?? '') }}"
-                                        placeholder="000" />
+                                        name="rw_ayah" value="{{ old('rw_ayah', str_replace('-', '', $pendaftar->rw_ayah ?? '')) }}"
+                                        placeholder="000" autocomplete="address-line2" />
                                 </label>
                             </div>
                             <label class="flex flex-col">
@@ -198,8 +198,8 @@
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
                                     name="kelurahan_ayah"
-                                    value="{{ old('kelurahan_ayah', $pendaftar->kelurahan_ayah ?? '') }}"
-                                    placeholder="Nama Desa/Kelurahan" />
+                                    value="{{ old('kelurahan_ayah', str_replace('-', '', $pendaftar->kelurahan_ayah ?? '')) }}"
+                                    placeholder="Nama Desa/Kelurahan" autocomplete="address-level3" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Kecamatan <span
@@ -207,8 +207,8 @@
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
                                     name="kecamatan_ayah"
-                                    value="{{ old('kecamatan_ayah', $pendaftar->kecamatan_ayah ?? '') }}"
-                                    placeholder="Nama Kecamatan" />
+                                    value="{{ old('kecamatan_ayah', str_replace('-', '', $pendaftar->kecamatan_ayah ?? '')) }}"
+                                    placeholder="Nama Kecamatan" autocomplete="address-level2" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Kabupaten/Kota
@@ -216,8 +216,8 @@
                                 </p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kota_ayah" value="{{ old('kota_ayah', $pendaftar->kota_ayah ?? '') }}"
-                                    placeholder="Nama Kabupaten/Kota" />
+                                    name="kota_ayah" value="{{ old('kota_ayah', str_replace('-', '', $pendaftar->kota_ayah ?? '')) }}"
+                                    placeholder="Nama Kabupaten/Kota" autocomplete="address-level1" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Provinsi <span
@@ -225,8 +225,8 @@
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
                                     name="provinsi_ayah"
-                                    value="{{ old('provinsi_ayah', $pendaftar->provinsi_ayah ?? '') }}"
-                                    placeholder="Nama Provinsi" />
+                                    value="{{ old('provinsi_ayah', str_replace('-', '', $pendaftar->provinsi_ayah ?? '')) }}"
+                                    placeholder="Nama Provinsi" autocomplete="address-level1" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Negara <span
@@ -234,8 +234,8 @@
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
                                     name="negara_ayah"
-                                    value="{{ old('negara_ayah', $pendaftar->negara_ayah ?? 'Indonesia') }}"
-                                    placeholder="Contoh: Indonesia" />
+                                    value="{{ old('negara_ayah', str_replace('-', '', $pendaftar->negara_ayah ?? 'Indonesia')) }}"
+                                    placeholder="Contoh: Indonesia" autocomplete="country-name" />
                             </label>
                         </div>
                     </div>
@@ -280,26 +280,26 @@
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nama_ibu" value="{{ old('nama_ibu', $pendaftar->nama_ibu ?? '') }}"
-                                placeholder="Sesuai KTP" />
+                                name="nama_ibu" value="{{ old('nama_ibu', str_replace('-', '', $pendaftar->nama_ibu ?? '')) }}"
+                                placeholder="Sesuai KTP" autocomplete="name" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">NIK <span
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nik_ibu" value="{{ old('nik_ibu', $pendaftar->nik_ibu ?? '') }}"
-                                placeholder="16 digit angka" type="text" />
+                                name="nik_ibu" value="{{ old('nik_ibu', str_replace(['-', '0'], '', $pendaftar->nik_ibu ?? '')) }}"
+                                placeholder="16 digit angka" type="text" autocomplete="username" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">No. Telepon / HP <span
                                     class="text-red-500">*</span></p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="hp_ibu" value="{{ old('hp_ibu', $pendaftar->hp_ibu ?? '') }}"
-                                placeholder="08xxxxxxxxxx" type="tel" />
+                                name="hp_ibu" value="{{ old('hp_ibu', str_replace('-', '', $pendaftar->hp_ibu ?? '')) }}"
+                                placeholder="08xxxxxxxxxx" type="tel" autocomplete="tel" />
                         </label>
-                        <label class="flex flex-col">
+ drum                        <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Pendidikan Terakhir
                             </p>
                             <select name="pendidikan_ibu"
@@ -384,23 +384,23 @@
                                     (Jalan/Dusun) <span class="text-red-500">*</span></p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="alamat_ibu" value="{{ old('alamat_ibu', $pendaftar->alamat_ibu ?? '') }}"
-                                    placeholder="Nama Jalan, Blok, atau No. Rumah" />
+                                    name="alamat_ibu" value="{{ old('alamat_ibu', str_replace('-', '', $pendaftar->alamat_ibu ?? '')) }}"
+                                    placeholder="Nama Jalan, Blok, atau No. Rumah" autocomplete="street-address" />
                             </label>
                             <div class="grid grid-cols-2 gap-4">
                                 <label class="flex flex-col">
                                     <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">RT</p>
                                     <input
                                         class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                        name="rt_ibu" value="{{ old('rt_ibu', $pendaftar->rt_ibu ?? '') }}"
-                                        placeholder="000" />
+                                        name="rt_ibu" value="{{ old('rt_ibu', str_replace('-', '', $pendaftar->rt_ibu ?? '')) }}"
+                                        placeholder="000" autocomplete="address-line2" />
                                 </label>
                                 <label class="flex flex-col">
                                     <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">RW</p>
                                     <input
                                         class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                        name="rw_ibu" value="{{ old('rw_ibu', $pendaftar->rw_ibu ?? '') }}"
-                                        placeholder="000" />
+                                        name="rw_ibu" value="{{ old('rw_ibu', str_replace('-', '', $pendaftar->rw_ibu ?? '')) }}"
+                                        placeholder="000" autocomplete="address-line2" />
                                 </label>
                             </div>
                             <label class="flex flex-col">
@@ -410,8 +410,8 @@
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
                                     name="kelurahan_ibu"
-                                    value="{{ old('kelurahan_ibu', $pendaftar->kelurahan_ibu ?? '') }}"
-                                    placeholder="Nama Desa/Kelurahan" />
+                                    value="{{ old('kelurahan_ibu', str_replace('-', '', $pendaftar->kelurahan_ibu ?? '')) }}"
+                                    placeholder="Nama Desa/Kelurahan" autocomplete="address-level3" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Kecamatan <span
@@ -419,8 +419,8 @@
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
                                     name="kecamatan_ibu"
-                                    value="{{ old('kecamatan_ibu', $pendaftar->kecamatan_ibu ?? '') }}"
-                                    placeholder="Nama Kecamatan" />
+                                    value="{{ old('kecamatan_ibu', str_replace('-', '', $pendaftar->kecamatan_ibu ?? '')) }}"
+                                    placeholder="Nama Kecamatan" autocomplete="address-level2" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Kabupaten/Kota
@@ -428,8 +428,8 @@
                                 </p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="kota_ibu" value="{{ old('kota_ibu', $pendaftar->kota_ibu ?? '') }}"
-                                    placeholder="Nama Kabupaten/Kota" />
+                                    name="kota_ibu" value="{{ old('kota_ibu', str_replace('-', '', $pendaftar->kota_ibu ?? '')) }}"
+                                    placeholder="Nama Kabupaten/Kota" autocomplete="address-level1" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Provinsi <span
@@ -437,8 +437,8 @@
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
                                     name="provinsi_ibu"
-                                    value="{{ old('provinsi_ibu', $pendaftar->provinsi_ibu ?? '') }}"
-                                    placeholder="Nama Provinsi" />
+                                    value="{{ old('provinsi_ibu', str_replace('-', '', $pendaftar->provinsi_ibu ?? '')) }}"
+                                    placeholder="Nama Provinsi" autocomplete="address-level1" />
                             </label>
                             <label class="flex flex-col">
                                 <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Negara <span
@@ -446,8 +446,8 @@
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
                                     name="negara_ibu"
-                                    value="{{ old('negara_ibu', $pendaftar->negara_ibu ?? 'Indonesia') }}"
-                                    placeholder="Contoh: Indonesia" />
+                                    value="{{ old('negara_ibu', str_replace('-', '', $pendaftar->negara_ibu ?? 'Indonesia')) }}"
+                                    placeholder="Contoh: Indonesia" autocomplete="country-name" />
                             </label>
                         </div>
                     </div>
@@ -464,22 +464,22 @@
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Nama Lengkap Wali</p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nama_wali" value="{{ old('nama_wali', $pendaftar->nama_wali ?? '') }}"
-                                placeholder="Sesuai KTP" />
+                                name="nama_wali" value="{{ old('nama_wali', str_replace('-', '', $pendaftar->nama_wali ?? '')) }}"
+                                placeholder="Sesuai KTP" autocomplete="name" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">NIK Wali</p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="nik_wali" value="{{ old('nik_wali', $pendaftar->nik_wali ?? '') }}"
-                                placeholder="16 digit angka" type="text" />
+                                name="nik_wali" value="{{ old('nik_wali', str_replace(['-', '0'], '', $pendaftar->nik_wali ?? '')) }}"
+                                placeholder="16 digit angka" type="text" autocomplete="username" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">No. Telepon / HP</p>
                             <input
                                 class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                name="no_hp_wali" value="{{ old('no_hp_wali', $pendaftar->no_hp_wali ?? '') }}"
-                                placeholder="08xxxxxxxxxx" type="tel" />
+                                name="no_hp_wali" value="{{ old('no_hp_wali', str_replace('-', '', $pendaftar->no_hp_wali ?? '')) }}"
+                                placeholder="08xxxxxxxxxx" type="tel" autocomplete="tel" />
                         </label>
                         <label class="flex flex-col">
                             <p class="text-[#111318] dark:text-gray-300 text-sm font-medium pb-2">Hubungan dengan Calon
@@ -550,8 +550,8 @@
                                     (Jalan/Dusun)</p>
                                 <input
                                     class="w-full rounded-lg text-[#111318] dark:text-white dark:bg-gray-900 border-[#dbdfe6] dark:border-gray-600 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-3 text-base"
-                                    name="alamat_wali" value="{{ old('alamat_wali', $pendaftar->alamat_wali ?? '') }}"
-                                    placeholder="Nama Jalan, Blok, atau No. Rumah" />
+                                    name="alamat_wali" value="{{ old('alamat_wali', str_replace('-', '', $pendaftar->alamat_wali ?? '')) }}"
+                                    placeholder="Nama Jalan, Blok, atau No. Rumah" autocomplete="street-address" />
                             </label>
                             <!-- (Other Wali Address fields omitted for brevity in thought but included in code) -->
                         </div>
