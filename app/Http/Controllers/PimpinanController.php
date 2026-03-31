@@ -22,17 +22,20 @@ class PimpinanController extends Controller
 
         $recentPendaftar = Pendaftar::latest()->take(5)->get();
 
-        $prodiStats = Pendaftar::selectRaw('SUBSTRING_INDEX(pilihan_prodi, ",", 1) as main_prodi, count(*) as count')
-            ->groupBy('main_prodi')
-            ->orderByDesc('count')
-            ->take(5)
-            ->get();
+        // Program Studi Terfavorit - Berdasarkan Pilihan Utama
+        $validProdis = ['Sistem Informasi S1', 'Sistem Komputer S1', 'Bisnis Digital S1'];
+        $prodiStats = collect();
 
-        // Map main_prodi back to pilihan_prodi for view compatibility
-        $prodiStats->map(function ($item) {
-            $item->pilihan_prodi = $item->main_prodi;
-            return $item;
-        });
+        foreach ($validProdis as $prodi) {
+            $count = Pendaftar::where('pilihan_prodi', 'LIKE', $prodi . '%')->count();
+            $prodiStats->push((object)[
+                'pilihan_prodi' => $prodi,
+                'count' => $count
+            ]);
+        }
+
+        // Sort by count descending
+        $prodiStats = $prodiStats->sortByDesc('count')->values();
 
         // Daily Stats for Chart (Last 30 days) - Extended from 7 to see more data
         $dailyStats = [];
@@ -96,18 +99,19 @@ class PimpinanController extends Controller
         ];
 
         // Fetch all prodi counts (Jurusan) - Group by first choice
-        $prodiCounts = Pendaftar::selectRaw('SUBSTRING_INDEX(pilihan_prodi, ",", 1) as main_prodi, count(*) as count')
-            ->groupBy('main_prodi')
-            ->pluck('count', 'main_prodi');
-
-        // Format for view (Jurusan)
+        // Fetch all valid prodi counts (Jurusan) - Group by first choice
+        $validProdis = ['Sistem Informasi S1', 'Sistem Komputer S1', 'Bisnis Digital S1'];
         $jurusanStats = [];
-        foreach ($prodiCounts as $key => $val) {
-            if (empty($key) || $key == '-')
-                continue;
-            $jurusanStats[] = ['name' => $key, 'count' => $val];
+
+        foreach ($validProdis as $prodi) {
+            $count = Pendaftar::where('pilihan_prodi', 'LIKE', $prodi . '%')->count();
+            $jurusanStats[] = [
+                'name' => $prodi,
+                'count' => $count
+            ];
         }
 
+        // Sort for view
         usort($jurusanStats, fn($a, $b) => $b['count'] <=> $a['count']);
 
         // Prepare Weekly Stats for Chart (last 6 weeks)
