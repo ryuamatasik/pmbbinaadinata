@@ -22,24 +22,21 @@ class AdminController extends Controller
         // Jadwal Ujian (DEBUG: Ambil yang paling baru dibuat, abaikan tanggal)
         $jadwalUjian = \App\Models\JadwalSeleksi::latest()->first();
 
-        // Sebaran Pendaftar
-        $prodiList = Pendaftar::whereNotNull('pilihan_prodi')->distinct()->pluck('pilihan_prodi')->toArray();
-        if (empty($prodiList)) {
-            $prodiList = ['Sistem Informasi', 'Sistem Komputer', 'Bisnis Digital'];
-        }
+        // Sebaran Pendaftar - Individu per Prodi (Bukan kombinasi)
+        $prodiList = ['Sistem Informasi S1', 'Sistem Komputer S1', 'Bisnis Digital S1'];
         $sebaranProdi = [];
 
         foreach ($prodiList as $prodi) {
-            $totalInProdi = Pendaftar::where('pilihan_prodi', $prodi)->count();
-            $acceptedInProdi = Pendaftar::where('pilihan_prodi', $prodi)->where('status', 'Diterima')->count();
+            $totalInProdi = Pendaftar::where('pilihan_prodi', 'LIKE', "%$prodi%")->count();
+            $acceptedInProdi = Pendaftar::where('pilihan_prodi', 'LIKE', "%$prodi%")->where('status', 'Diterima')->count();
 
             $percentage = $totalInProdi > 0 ? round(($acceptedInProdi / $totalInProdi) * 100) : 0;
 
-            // Assign color based on prodi for consistent UI
+            // Assign color based on prodi
             $color = match ($prodi) {
-                'Sistem Informasi' => ['bg' => 'bg-primary', 'text' => 'text-primary'],
-                'Sistem Komputer' => ['bg' => 'bg-purple-400', 'text' => 'text-purple-600'],
-                'Bisnis Digital' => ['bg' => 'bg-blue-400', 'text' => 'text-blue-600'],
+                'Sistem Informasi S1' => ['bg' => 'bg-primary', 'text' => 'text-primary'],
+                'Sistem Komputer S1' => ['bg' => 'bg-purple-400', 'text' => 'text-purple-600'],
+                'Bisnis Digital S1' => ['bg' => 'bg-blue-400', 'text' => 'text-blue-600'],
                 default => ['bg' => 'bg-gray-400', 'text' => 'text-gray-600'],
             };
 
