@@ -541,7 +541,7 @@
                                 type="text" placeholder="16 digit NIK" maxlength="16"
                                 autocomplete="username"
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                onkeypress="return event.charCode >= 48 && event.charCode <= 57" required />
+                                onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
                         </div>
                         <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">NISN <span
@@ -551,7 +551,7 @@
                                 type="text" placeholder="10 digit NISN" maxlength="10"
                                 autocomplete="username"
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                onkeypress="return event.charCode >= 48 && event.charCode <= 57" required />
+                                onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
                         </div>
 
                         <!-- Status Pernikahan & NPWP -->
@@ -580,7 +580,7 @@
                             <input name="nama_lengkap"
                                 value="{{ old('nama_lengkap', str_replace('-', '', $pendaftar->nama_lengkap ?? Auth::user()->name ?? '')) }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                type="text" placeholder="Sesuai ijazah" autocomplete="name" required />
+                                type="text" placeholder="Sesuai ijazah" autocomplete="name" />
                         </div>
                         <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
                             <label class="text-sm font-bold text-slate-900 dark:text-white">Jenis Kelamin <span
@@ -607,7 +607,7 @@
                             <input name="tanggal_lahir"
                                 value="{{ old('tanggal_lahir', $pendaftar->tanggal_lahir ?? '') }}"
                                 class="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                type="date" autocomplete="bday" required />
+                                type="date" autocomplete="bday" />
                         </div>
 
                         <!-- Row 4: Agama & Physical -->
@@ -1225,7 +1225,7 @@
         });
     </script>
 
-    </form>
+
     <!-- Unsaved Changes Warning Modal -->
     <div x-show="showUnsavedModal" style="display: none;"
         class="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -1245,15 +1245,21 @@
                         Pastikan Anda menyimpan progres pengisian formulir agar data tidak hilang.
                     </p>
                 </div>
-                <div class="flex flex-row items-center justify-center gap-3 w-full">
+                <div class="flex flex-col gap-3 w-full">
                     <button @click="saveDraft()"
-                        class="flex-1 px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-900 hover:shadow-lg transition-all active:scale-95">
-                        Simpan Draft
+                        class="w-full px-5 py-3 bg-primary text-white text-sm font-bold rounded-xl hover:bg-blue-900 hover:shadow-lg transition-all active:scale-95">
+                        Simpan Draft & Keluar
                     </button>
-                    <button @click="showUnsavedModal = false"
-                        class="flex-1 px-5 py-2.5 bg-transparent text-slate-500 text-sm font-semibold rounded-full hover:bg-slate-50 border border-slate-200 transition-all active:scale-95">
-                        Tetap di Halaman
-                    </button>
+                    <div class="flex gap-3">
+                        <button @click="window.location.href = pendingUrl"
+                            class="flex-1 px-5 py-2.5 bg-red-50 text-red-600 text-xs font-bold rounded-xl hover:bg-red-100 transition-all">
+                            Abaikan & Keluar
+                        </button>
+                        <button @click="showUnsavedModal = false"
+                            class="flex-1 px-5 py-2.5 bg-slate-50 text-slate-500 text-xs font-bold rounded-xl hover:bg-slate-100 transition-all">
+                            Batal
+                        </button>
+                    </div>
                 </div>
             </div>
             <p class="mb-6 text-center text-slate-400 text-xs font-medium flex items-center justify-center gap-1.5">

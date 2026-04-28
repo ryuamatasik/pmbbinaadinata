@@ -38,7 +38,7 @@
         html {
             scroll-behavior: smooth;
         }
-        /* Scroll Reveal Animation */
+        
         .reveal {
             opacity: 0;
             transform: translateY(40px) scale(0.95);
@@ -51,7 +51,7 @@
             filter: blur(0);
         }
 
-        /* Staggered Card Reveal */
+      
         .reveal-card {
             opacity: 0;
             transform: translateY(30px) scale(0.9);
@@ -81,7 +81,7 @@
             }
 
             window.addEventListener('scroll', checkScroll);
-            // Initial check
+
             checkScroll();
         });
     </script>
@@ -549,7 +549,8 @@
                                         <div>
                                             <p class="text-xs text-gray-500 uppercase font-bold">SPP / Semester</p>
                                             <p class="text-sm text-primary font-bold">Rp
-                                                {{ number_format($sppFee, 0, ',', '.') }}</p>
+                                                {{ number_format($sppFee, 0, ',', '.') }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -589,7 +590,8 @@
                                             </div>
                                             <div class="pb-2">
                                                 <h4 class="font-bold text-[#111318] dark:text-white text-sm">
-                                                    {{ $step['title'] }}</h4>
+                                                    {{ $step['title'] }}
+                                                </h4>
                                                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
                                                     {!! $step['desc'] !!}
                                                 </p>
