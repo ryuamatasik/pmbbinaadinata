@@ -136,6 +136,28 @@
             class="flex flex-col grow" enctype="multipart/form-data" @submit="isLoading = true">
             @csrf
             <input type="hidden" name="action" id="form-action" value="submit">
+
+            <!-- Error Messages -->
+            @if ($errors->any())
+                <div class="mx-4 md:mx-10 mt-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-3 animate-bounce">
+                    <span class="material-symbols-outlined text-red-500">error</span>
+                    <div>
+                        <h4 class="text-sm font-bold text-red-800">Ups! Ada data yang terlewat:</h4>
+                        <ul class="text-xs text-red-600 mt-1 list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @endif
+
+            @if (session('success'))
+                <div class="mx-4 md:mx-10 mt-6 p-4 bg-green-50 border border-green-100 rounded-2xl flex items-start gap-3">
+                    <span class="material-symbols-outlined text-green-500">check_circle</span>
+                    <div class="text-sm font-bold text-green-800">{{ session('success') }}</div>
+                </div>
+            @endif
             <!-- Modal Toggles (using checkbox hack from User HTML) -->
             <input class="peer/modal1 hidden modal-toggle" id="modal-1" type="checkbox" />
             <input class="peer/modal2 hidden modal-toggle" id="modal-2" type="checkbox" />
@@ -367,10 +389,12 @@
                         </button>
                         <button
                             class="flex items-center justify-center gap-2 h-14 px-10 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all transform w-full md:w-auto disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-                            type="submit" onclick="document.getElementById('form-action').value='submit'" @click="if(!step1Complete) { 
-                                        $event.preventDefault(); 
-                                        showToast('Data Program Studi belum lengkap. Silakan pilih Program Studi terlebih dahulu.', 'warning'); 
-                                    }" :disabled="isLoading">
+                             type="submit" onclick="document.getElementById('form-action').value='submit'" 
+                             @click="isLoading = true" :disabled="isLoading">
+                             
+                            <!-- Loading Text -->
+                            <span x-show="isLoading">Memproses...</span>
+                            <span x-show="!isLoading">Lanjut</span>
 
                             <!-- Loading Spinner -->
                             <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white"
@@ -1200,20 +1224,20 @@
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         }
                     })
-                        .then(response => {
+                        .then(async response => {
+                            let data = {};
+                            try { data = await response.json(); } catch(e) {}
+                            
                             if (response.ok) {
+                                this.showToast('Draf berhasil disimpan!', 'success');
                                 if (this.pendingUrl) {
                                     window.location.href = this.pendingUrl;
                                 } else {
-                                    window.location.reload();
+                                    setTimeout(() => window.location.reload(), 1000);
                                 }
                             } else {
-                                response.json().then(data => {
-                                    console.error('Save failed:', data);
-                                    this.showToast('Gagal menyimpan data: ' + (data.message || response.statusText), 'error');
-                                }).catch(() => {
-                                    this.showToast('Gagal menyimpan data (Status: ' + response.status + ')', 'error');
-                                });
+                                console.error('Save failed:', data);
+                                this.showToast('Gagal simpan: ' + (data.message || 'Cek kembali data Anda'), 'error');
                             }
                         })
                         .catch(error => {

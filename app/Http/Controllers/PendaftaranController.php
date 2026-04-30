@@ -164,10 +164,11 @@ class PendaftaranController extends Controller
         }
 
         if ($request->input('action') === 'draft') {
-            return redirect()->route('mahasiswa.pendaftaran')->with('success', 'Data draf pendaftaran berhasil disimpan.')->with('was_draft', true);
+            return redirect('/formulir-pendaftaran')->with('success', 'Data draf pendaftaran berhasil disimpan.');
         }
 
-        return redirect()->route('mahasiswa.upload')->with('success', 'Data pendaftaran berhasil disimpan. Silakan unggah dokumen.');
+        // Use absolute-relative path for safety across different domains/ngrok
+        return redirect('/formulir-pendaftaran/upload')->with('success', 'Data pendaftaran berhasil disimpan! Silakan lengkapi berkas Anda.');
     }
 
     public function uploadIndex()
