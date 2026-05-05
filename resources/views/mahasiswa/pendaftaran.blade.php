@@ -1015,7 +1015,7 @@
                         class="p-6 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 bg-slate-50 dark:bg-black/20 rounded-b-2xl">
                         <label for="modal-5"
                             class="px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-600 font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer transition-colors">Batal</label>
-                        <div @click="document.getElementById('modal-5').checked = false; checkCompletion();"
+                        <div @click="validateStep(5)"
                             class="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-blue-500/20 hover:bg-primary-dark cursor-pointer transition-colors">
                             <span>Simpan &amp; Lanjutkan</span>
                             <span class="material-symbols-outlined text-sm">arrow_forward</span>
@@ -1131,11 +1131,14 @@
                     } else if (step === 4) {
                         fields = ['status_ayah', 'nomor_kk', 'nama_ayah', 'nik_ayah', 'hp_ayah', 'alamat_ayah', 'status_ibu', 'nama_ibu', 'nik_ibu', 'hp_ibu', 'alamat_ibu'];
                         stepName = "Identitas Keluarga";
+                    } else if (step === 5) {
+                        // Optional step, but we still use validateStep to handle the transition
+                        stepName = "Mahasiswa Transfer";
                     }
 
                     fields.forEach(name => {
                         let el = document.querySelector(`[name="${name}"]`);
-                       if (!el) return;
+                        if (!el) return;
 
                         // Check if it's a radio group (multiple elements with same name)
                         const isRadioGroup = document.querySelectorAll(`[name="${name}"][type="radio"]`).length > 0;
@@ -1180,9 +1183,21 @@
                         const uniqueMissing = [...new Set(missing)];
                         this.showToast(`Mohon lengkapi data pada bagian ${stepName}: ${uniqueMissing.join(', ')}`, "error");
                     } else {
-                        // Close modal manually
-                        const modalSelector = document.getElementById('modal-' + step);
-                        if (modalSelector) modalSelector.checked = false;
+                        // Close current modal
+                        const currentModal = document.getElementById('modal-' + step);
+                        if (currentModal) currentModal.checked = false;
+                        
+                        // Open next modal after a slightly longer delay for mobile stability
+                        const nextStep = step + 1;
+                        const nextModal = document.getElementById('modal-' + nextStep);
+                        if (nextModal) {
+                            setTimeout(() => {
+                                nextModal.checked = true;
+                                // Scroll to top to ensure modal header is visible on mobile
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }, 500);
+                        }
+                        
                         this.checkCompletion();
                         this.showToast(`Bagian ${stepName} berhasil disimpan!`, "success");
                     }

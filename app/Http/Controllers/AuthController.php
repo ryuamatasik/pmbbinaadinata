@@ -110,7 +110,7 @@ class AuthController extends Controller
         try {
             \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\WelcomeEmail($pendaftar));
         } catch (\Exception $e) {
-            // Log error
+            \Illuminate\Support\Facades\Log::error('Welcome Email Error: ' . $e->getMessage());
         }
 
         Auth::login($user);
