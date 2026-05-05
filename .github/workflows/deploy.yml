@@ -19,6 +19,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             set -e
+            
+            # Fix ownership so ubuntu user can run git
+            sudo chown -R ubuntu:ubuntu /var/www/pmbbinaadinata
+            git config --global --add safe.directory /var/www/pmbbinaadinata
+            
             cd /var/www/pmbbinaadinata
             
             echo "Pulling latest changes..."
