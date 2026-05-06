@@ -192,23 +192,36 @@
                             </div>
                             <div class="relative flex gap-4 pb-8 group">
                                 <div class="flex flex-col items-center">
-                                    <div
-                                        class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 ring-4 ring-white dark:ring-surface-dark z-10 border border-slate-200 dark:border-slate-700">
+                                    @if(in_array($pendaftar->status, ['Diterima', 'Verifikasi']))
+                                    <div class="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 ring-4 ring-white dark:ring-surface-dark z-10">
+                                        <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                                    </div>
+                                    @else
+                                    <div class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 ring-4 ring-white dark:ring-surface-dark z-10 border border-slate-200 dark:border-slate-700">
                                         <span class="material-symbols-outlined text-[18px]">lock</span>
                                     </div>
-                                    <div class="absolute top-8 bottom-0 w-0.5 bg-border-light dark:bg-border-dark">
-                                    </div>
+                                    @endif
+                                    <div class="absolute top-8 bottom-0 w-0.5 bg-border-light dark:bg-border-dark"></div>
                                 </div>
-                                <div class="flex-1 pt-1 opacity-60">
+                                <div class="flex-1 pt-1 {{ in_array($pendaftar->status, ['Diterima', 'Verifikasi']) ? '' : 'opacity-60' }}">
                                     <div class="flex justify-between items-start mb-1">
-                                        <h3 class="text-base font-medium text-slate-900 dark:text-white">Ujian Seleksi
-                                            Masuk</h3>
-                                        <span
-                                            class="text-xs font-medium text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">Terkunci</span>
+                                        <h3 class="text-base font-{{ in_array($pendaftar->status, ['Diterima', 'Verifikasi']) ? 'bold text-slate-900 dark:text-white' : 'medium text-slate-900 dark:text-white' }}">Ujian Seleksi Masuk</h3>
+                                        @if(in_array($pendaftar->status, ['Diterima', 'Verifikasi']))
+                                        <span class="text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full">Aktif</span>
+                                        @else
+                                        <span class="text-xs font-medium text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">Terkunci</span>
+                                        @endif
                                     </div>
                                     <p class="text-sm text-slate-500 dark:text-slate-400">Jadwal:
                                         {{ $timeline['ujian_jadwal'] }}
                                     </p>
+                                    @if(in_array($pendaftar->status, ['Diterima', 'Verifikasi']))
+                                    <a href="{{ route('mahasiswa.cetak_kartu') }}" target="_blank"
+                                        class="mt-3 inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary-dark text-white text-xs font-bold px-3 py-2 transition-all shadow-sm hover:scale-[1.02]">
+                                        <span class="material-symbols-outlined text-[16px]">badge</span>
+                                        Cetak Kartu Ujian
+                                    </a>
+                                    @endif
                                 </div>
                             </div>
                             <div class="relative flex gap-4 group">
@@ -248,17 +261,19 @@
                             </h2>
                         </div>
 
-                        @if($pendaftar->status == 'Diterima')
+                        @if(in_array($pendaftar->status, ['Diterima', 'Verifikasi']))
                             <div
                                 class="mb-4 p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 animate-in fade-in slide-in-from-bottom-4 duration-700">
                                 <div class="flex items-center gap-3 mb-3 text-green-700 dark:text-green-400">
                                     <span class="material-symbols-outlined shrink-0 text-[24px]">verified</span>
-                                    <p class="text-sm font-bold">Selamat! Berkas Anda telah diverifikasi.</p>
+                                    <p class="text-sm font-bold">
+                                        {{ $pendaftar->status == 'Diterima' ? 'Selamat! Anda diterima.' : 'Berkas sedang diverifikasi.' }}
+                                    </p>
                                 </div>
                                 <a href="{{ route('mahasiswa.cetak_kartu') }}" target="_blank"
                                     class="w-full flex items-center justify-center gap-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-bold h-11 px-4 transition-all shadow-lg shadow-green-200 dark:shadow-none hover:scale-[1.02] active:scale-[0.98]">
                                     <span class="material-symbols-outlined text-[20px]">print</span>
-                                    DOWNLOAD KARTU UJIAN
+                                    CETAK KARTU UJIAN
                                 </a>
                                 <p class="text-[10px] text-green-600 dark:text-green-500 mt-2 text-center">Silakan cetak
                                     kartu ini sebagai bukti peserta ujian yang sah.</p>
