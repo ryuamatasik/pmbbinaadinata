@@ -14,56 +14,6 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#135bec",
-                        "primary-dark": "#0e45b5",
-                        "background-light": "#f6f6f8",
-                        "background-dark": "#101622",
-                    },
-                    fontFamily: {
-                        "display": ["Lexend", "sans-serif"],
-                        "body": ["Noto Sans", "sans-serif"]
-                    },
-                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
-                },
-            },
-        }
-    </script>
-    <style type="text/tailwindcss">
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px) scale(0.95);
-            filter: blur(10px);
-            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0);
-        }
-
-      
-        .reveal-card {
-            opacity: 0;
-            transform: translateY(30px) scale(0.9);
-            filter: blur(5px);
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .reveal-card.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0);
-        }
-    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const reveals = document.querySelectorAll('.reveal, .reveal-card');
@@ -81,7 +31,6 @@
             }
 
             window.addEventListener('scroll', checkScroll);
-
             checkScroll();
         });
     </script>

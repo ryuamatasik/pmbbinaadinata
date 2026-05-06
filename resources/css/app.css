@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Force class-based dark mode (Tailwind v4) — dark: classes only activate with .dark on ancestor */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: #135bec;
   --color-primary-dark: #0e45b5;
@@ -14,6 +17,36 @@
   --font-display: 'Lexend', sans-serif;
   --font-body: 'Noto Sans', sans-serif;
 }
+
+/* Scroll reveal animations */
+html {
+  scroll-behavior: smooth;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  filter: blur(10px);
+  transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.reveal-card {
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+  filter: blur(5px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-card.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
 .custom-scrollbar::-webkit-scrollbar { width: 6px; }
 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #CBD5E1; border-radius: 20px; }
